@@ -1,5 +1,4 @@
-button
-{
+button{
     display: inline-block;
     width: 200px;
     border: none;
@@ -41,4 +40,89 @@ body::before {
 }
 body::after {
     bottom: 0;
+}
+
+.loginlabel{
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #066cb1;
+}
+.loginput{
+    padding: 10px;
+    border-radius: 6px;
+    border:none;
+    background-color:#fffbd8;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.form-control3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.regtoplabel{
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #066cb1;
+}
+
+.reglabel{
+    display: inline-block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    color: #f7c331;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.reglabel input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.regcheck{
+    position: absolute;
+    top: 0px;
+    right: 370px;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+}
+.reglabel:hover input ~ .regcheck {
+    background-color: #ccc;
+}
+.reglabel input:checked ~ .regcheck {
+    background-color: #066cb1;
+}
+.regcheck:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.reglabel input:checked ~ .regcheck:after {
+    display: block;
+}
+.reglabel .regcheck:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.form-control3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
 }
