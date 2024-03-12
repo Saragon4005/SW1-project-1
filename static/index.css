@@ -1,73 +1,89 @@
 body {
-    text-align: center;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
+	text-align: center;
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
 }
 
 button{
-    display: inline-block;
-    width: 200px;
-    border: none;
-    padding: 20px 30px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    background-color: #066cb1;
-    color: white;
-    border-radius: 40px;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+	display: inline-block;
+	width: 200px;
+	border: none;
+	padding: 20px 30px;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	background-color: #066cb1;
+	color: white;
+	border-radius: 40px;
+	box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
 }     
 
 .topBanner,.bottomBanner{
-    background-color: #066cb1; 
-    width: 100%;
-    height: 10%;
+	background-color: #066cb1; 
+	width: 100%;
+	height: 10%;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    cursor:pointer;
+	transform: translateY(-2px);
+	cursor:pointer;
 }
 
 .logoContainer{
-    width: 100%;
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	width: 100%;
+	height: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .logo-image{
-    /*
-    padding: 50px;
-    margin-top: 100px;
-    */
-    padding-top: 150px;
-    width:auto;
-    height:auto;
-    max-width: 100%;
-    max-height: 100%;
+	/*
+	padding: 50px;
+	margin-top: 100px;
+	*/
+	padding-top: 150px;
+	width:auto;
+	height:auto;
+	max-width: 100%;
+	max-height: 100%;
 }
 .home-button-Container{
-    width: 100%;
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+	width: 100%;
+	height: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
 }
+
 .home-buttons{
-    max-height: 100%;
-    position: absolute;
-    top: 0;
+	max-height: 100%;
+	position: absolute;
+	top: 0;
+}
+
+.loginBox{
+	width: 100%;
+	height: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.loginForm{
+	max-height: 100%;
+	position: absolute;
+	top: 0;
 }
 
 .bodySection{
-    width: 100%;
-    height: 80%;
+	width: 100%;
+	height: 80%;
 }
 /*
 body::before,
@@ -88,96 +104,95 @@ body::after {
 }
 */
 .loginlabel{
-    font-size: 16px;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #066cb1;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #066cb1;
 }
 
 .loginput{
-    padding: 10px;
-    border-radius: 6px;
-    border:none;
-    background-color:#fffbd8;
-    font-family: Arial, Helvetica, sans-serif;
+	padding: 10px;
+	border-radius: 6px;
+	border:none;
+	background-color:#fffbd8;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 .form-control3{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
 }
 
+.independent-button{
+	 padding-top:3%;
+}
 .regtoplabel{
-    font-size: 16px;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #066cb1;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #066cb1;
 }
 
 .reglabel{
-    display: inline-block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: bold;
-    color: #f7c331;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    font-family: Arial, Helvetica, sans-serif;
+	display: inline-block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: bold;
+	color: #f7c331;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 .reglabel input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
 }
 
 .regcheck{
-    position: absolute;
-    top: 0px;
-    right: 370px;
-    height: 20px;
-    width: 20px;
-    background-color: #eee;
+	position: absolute;
+	top: 0px;
+	right: 370px;
+	height: 20px;
+	width: 20px;
+	background-color: #eee;
 }
 
 .reglabel:hover input ~ .regcheck {
-    background-color: #ccc;
+	background-color: #ccc;
 }
 
 .reglabel input:checked ~ .regcheck {
-    background-color: #066cb1;
+	background-color: #066cb1;
 }
 
 .regcheck:after {
-    content: "";
-    position: absolute;
-    display: none;
+	content: "";
+	position: absolute;
+	display: none;
 }
 
 .reglabel input:checked ~ .regcheck:after {
-    display: block;
+	display: block;
 }
 
 .reglabel .regcheck:after {
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+	left: 6px;
+	top: 2px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
-.form-control3{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-}
