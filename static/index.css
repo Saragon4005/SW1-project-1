@@ -1,3 +1,10 @@
+body {
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
 button{
     display: inline-block;
     width: 200px;
@@ -12,20 +19,55 @@ button{
     border-radius: 40px;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+}     
+
+.topBanner,.bottomBanner{
+    background-color: #066cb1; 
+    width: 100%;
+    height: 10%;
 }
+
 button:hover {
     transform: translateY(-2px);
     cursor:pointer;
 }
+
+.logoContainer{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .logo-image{
+    /*
     padding: 50px;
     margin-top: 100px;
+    */
+    padding-top: 150px;
     width:auto;
     height:auto;
+    max-width: 100%;
+    max-height: 100%;
 }
-body {
-    text-align: center;
-  }
+.home-button-Container{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.home-buttons{
+    padding-bottom: 150px;
+}
+
+.bodySection{
+    width: 100%;
+    height: 80%;
+}
+/*
 body::before,
 body::after {
     content: "";
@@ -38,16 +80,18 @@ body::after {
 body::before {
     top: 0;
 }
+
 body::after {
     bottom: 0;
 }
-
+*/
 .loginlabel{
     font-size: 16px;
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     color: #066cb1;
 }
+
 .loginput{
     padding: 10px;
     border-radius: 6px;
@@ -55,6 +99,7 @@ body::after {
     background-color:#fffbd8;
     font-family: Arial, Helvetica, sans-serif;
 }
+
 .form-control3{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
@@ -82,6 +127,7 @@ body::after {
     user-select: none;
     font-family: Arial, Helvetica, sans-serif;
 }
+
 .reglabel input {
     position: absolute;
     opacity: 0;
@@ -89,6 +135,7 @@ body::after {
     height: 0;
     width: 0;
 }
+
 .regcheck{
     position: absolute;
     top: 0px;
@@ -97,20 +144,25 @@ body::after {
     width: 20px;
     background-color: #eee;
 }
+
 .reglabel:hover input ~ .regcheck {
     background-color: #ccc;
 }
+
 .reglabel input:checked ~ .regcheck {
     background-color: #066cb1;
 }
+
 .regcheck:after {
     content: "";
     position: absolute;
     display: none;
 }
+
 .reglabel input:checked ~ .regcheck:after {
     display: block;
 }
+
 .reglabel .regcheck:after {
     left: 6px;
     top: 2px;
@@ -122,6 +174,7 @@ body::after {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
 .form-control3{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
