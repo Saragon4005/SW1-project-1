@@ -1,69 +1,84 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <link rel="stylesheet" href="index.css">
-    <title>
-      Welcome Back!
-    </title>
-    <link rel="icon" href="CWIcon.png" type="image/x-icon">
+    <link rel="stylesheet" href="index.css" />
+    <title>Welcome Back!</title>
+    <link rel="icon" href="CWIcon.png" type="image/x-icon" />
   </head>
   <body>
-    <h1>Welcome to</h1>
-  </body>
-</html>
-  
-<head>
-  <body>
-    <div class="logo-image">
-      <img src="Cashwash.png"/>
-    </div>
-    <br>
-      <form id="form" action="" method="POST" required>
-          <div class="formusr" id="formusr">
+    <div class="topBanner"></div>
+    <div class="bodySection">
+      <div class="logoContainer">
+        <div class="logo-image">
+          <img src="Cashwash.png" />
+        </div>
+      </div>
+
+      <div class="bottomHalf">
+        <div class="loginContainer">
+          <form class="loginForm" id="form" action="" method="POST" required>
+            <div class="formusr" id="formusr">
               <label class="regtoplabel" for="username">Username</label>
               <div class="form-control">
-                  <input class="loginput" id="username" type="text" placeholder="Enter Your Username" required  name="username"/>
+                <input
+                  class="loginput"
+                  id="username"
+                  type="text"
+                  placeholder="Enter Your Username"
+                  required
+                  name="username"
+                />
               </div>
-              <br>
+              <br />
               <label class="regtoplabel" for="password">Password</label>
               <div class="form-control">
-                  <input class="loginput" id="password" type="password" placeholder="Enter Your Password" required name="password"/>
+                <input
+                  class="loginput"
+                  id="password"
+                  type="password"
+                  placeholder="Enter Your Password"
+                  required
+                  name="password"
+                />
               </div>
-              <br>
-              <label class="regtoplabel" for="cpassword">Confirm Password</label>
+              <br />
+              <label class="regtoplabel" for="cpassword"
+                >Confirm Password</label
+              >
               <div class="form-control">
-                  <input class="loginput" id="cpassword" type="password" placeholder="Confirm Your Password" required name="cpassword"/>
+                <input
+                  class="loginput"
+                  id="cpassword"
+                  type="password"
+                  placeholder="Confirm Your Password"
+                  required
+                  name="cpassword"
+                />
               </div>
-              <br> 
-          </div>
-          <div id="checkbx">
+              <br />
+            </div>
+            <div id="checkbx">
               <label class="reglabel">
-                  I would like to sacrifice and give up my whole self
-                  <input class="regbox" type="checkbox" required="true" />
-                  <span class="regcheck"></span>
+                I would like to sacrifice and give up my whole self
+                <input class="regbox" type="checkbox" required="true" />
+                <span class="regcheck"></span>
               </label>
-              <br>
+              <br />
+            </div>
+            <div class="form-control3" id="log-in-option">
+              <em> Already have an account? <a href="index.html">Log In</a></em>
+            </div>
+          </form>
+          <div class="independent-button">
+            <a href="" class="b-button">
+              <button class="b-login">REGISTER</button>
+            </a>
+            <br />
+            <br />
           </div>
-          <div class="form-control3" id="log-in-option">
-                  <em> Already have an account? <a href="index.html">Log In</a></em>
-          </div>
-      </form>
-    <div class="home-buttons">
-      <a href=""class="b-button">
-        <button class="b-login">REGISTER</button>
-      </a>
-      <br>
-      <br>
-      <!-- <a href=""class="b-button">
-        <button class="b-register">REGISTER</button>
-      </a>
-      <br>
-      <br>
-      <a href=""class="b-button">
-        <button class="b-Admin Login">ADMIN LOGIN</button>
-      </a>
-      <br>
-      <br> -->
+        </div>
+      </div>
     </div>
+    <div class="bottomBanner"></div>
   </body>
-</head>
+</html>
