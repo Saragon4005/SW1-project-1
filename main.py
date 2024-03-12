@@ -1,28 +1,39 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from typing import Annotated
+import sqlite3
 
-from fastapi import FastAPI, Form
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+database = sqlite3.Connection("bank.db")
+cur: sqlite3.Cursor = database.cursor()
+
+
 @app.get("/")
-def root():
-   return FileResponse("./static/index.html")
-@app.get("/index.html")
-def load():
-   return FileResponse("./static/index.html")
-@app.post("/register")
-#Form stuff is from https://fastapi.tiangolo.com/tutorial/request-forms/
-def register(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-   #you can add the database stuff here 
-   return {"username": username, "password": password}
-@app.post("/loginPOST")
-def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-   # you can add the database stuff here.
-   return {"username": username, "password": password }
-@app.post("/adminPOST")
-def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-   return {"username": username, "password": password }
+async def root():
+    return {"message": "Hello World"}
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/register")
+async def register(username: str, password: str):
+    # Check for existing username
+    user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    if user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
+        )
+    # Insert new user into database
+    cur.execute(
+        "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
+    )
+    database.commit()
+    return {"message": "Registration successful"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=8000)
