@@ -2,6 +2,8 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
+	overflow: scroll;
+	overflow-x: hidden;
 }
 
 button {
@@ -26,14 +28,12 @@ button {
   height:10%;
 }
 
-
 .bottomBanner{
 	background-color: #066cb1;
-  width: 100%;
-  height: 10%;
-
-	position:fixed;
-	bottom:0;
+	margin-top:auto;
+	width: 100%;
+	height: 10%;
+	position: fixed;
 }
 
 button:hover {
@@ -81,7 +81,6 @@ button:hover {
   width: 100%;
   height: 50%;
 	display: flex;
-  min-height: 350px;
 	justify-content: center;
 }
 
@@ -109,7 +108,7 @@ button:hover {
 .bodySection {
   width: 100%;
   height: 80%;
-
+	min-height: calc(100vh - 20%);
 }
 /*
 body::before,
