@@ -1,108 +1,120 @@
 <style>
-    button{
-      display: inline-block;
-      width: 200px;
-      border: none;
-      padding: 20px 30px;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      text-decoration: none;
-      background-color: #066cb1;
-      color: white;
-      border-radius: 40px;
-      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-    }
-    button:hover {
-      transform: translateY(-2px);
-      cursor:pointer;
-    }
-    .logo-image{
-      padding: 50px;
-      margin-top: 100px;
-      width:auto;
-      height:auto;
-    }
-    .loginlabel{
-        font-size: 16px;
-        font-weight: bold;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #066cb1;
-    }
-    .loginput{
-        padding: 10px;
-        border-radius: 6px;
-        border:none;
-        background-color:#fffbd8;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-    .form-control3{
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-    }
-    body {
-      text-align: center;
-    }
-    body::before,
-    body::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 75px;
-      background-color: #066cb1; 
-    }
-    body::before {
-      top: 0;
-    }
-    body::after {
-      bottom: 0;
-    }
-  </style>
-  
-  <html>
-    <head>
-      <title>
-        Welcome Back!
-      </title>
-      <link rel="icon" href="CWIcon.png" type="image/x-icon">
-    </head>
-    <body>
-      <h1>Welcome to</h1>
-    </body>
-  </html>
-  
+  button {
+    display: inline-block;
+    width: 200px;
+    border: none;
+    padding: 20px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #066cb1;
+    color: white;
+    border-radius: 40px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  button:hover {
+    transform: translateY(-2px);
+    cursor: pointer;
+  }
+  .logo-image {
+    padding: 50px;
+    margin-top: 100px;
+    width: auto;
+    height: auto;
+  }
+  .loginlabel {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #066cb1;
+  }
+  .loginput {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background-color: #fffbd8;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .form-control3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+  }
+  body {
+    text-align: center;
+  }
+  body::before,
+  body::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 75px;
+    background-color: #066cb1;
+  }
+  body::before {
+    top: 0;
+  }
+  body::after {
+    bottom: 0;
+  }
+</style>
+
+<html>
   <head>
-    <body>
-      <div class="logo-image">
-        <img src="Cashwash.png"/>
+    <title>Welcome Back!</title>
+    <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+  </head>
+  <body>
+    <h1>Welcome to</h1>
+  </body>
+</html>
+
+<head>
+  <body>
+    <div class="logo-image">
+      <img src="Cashwash.png" />
+    </div>
+    <br />
+    <form id="form" action="" method="POST" required>
+      <div class="formusr" id="formusr">
+        <label class="loginlabel" for="username">Username</label>
+        <div class="form-control">
+          <input
+            class="loginput"
+            id="username"
+            type="text"
+            placeholder="Enter Your Username"
+            required
+            name="username"
+          />
+        </div>
+        <br />
+        <label class="loginlabel" for="password">Password</label>
+        <div class="form-control">
+          <input
+            class="loginput"
+            id="password"
+            type="password"
+            placeholder="Enter Your Password"
+            required
+            name="password"
+          />
+        </div>
+        <br />
       </div>
-      <br>
-        <form id="form" action="" method="POST" required>
-            <div class="formusr" id="formusr">
-                <label class="loginlabel" for="username">Username</label>
-                <div class="form-control">
-                    <input class="loginput" id="username" type="text" placeholder="Enter Your Username" required  name="username"/>
-                </div>
-                <br>
-                <label class="loginlabel" for="password">Password</label>
-                <div class="form-control">
-                    <input class="loginput" id="password" type="password" placeholder="Enter Your Password" required name="password"/>
-                </div>
-                <br> 
-            </div>
-            <div class="form-control3" id="log-in-option">
-                    <em>Not a member? <a href="registration.html">Register</a></em>
-            </div>
-        </form>
-      <div class="home-buttons">
-        <a href=""class="b-button">
-          <button class="b-login">LOGIN</button>
-        </a>
-        <br>
-        <br>
-        <!-- <a href=""class="b-button">
+      <div class="form-control3" id="log-in-option">
+        <em>Not a member? <a href="registration.html">Register</a></em>
+      </div>
+    </form>
+    <div class="home-buttons">
+      <a href="" class="b-button">
+        <button class="b-login">LOGIN</button>
+      </a>
+      <br />
+      <br />
+      <!-- <a href=""class="b-button">
           <button class="b-register">REGISTER</button>
         </a>
         <br>
@@ -112,6 +124,6 @@
         </a>
         <br>
         <br> -->
-      </div>
-    </body>
-  </head>
+    </div>
+  </body>
+</head>
