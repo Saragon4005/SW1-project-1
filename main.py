@@ -29,6 +29,9 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()])
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
    # you can add the database stuff here.
    return {"username": username, "password": password }
-   
+@app.post("/adminPOST")
+def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+   return {"username": username, "password": password }
+
 
 
