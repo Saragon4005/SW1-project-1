@@ -11,7 +11,8 @@ app = FastAPI()
 
 # referred to the Fastapi docs and sql alchemy docs
 # opens a instance for db and closes after finished
-#This code, the depends stuff, and db.functions() are from https://fastapi.tiangolo.com/tutorial/sql-databases/
+"""This code, metadata.create_all(),the depends stuff, and db.functions() are all 
+from https://fastapi.tiangolo.com/tutorial/sql-databases/"""
 def get_Db():
    db = SessionLocal()
    try:
