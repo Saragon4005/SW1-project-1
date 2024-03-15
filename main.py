@@ -40,8 +40,8 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
                status_code=status.HTTP_400_BAD_REQUEST, detail="Username does not exist"
           )
      else:
-          tuple = user
-          if(tuple[1] == password):
+          Cpassword= user[1]
+          if(Cpassword == password):
                return{"Message": "Success"}
      return {"username": username, "password": password}
 @app.post("/adminPOST")
