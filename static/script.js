@@ -1,4 +1,5 @@
 function reload(value){
+// location assign https://www.w3schools.com/jsref/met_loc_assign.asp
     if(value === "login"){
         location.assign("./static/login.html");
     }

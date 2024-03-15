@@ -1,183 +1,84 @@
-<style>
-    button{
-      display: inline-block;
-      width: 200px;
-      border: none;
-      padding: 20px 30px;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      text-decoration: none;
-      background-color: #066cb1;
-      color: white;
-      border-radius: 40px;
-      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-    }
-    button:hover {
-      transform: translateY(-2px);
-      cursor:pointer;
-    }
-    .logo-image{
-      padding: 50px;
-      margin-top: 200px;
-      width:auto;
-      height:auto;
-    }
-    .regtoplabel{
-        font-size: 16px;
-        font-weight: bold;
-        font-family: Arial, Helvetica, sans-serif;
-        color: #066cb1;
-    }
-    .loginput{
-        padding: 10px;
-        border-radius: 6px;
-        border:none;
-        background-color:#fffbd8;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-    .reglabel{
-        display: inline-block;
-        position: relative;
-        padding-left: 35px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        font-size: 15px;
-        font-weight: bold;
-        color: #f7c331;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-    .reglabel input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
-    .regcheck{
-        position: absolute;
-        top: 0px;
-        right: 370px;
-        height: 20px;
-        width: 20px;
-        background-color: #eee;
-    }
-    .reglabel:hover input ~ .regcheck {
-        background-color: #ccc;
-    }
-    .reglabel input:checked ~ .regcheck {
-        background-color: #066cb1;
-    }
-    .regcheck:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
-    .reglabel input:checked ~ .regcheck:after {
-        display: block;
-    }
-    .reglabel .regcheck:after {
-        left: 6px;
-        top: 2px;
-        width: 5px;
-        height: 10px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-    }
-    .form-control3{
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-    }
-    body {
-      text-align: center;
-    }
-    body::before,
-    body::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 75px;
-    }
-    body::before {
-      top: 0;
-    }
-    body::after {
-      bottom: 0;
-    }
-  </style>
-  
-  <html>
-    <head>
-      <title>
-        Welcome Back!
-      </title>
-      <link rel="icon" href="CWIcon.png" type="image/x-icon">
-    </head>
-    <body>
-      <h1>Welcome to</h1>
-    </body>
-  </html>
-  
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <body>
-      <div class="logo-image">
-        <img src="Cashwash.png"/>
+    <link rel="stylesheet" href="index.css" />
+    <title>Welcome Back!</title>
+    <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+  </head>
+  <body>
+    <div class="topBanner"></div>
+    <div class="bodySection">
+      <div class="logoContainer">
+        <div class="logo-image">
+          <img src="Cashwash.png" />
+        </div>
       </div>
-      <br>
-        <form id="form" action="/register" method="post" required>
+      <div class="bottomHalf">
+        <div class="loginContainer">
+          <form class="loginForm" id="form" action="/register" method="POST" required>
             <div class="formusr" id="formusr">
-                <label class="regtoplabel" for="username">Username</label>
-                <div class="form-control">
-                    <input class="loginput" id="username" type="text" placeholder="Enter Your Username" required  name="username"/>
-                </div>
-                <br>
-                <label class="regtoplabel" for="password">Password</label>
-                <div class="form-control">
-                    <input class="loginput" id="password" type="password" placeholder="Enter Your Password" required name="password"/>
-                </div>
-                <br>
-                <label class="regtoplabel" for="cpassword">Confirm Password</label>
-                <div class="form-control">
-                    <input class="loginput" id="cpassword" type="password" placeholder="Confirm Your Password" required name="cpassword"/>
-                </div>
-                <br> 
+              <label class="regtoplabel" for="username">Username</label>
+              <div class="form-control">
+                <input
+                  class="loginput"
+                  id="username"
+                  name="username"
+                  type="text"
+                  placeholder="Enter Your Username"
+                  required
+                />
+              </div>
+              <br />
+              <label class="regtoplabel" for="password">Password</label>
+              <div class="form-control">
+                <input
+                  class="loginput"
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter Your Password"
+                  required
+                />
+              </div>
+              <br />
+              <label class="regtoplabel" for="cpassword"
+                >Confirm Password</label
+              >
+              <div class="form-control">
+                <input
+                  class="loginput"
+                  id="cpassword"
+                  type="password"
+                  placeholder="Confirm Your Password"
+                  required
+                  name="cpassword"
+                />
+              </div>
+              <br />
             </div>
             <div id="checkbx">
-                <label class="reglabel">
-                    I would like to sacrifice and give up my whole self
-                    <input class="regbox" type="checkbox" required="true" />
-                    <span class="regcheck"></span>
-                </label>
-                <br>
+              <label class="reglabel">
+                I would like to sacrifice and give up my whole self
+                <input class="regbox" type="checkbox" required="true" />
+                <span class="regcheck"></span>
+              </label>
+              <br />
             </div>
             <div class="form-control3" id="log-in-option">
-                    <em> Already have an account? <a href="index.html">Log In</a></em>
+              <em> Already have an account? <a href="http://127.0.0.1:8000">Log In</a></em>
             </div>
-            <button type="submit" class="b-login">Register</button>
-        </form>
-      <div class="home-buttons">
-        </a>
-        <br>
-        <br>
-        <!-- <a href=""class="b-button">
-          <button class="b-register">REGISTER</button>
-        </a>
-        <br>
-        <br>
-        <a href=""class="b-button">
-          <button class="b-Admin Login">ADMIN LOGIN</button>
-        </a>
-        <br>
-        <br> -->
+            <br />
+            <button type="submit" class="b-login">REGISTER</button>
+          </form>
+          <div class="independent-button">
+            <a href="" class="b-button">
+            </a>
+            <br />
+            <br />
+          </div>
+        </div>
       </div>
-    </body>
-  </head>
+    </div>
+    <div class="bottomBanner"></div>
+  </body>
+</html>
