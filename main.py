@@ -11,6 +11,7 @@ app = FastAPI()
 
 
 # opens a instance for db and closes after finished
+#This code and the depends stuff is from https://fastapi.tiangolo.com/tutorial/sql-databases/
 def get_Db():
    db = SessionLocal()
    try:
