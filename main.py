@@ -19,7 +19,7 @@ async def root():
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-@app.get("/register")
+@app.post("/register")
 async def register(username: str, password: str):
     # Check for existing username
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
@@ -32,7 +32,9 @@ async def register(username: str, password: str):
         "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
     )
     database.commit()
-    return {"message": "Registration successful"}
+    return RedirectResponse(
+        "static/login.html", 303
+    )  # tell browser to redirect to login 303 means redirected to confirmation page
 
 
 if __name__ == "__main__":
