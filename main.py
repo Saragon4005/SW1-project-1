@@ -1,25 +1,15 @@
 from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
+from fastapi import FastAPI, HTTPException, status, Form
 from typing import Annotated
-import tables
-from database import SessionLocal, engine
-from sqlalchemy.orm import Session
-from fastapi import FastAPI, Form
-tables.Base.metadata.create_all(bind=engine)
+import sqlite3
 app = FastAPI()
-
+# fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
+database = sqlite3.Connection("bank.db", check_same_thread=False)
+cur: sqlite3.Cursor = database.cursor()
 # referred to the Fastapi docs and sql alchemy docs
 # opens a instance for db and closes after finished
-"""This code, metadata.create_all(),the depends stuff, and db.functions() are all 
-from https://fastapi.tiangolo.com/tutorial/sql-databases/"""
-def get_Db():
-   db = SessionLocal()
-   try:
-      yield db
-   finally:
-      db.close()
-   
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 @app.get("/")
 def root():
@@ -29,38 +19,24 @@ def load():
    return FileResponse("./static/index.html")
 @app.post("/register")
 #Form stuff is from https://fastapi.tiangolo.com/tutorial/request-forms/
-def register(username: Annotated[str, Form()], password: Annotated[str, Form()], db: Session=Depends(get_Db)):
+def register(username: Annotated[str, Form()], password: Annotated[str, Form()]):
    #you can add the database stuff here 
-   data_model = tables.Customers(username=username, password=password) 
-   try:
-      db.add(data_model)
-      db.commit()
-   except:
-       return {"Error": "user already exists, please go back and try again"}
-   finally:
-      # reloads to index.html
-      html = """<script>location.assign("/index.html")</script>"""
-      return HTMLResponse(content=html)
-   
+   user = cur.execute("SELECT * FROM customers WHERE username = ?", (username,)).fetchone()
+   if user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
+        )
+    # Insert new user into database
+   cur.execute(
+        "INSERT INTO customers (username, password) VALUES (?, ?)", (username, password)
+    )
+   database.commit()
+   html = "<script>location.assign('/index.html')</script>"
+   return HTMLResponse(content=html)
 @app.post("/loginPOST")
-def login(username: Annotated[str, Form()], password: Annotated[str, Form()], db: Session=Depends(get_Db)):
+def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
    # db.get(table, "name of primary key") from the sqlachemy docs
-   results = db.get(tables.Customers, username)
-   if(results == None):
-      return {"message": "No username exists, please try again"}
-   else:
-      if(results.password == password):
-         return FileResponse("./static/accountsPage")
-      else:
-         return {"message": "Password incorrect, please try again "}
+     return {"username": username, "password": password}
 @app.post("/adminPOST")
-def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()], db: Session=Depends(get_Db)):
-   results = db.get(tables.Employees, username)
-   if(results == None):
-      return {"message": "No username exists"}
-   else:
-      if(results.password == password):
-         html = """<script>location.assign("./static/login.html")</script>"""
-         return HTMLResponse(content=html)
-      else:
+def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
          return {"message": "Password incorrect, please try again "}
