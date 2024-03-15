@@ -9,9 +9,9 @@ from fastapi import FastAPI, Form
 tables.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
-
+# referred to the Fastapi docs and sql alchemy docs
 # opens a instance for db and closes after finished
-#This code and the depends stuff is from https://fastapi.tiangolo.com/tutorial/sql-databases/
+#This code, the depends stuff, and db.functions() are from https://fastapi.tiangolo.com/tutorial/sql-databases/
 def get_Db():
    db = SessionLocal()
    try:
@@ -30,8 +30,7 @@ def load():
 #Form stuff is from https://fastapi.tiangolo.com/tutorial/request-forms/
 def register(username: Annotated[str, Form()], password: Annotated[str, Form()], db: Session=Depends(get_Db)):
    #you can add the database stuff here 
-   data_model = tables.Customers(username=username, password=password)
-   # register works 
+   data_model = tables.Customers(username=username, password=password) 
    try:
       db.add(data_model)
       db.commit()
@@ -44,7 +43,7 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()],
    
 @app.post("/loginPOST")
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()], db: Session=Depends(get_Db)):
-   # you can add the database stuff here.
+   # db.get(table, "name of primary key") from the sqlachemy docs
    results = db.get(tables.Customers, username)
    if(results == None):
       return {"message": "No username exists, please try again"}
