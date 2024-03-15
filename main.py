@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 import sqlite3
 
@@ -10,8 +11,9 @@ cur: sqlite3.Cursor = database.cursor()
 
 
 @app.get("/")
+@app.get("/index.html")
 async def root():
-    return {"message": "Hello World"}
+    return RedirectResponse("static/index.html", 301)
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
