@@ -37,6 +37,21 @@ async def register(username: str, password: str):
     )  # tell browser to redirect to login 303 means redirected to confirmation page
 
 
+@app.post("/login")
+async def login(username: str, password: str):
+    # Check for username and password combination
+    user = cur.execute(
+        "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
+    ).fetchone()
+    if user:
+        return {"message": "Login sucess, not yet implemented"}
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Username or password doesn't match",
+    )
+
+
 if __name__ == "__main__":
     import uvicorn
 
