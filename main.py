@@ -39,7 +39,7 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()])
     return HTMLResponse(content=html)
 
 
-@app.post("/loginPOST")
+@app.post("/login")
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     # db.get(table, "name of primary key") from the sqlachemy docs
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
@@ -54,6 +54,12 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     return {"username": username, "password": password}
 
 
-@app.post("/adminPOST")
+@app.post("/admin")
 def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     return {"message": "Password incorrect, please try again "}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=8000)
