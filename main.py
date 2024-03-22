@@ -50,7 +50,9 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     else:
         Cpassword = user[1]
         if Cpassword == password:
-            return {"Message": "Success"}
+            return HTMLResponse(
+                content="<script>location.assign('/static/member.html')</script>"
+            )
     return {"username": username, "password": password}
 
 
