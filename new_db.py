@@ -18,3 +18,5 @@ with open("create.sql", "r") as sql_file:
     conn.executescript(sql_file.read())
 
 conn.close()
+
+print("Sucessfully created new database with example values inserted")
