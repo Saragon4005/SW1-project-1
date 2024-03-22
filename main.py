@@ -43,7 +43,7 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()])
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     # db.get(table, "name of primary key") from the sqlachemy docs
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
-    if user == None:
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Username does not exist"
         )
