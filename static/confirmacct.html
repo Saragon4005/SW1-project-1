@@ -2,13 +2,14 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="index.css" />
+        <link rel="stylesheet" href="member.css" />
+
 <title>Howdy, CashWash-er!</title>
 <link rel="icon" href="CWIcon.png" type="image/x-icon" />
 </head>
 
 <div class="topBanner">
   <div class="menu-btn">
-    <br><br><br>
     <div class="btn-line"></div>
     <div class="btn-line"></div>
     <div class="btn-line"></div>
@@ -29,12 +30,6 @@
       <li><a href="index.html">Log Out</a></li>
     </ul>
 </div>
-<script>
-function toggleMenu() {
-    var menu = document.getElementById("menu");
-    menu.classList.toggle("show");
-}
-</script>
 <body>
 <div class="bodySection">
 
@@ -42,17 +37,17 @@ function toggleMenu() {
   <div class="ammountContainer">
     <div class="box-image">
         <div class="center2">
-            <p>This is Account <span class="colored">#01234567</span></p>
+            <p>Your Account Number is #<span class="colored">01234567</span></p>
           </div>
          
         <div class="center3">
-            <p><span class="colored3">Enter your ATM 4-diget PIN below</span></p>
+            <p><span class="colored3">Enter your ATM 4-digit PIN below</span></p>
           </div>
           <br>
           <div class="loginContainer">
             <form class="loginForm" id="form" action="#" method="POST" required>
                 <div class="formusr" id="formusr">
-                  <label class="loginlabel" for="Pin">Pin</label>
+                  <label class="loginlabel" for="Pin">PIN</label>
                   <div class="form-control">
                     <input
                       class="loginput"
@@ -63,7 +58,7 @@ function toggleMenu() {
                     />
                   </div>
                   <br />
-                  <label class="loginlabel" for="Pin2">Confirm Your Pin</label>
+                  <label class="loginlabel" for="Pin2">Confirm Your PIN</label>
                   <div class="form-control">
                     <input
                       class="loginput"
