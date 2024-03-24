@@ -42,18 +42,18 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()])
 @app.post("/login")
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     # db.get(table, "name of primary key") from the sqlachemy docs
-    user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
-    if user == None:
+    user = cur.execute(
+        "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
+    ).fetchone()
+    if user is None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username does not exist"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Username or Password is wrong",
         )
     else:
-        Cpassword = user[1]
-        if Cpassword == password:
-            return HTMLResponse(
-                content="<script>location.assign('/static/member.html')</script>"
-            )
-    return {"username": username, "password": password}
+        return HTMLResponse(
+            content="<script>location.assign('/static/member.html')</script>"
+        )
 
 
 @app.post("/admin")
