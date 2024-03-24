@@ -38,6 +38,7 @@ button {
 	height: 10%;
 	position: fixed;
   z-index: 1000;
+  bottom:0;
 }
 
 button:hover {
@@ -226,8 +227,16 @@ body::after {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+/* .navbar {
+  background-color: #066cb1;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  padding: 10px 20px;
+} */
 
-.colored-text {
+/* .colored-text {
   background-color: #f6efd6;
   color: #333;
   padding: 20px;
@@ -260,7 +269,7 @@ hr {
   background-color: #066cb1; 
 }
 .menu-ln{
-  width: 248px;
+  width: 24px;
 }
 .ammountContainer {
   width: 1000;
@@ -341,4 +350,4 @@ hr {
   padding: 20px;
   padding-top: 60px;
   transition: margin-left 0.3s ease;
-}
+} */
