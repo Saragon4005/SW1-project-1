@@ -241,7 +241,7 @@ button:hover {
   color: #066cb1;
 }
 
-.logo-image{
+.logo-image {
   padding-top: 100px;
   width: auto;
   height: auto;
@@ -338,6 +338,15 @@ hr {
   height: 300;
   max-width: 100%;
   max-height: 100%;
+ 
+}
+.navbar {
+  background-color: #066cb1;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  padding: 10px 20px;
 }
 .menu-btn {
   position: absolute;
