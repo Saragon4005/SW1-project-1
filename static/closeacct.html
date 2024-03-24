@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <title>Bye, CashWash-er!</title>
+    <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+  </head>
+  
+<div class="topBanner">
+    <div class="menu-btn">
+        <br><br><br>
+      <div class="btn-line"></div>
+      <div class="btn-line"></div>
+      <div class="btn-line"></div>
+    </div>
+  </div>
+    
+  <div class="sidebar">
+      <ul class="menu-ctr-one">
+          <li><a href="">Open Account</a></li>
+          <hr class="menu-ln">
+          <li><a href="">Close Account</a></li>
+          <hr class="menu-ln">
+          <li><a href="">ATM</a></li>
+      </ul>
+      <ul class="menu-ctr-two">
+        <li><a href="">Account Settings</a></li>
+          <hr class="menu-ln">
+        <li><a href="index.html">Log Out</a></li>
+      </ul>
+  </div>
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById("menu");
+        menu.classList.toggle("show");
+    }
+</script>
+  <body>
+    <div class="bodySection">
+
+      <div class="ammountContainer">
+        <div class="box-image">
+            <div class="center4">
+                <p><span class="colored4">We are so sad to see you go! <br>
+                    Just know that by closing your account means we get <span class="colored">ALL</span> of <span class="colored">YOUR</span> money.<br>
+                     Thank you for trusting us at <span class="colored">CA$H WASH!!!</span></span></p>
+              </div>
+              <br>
+              <div class="loginContainer">
+                <form class="loginForm" id="form" action="/register" method="POST" required>
+                    <div class="formusr" id="formusr">
+                      <label class="regtoplabel" for="accountca"> Enter Account #</label>
+                      <div class="form-control">
+                        <input
+                          class="loginput"
+                          id="accountca"
+                          name="accountca"
+                          type="text"
+                          required
+                        />
+                      </div>
+                      <br />
+                      <label class="regtoplabel" for="usernameca">Enter Username</label>
+                      <div class="form-control">
+                        <input
+                          class="loginput"
+                          id="usernameca"
+                          name="usernameca"
+                          type="text"
+                          required
+                        />
+                      </div>
+                      <br />
+                      <label class="regtoplabel" for="passwordca"
+                        >Enter Password</label
+                      >
+                      <div class="form-control">
+                        <input
+                          class="loginput"
+                          id="cpasswordca"
+                          type="password"
+                          required
+                          name="cpasswordca"
+                        />
+                      </div>
+                      <br />
+                    </div>
+                    <button type="submit" class="b-login">Close Account</button>
+                  </form>
+                  <div class="independent-button">
+                    <a href="" class="b-button">
+                    </a>
+                    <br />
+                    <br />
+                  </div>
+                  </div>
+                  </div>
+         </div>
+      <br />
+    </div>
+    <div class="bottomBanner"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
