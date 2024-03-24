@@ -203,7 +203,7 @@ button:hover {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-.colored-text {
+/* .colored-text {
   background-color: #f6efd6;
   color: #333;
   padding: 20px;
@@ -254,9 +254,9 @@ hr {
   max-width: 100%;
   max-height: 100%;
  
-}
+} */
 
-
+/* 
 .navbar {
   background-color: #066cb1;
   color: #fff;
@@ -330,7 +330,7 @@ hr {
   padding: 20px;
   padding-top: 60px;
   transition: margin-left 0.3s ease;
-}
+} */
 
 
 
@@ -376,7 +376,7 @@ hr {
     color: #066cb1;
   }
 
-
+/* 
   .sidebar {
   display: flex;
   position: fixed;
@@ -512,4 +512,4 @@ hr {
 }
 .transact-btns .b-button {
   margin: 0 20px;
-}
+} */
