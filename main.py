@@ -9,21 +9,19 @@ app = FastAPI()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
-
-
 @app.get("/")
 def root():
     return FileResponse("./static/index.html")
-
-
 @app.get("/index.html")
 def load():
     return FileResponse("./static/index.html")
-
-
+@app.post("/passwordError")
+def load():
+    html = "<script>location.assign('/static/registration.html')</script>"
+    return HTMLResponse(content=html)
 @app.post("/register")
 # Form stuff is from https://fastapi.tiangolo.com/tutorial/request-forms/
-def register(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+def register(username: Annotated[str, Form()], password: Annotated[str, Form()],):
     # you can add the database stuff here
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user:
@@ -31,17 +29,17 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()])
             status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
         )
     # Insert new user into database
-    cur.execute(
+    else:
+        cur.execute(
         "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
-    )
-    database.commit()
-    html = "<script>location.assign('/index.html')</script>"
-    return HTMLResponse(content=html)
+         )
+        database.commit()
+        html = "<script>location.assign('/index.html')</script>"
+        return HTMLResponse(content=html)
 
 
 @app.post("/login")
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-    # db.get(table, "name of primary key") from the sqlachemy docs
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user == None:
         raise HTTPException(
