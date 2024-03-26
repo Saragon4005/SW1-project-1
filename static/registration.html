@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="index.css" />
     <title>Welcome Back!</title>
     <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+    <script src="script.js"></script>
   </head>
   <body>
     <div class="topBanner"></div>
@@ -18,10 +19,11 @@
         <div class="loginContainer">
           <form
             class="loginForm"
-            id="form"
-            action="/register"
-            method="POST"
+            id="formR"
+            method="post"
             required
+            onsubmit="passwordvalidate()"
+            autocomplete="off"
           >
             <div class="formusr" id="formusr">
               <label class="regtoplabel" for="username">Username</label>
@@ -33,6 +35,7 @@
                   type="text"
                   placeholder="Enter Your Username"
                   required
+                  autocomplete="off"
                 />
               </div>
               <br />
