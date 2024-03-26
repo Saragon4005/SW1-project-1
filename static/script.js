@@ -24,7 +24,7 @@ function passwordvalidate(){
         form.action="/passwordError";
     }
     else{
-        //How to change form action from https://stackoverflow.com/a/5361785
+        
        form.action= "/register";
     }
 }
