@@ -16,17 +16,23 @@
 
       <div class="bottomHalf">
         <div class="loginContainer">
-          <form class="loginForm" id="form" action="" method="POST" required>
+          <form
+            class="loginForm"
+            id="form"
+            action="/register"
+            method="POST"
+            required
+          >
             <div class="formusr" id="formusr">
               <label class="regtoplabel" for="username">Username</label>
               <div class="form-control">
                 <input
                   class="loginput"
                   id="username"
+                  name="username"
                   type="text"
                   placeholder="Enter Your Username"
                   required
-                  name="username"
                 />
               </div>
               <br />
@@ -35,10 +41,10 @@
                 <input
                   class="loginput"
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="Enter Your Password"
                   required
-                  name="password"
                 />
               </div>
               <br />
@@ -66,13 +72,16 @@
               <br />
             </div>
             <div class="form-control3" id="log-in-option">
-              <em> Already have an account? <a href="index.html">Log In</a></em>
+              <em>
+                Already have an account?
+                <a href="/static/index.html">Log In</a></em
+              >
             </div>
+            <br />
+            <button type="submit" class="b-login">REGISTER</button>
           </form>
           <div class="independent-button">
-            <a href="" class="b-button">
-              <button class="b-login">REGISTER</button>
-            </a>
+            <a href="" class="b-button"> </a>
             <br />
             <br />
           </div>
