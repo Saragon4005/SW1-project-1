@@ -10,6 +10,7 @@ function reload(value){
     }
 }
 function passwordvalidate(){
+    //Learned how to change form action from https://stackoverflow.com/a/5361776
     let password = document.getElementById("password").value;
     let confirmPassword = document.getElementById("cpassword").value;
     let form = document.getElementById("formR");
@@ -24,7 +25,6 @@ function passwordvalidate(){
         form.action="/passwordError";
     }
     else{
-        
        form.action= "/register";
     }
 }
