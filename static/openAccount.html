@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="menuPartial.css" />
+    <link rel="stylesheet" href="openAccount.css" />
+    <title>Howdy, CashWash-er!</title>
+    <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <div class="topBanner">
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
+    </div>
+
+    <div class="atmbodySection">
+      <div class="left-side">
+        <div class="leftside"></div>
+        <div class="rightside">
+          <div class="textDescription">
+            To open an account, you must
+            <span class="colored">confirm your login details</span> and
+            <span class="colored"
+              >deposit at least $5.00 through our online check deposit
+              system</span
+            >
+            to meet the required minimum account balance
+          </div>
+          <div class="loginContainer">
+            <form
+              class="loginForm"
+              id="form"
+              action="/register"
+              method="POST"
+              required
+            >
+              <div class="formusr" id="formusr">
+                <label class="regtoplabel" for="username">Username</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Enter Your Username"
+                    required
+                  />
+                </div>
+                <br />
+                <label class="regtoplabel" for="password">Password</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Enter Your Password"
+                    required
+                  />
+                </div>
+                <br />
+                <label class="regtoplabel" for="cpassword"
+                  >Confirm Password</label
+                >
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="cpassword"
+                    type="password"
+                    placeholder="Confirm Your Password"
+                    required
+                    name="cpassword"
+                  />
+                </div>
+                <br />
+              </div>
+              <br />
+              <button type="submit" class="b-login" onclick="reload('')">Open Account </button>
+            </form>
+            <div class="independent-button">
+              <a href="" class="b-button"> </a>
+              <br />
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="vertical-line"></div>
+      <div class="right-side">
+				<div class="leftside">
+					<div class="textDescription">
+						Electronics Check deposit
+						<br />
+						<span class="colored">Upload</span>
+						or <span class="colored">Drag</span>
+						your image below
+					</div>
+					<div class="image-container">
+						<img src="/static/pictures/uploadPicture.jpg" alt="Uploaded Image">
+					</div>
+					<div class="ammountInput">
+						<label class="regtoplabel" for="username">Ammount (in USD):</label>
+						<div class="form-control">
+							<input
+								class="loginput"
+								id="username"
+								name="username"
+								type="text"
+								required
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="rightside">
+					
+				</div>
+        
+      </div>
+    </div>
+    <div class="bottomBanner"></div>
+  </body>
+</html>
