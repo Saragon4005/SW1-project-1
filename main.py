@@ -59,6 +59,14 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
         )
 
 
+@app.post("/ATMlogin")
+def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
+    # TODO: actually validate
+    return HTMLResponse(
+        content="<script>location.assign('/static/atmWithdraw.html')</script>"
+    )
+
+
 @app.post("/admin")
 def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     return {"message": "Password incorrect, please try again "}
