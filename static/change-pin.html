@@ -1,73 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="member.css" />
-    <link rel="stylesheet" href="menuPartial.css">
+    <link rel="stylesheet" href="menuPartial.css" />
     <title>Change PIN</title>
     <link rel="icon" href="CWIcon.png" type="image/x-icon" />
     <style>
-        .loginput {
-            font-size: 18px;
-            padding: 10px;
-            width: 300px;
-        }
-        
-        .colored4 {
-            font-size: 24px;
-        }
+      .loginput {
+        font-size: 18px;
+        padding: 10px;
+        width: 300px;
+      }
 
-        .regtoplabel {
-            font-size: 18px;
-        }
+      .colored4 {
+        font-size: 24px;
+      }
 
+      .regtoplabel {
+        font-size: 18px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="topBanner">
-        <div class="menu-btn">
-            <div class="btn-line"></div>
-            <div class="btn-line"></div>
-            <div class="btn-line"></div>
-        </div>
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
     </div>
     <div id="menuPartial"></div>
     <script src="menuPartial.html" defer></script>
     <div class="bodySection">
-        <div class="ammountContainer">
-            <div class="box-image">
-                <div class="center4">
-                    <p>
-                        <span class="colored4">Change Your PIN</span>
-                    </p>
+      <div class="ammountContainer">
+        <div class="box-image">
+          <div class="center4">
+            <p>
+              <span class="colored4">Change Your PIN</span>
+            </p>
+          </div>
+          <br />
+          <div class="loginContainer">
+            <form
+              class="loginForm"
+              id="form"
+              action="/change-pin"
+              method="POST"
+              required
+            >
+              <div class="formusr" id="formusr">
+                <label class="regtoplabel" for="username">Username</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="username"
+                    type="text"
+                    required
+                    name="username"
+                  />
                 </div>
                 <br />
-                <div class="loginContainer">
-                    <form class="loginForm" id="form" action="/change-pin" method="POST" required>
-                        <div class="formusr" id="formusr">
-                            <label class="regtoplabel" for="username">Username</label>
-                            <div class="form-control">
-                                <input class="loginput" id="username" type="text" required name="username" />
-                            </div>
-                            <br />
-                            <label class="regtoplabel" for="password">Password</label>
-                            <div class="form-control">
-                                <input class="loginput" id="password" type="password" required name="password" />
-                            </div>
-                            <br />
-                            <label class="regtoplabel" for="new-pin">New PIN</label>
-                            <div class="form-control">
-                                <input class="loginput" id="new-pin" type="password" required name="new-pin" />
-                            </div>
-                            <br />
-                        </div>
-                        <button type="submit" class="b-login">SET PIN</button>
-                    </form>
+                <label class="regtoplabel" for="password">Password</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="password"
+                    type="password"
+                    required
+                    name="password"
+                  />
                 </div>
-            </div>
+                <br />
+                <label class="regtoplabel" for="new-pin">New PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="new-pin"
+                    type="password"
+                    required
+                    name="new-pin"
+                  />
+                </div>
+                <br />
+              </div>
+              <button type="submit" class="b-login">SET PIN</button>
+            </form>
+          </div>
         </div>
-        <br />
+      </div>
+      <br />
     </div>
     <div class="bottomBanner"></div>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
