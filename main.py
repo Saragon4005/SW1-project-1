@@ -12,13 +12,15 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 
 @app.get("/")
+@app.get("/index.html")
 def root():
     return FileResponse("./static/index.html")
 
 
-@app.get("/index.html")
+@app.post("/passwordError")
 def load():
-    return FileResponse("./static/index.html")
+    html = "<script>location.assign('/static/registration.html')</script>"
+    return HTMLResponse(content=html)
 
 
 @app.post("/register")
@@ -31,12 +33,13 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()])
             status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
         )
     # Insert new user into database
-    cur.execute(
-        "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
-    )
-    database.commit()
-    html = "<script>location.assign('/index.html')</script>"
-    return HTMLResponse(content=html)
+    else:
+        cur.execute(
+            "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
+        )
+        database.commit()
+        html = "<script>location.assign('/index.html')</script>"
+        return HTMLResponse(content=html)
 
 
 @app.post("/login")
@@ -54,6 +57,14 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
         return HTMLResponse(
             content="<script>location.assign('/static/member.html')</script>"
         )
+
+
+@app.post("/ATMlogin")
+def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
+    # TODO: actually validate
+    return HTMLResponse(
+        content="<script>location.assign('/static/atmWithdraw.html')</script>"
+    )
 
 
 @app.post("/admin")
