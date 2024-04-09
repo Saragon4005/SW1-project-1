@@ -8,6 +8,7 @@ Assuming python and pip is installed the libraries can be installed with `pip in
 ### Initialize the Database
 
 If the databse doesn't exist, run the sql quaries in `create.sql`.
+This can be done by running the `new_db.py` Python script
 Important to note, employee logins need to be added manually
 
 ## Running

@@ -10,6 +10,7 @@ database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 @app.get("/")
+@app.get("/index.html")
 def root():
     return FileResponse("./static/index.html")
 @app.get("/index.html")
@@ -43,15 +44,21 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user == None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username does not exist"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Username or Password is wrong",
         )
     else:
-        Cpassword = user[1]
-        if Cpassword == password:
-            return HTMLResponse(
-                content="<script>location.assign('/static/member.html')</script>"
-            )
-    return {"username": username, "password": password}
+        return HTMLResponse(
+            content="<script>location.assign('/static/member.html')</script>"
+        )
+
+
+@app.post("/ATMlogin")
+def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
+    # TODO: actually validate
+    return HTMLResponse(
+        content="<script>location.assign('/static/atmWithdraw.html')</script>"
+    )
 
 
 @app.post("/admin")

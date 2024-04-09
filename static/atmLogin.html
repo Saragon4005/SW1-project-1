@@ -2,58 +2,67 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="index.css" />
-    <title>Welcome Back!</title>
+    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="menuPartial.css">
+    <title>Howdy, CashWash-er!</title>
     <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+    <script src="script.js"></script>
   </head>
+
   <body>
-    <div class="topBanner"></div>
+    <div class="topBanner">
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
+    </div>
+
+    <div id="menuPartial"></div>
+    <script src="menuPartial.html" defer></script>
+
     <div class="bodySection">
       <div class="logoContainer">
-        <div class="logo-image">
-          <img src="pictures/Cashwash.png" />
+        <div class="logo-image-atm">
+          <img src="/static/pictures/atmLogo.PNG" />
         </div>
       </div>
-
-      <div class="bottomHalf">
+      <br />
+      <div class="home-button-Container">
         <div class="loginContainer">
           <form
             class="loginForm"
             id="form"
-            action="/login"
+            action="/ATMlogin"
             method="POST"
             required
           >
             <div class="formusr" id="formusr">
-              <label class="loginlabel" for="username">Username</label>
+              <label class="loginlabel" for="accountID">Account #:</label>
               <div class="form-control">
                 <input
                   class="loginput"
-                  id="username"
+                  id="accountID"
                   type="text"
-                  placeholder="Enter Your Username"
                   required
-                  name="username"
+                  name="accountID"
                 />
               </div>
               <br />
-              <label class="loginlabel" for="password">Password</label>
+              <label class="loginlabel" for="Pin">PIN:</label>
               <div class="form-control">
                 <input
                   class="loginput"
-                  id="password"
+                  id="pin"
                   type="password"
-                  placeholder="Enter Your Password"
                   required
-                  name="password"
+                  name="pin"
                 />
               </div>
               <br />
-            </div>
-            <div class="form-control3" id="log-in-option">
-              <em>Not a member? <a href="registration.html">Register</a></em>
             </div>
             <br />
-            <button class="b-login">LOGIN</button>
+            <button class="b-login">ENTER</button>
           </form>
           <div class="independent-button">
             <a href="" class="b-button"> </a>

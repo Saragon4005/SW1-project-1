@@ -6,7 +6,7 @@ __pycache__/
 # C extensions
 *.so
 
-Mac OS
+# Mac OS
 .DS_Store
 
 # Distribution / packaging

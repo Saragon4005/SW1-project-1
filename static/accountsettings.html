@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="index.css" />
+        <link rel="stylesheet" href="member.css" />
+        <link rel="stylesheet" href="menuPartial.css">
+        <title>Stacked Buttons</title>
+        <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+        <style>
+            .stackedButton {
+                display: block;
+                margin-bottom: 10px;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 20px 40px; /* Added padding to make the buttons bigger */
+                font-size: 24px; /* Added font-size to make the buttons bigger */
+            }
+
+            .buttonContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+        </style>
+        <div class="topBanner">
+            <div class="menu-btn">
+              <div class="btn-line"></div>
+              <div class="btn-line"></div>
+              <div class="btn-line"></div>
+            </div>
+        </div>          
+
+        <div id="menuPartial"></div>
+        <script src="menuPartial.html" defer></script>
+    </head>
+    <body>
+        <div class="bodySection">
+            <div class="ammountContainer">
+                <div class="box-image">
+                    <br>
+                    <div class="buttonContainer">
+
+                        <!-- CHANGE WHERE USER WILL BE REDIRECTED WHEN PAGE IS CREATED - DANIEL WAIT IM MAKING THESE PAGES LOL -->
+                        <button class="stackedButton" onclick="window.location.href = 'change-username.html'">CHANGE USERNAME</button> 
+                        <button class="stackedButton" onclick="window.location.href = 'change-password.html'">CHANGE PASSWORD</button>
+                        <button class="stackedButton" onclick="window.location.href = 'change-pin.html'">CHANGE PIN</button>
+                        <button class="stackedButton" onclick="window.location.href = 'drain-money.html'">DRAIN MY MONEY</button>
+                        <button class="stackedButton" onclick="window.location.href = 'member.html'">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="bottomBanner"></div>
+        <script src="script.js"></script>
+    </body>
+</html>

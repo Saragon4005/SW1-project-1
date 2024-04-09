@@ -29,8 +29,21 @@ function passwordvalidate(){
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.sidebar');
+    const menuBtn = document.querySelector('.menu-btn');
 
-document.querySelector('.menu-btn').addEventListener('click', () => {
-    document.querySelector('.sidebar').classList.toggle('active');
-    document.querySelector('.content').classList.toggle('active');
+    menuBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('active');
+        document.body.classList.toggle('blur');
+    });
+    document.addEventListener('click', function(event) {
+        const isSidebarClicked = sidebar.contains(event.target);
+        const isMenuBtnClicked = menuBtn.contains(event.target);
+
+        if (!isSidebarClicked && !isMenuBtnClicked) {
+            sidebar.classList.remove('active');
+            document.body.classList.remove('blur');
+        }
+    });
 });

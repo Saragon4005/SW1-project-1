@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="menuPartial.css" />
+    <title>Change Username</title>
+    <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+    <style>
+      .loginput {
+        font-size: 18px;
+        padding: 10px;
+        width: 300px;
+      }
+
+      .colored4 {
+        font-size: 24px;
+      }
+
+      .regtoplabel {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topBanner">
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
+    </div>
+    <div id="menuPartial"></div>
+    <script src="menuPartial.html" defer></script>
+    <div class="bodySection">
+      <div class="ammountContainer">
+        <div class="box-image">
+          <div class="center4">
+            <p>
+              <span class="colored4">Change Your Username</span>
+            </p>
+          </div>
+          <br />
+          <div class="loginContainer">
+            <form
+              class="loginForm"
+              id="form"
+              action="/change-username"
+              method="POST"
+              required
+            >
+              <div class="formusr" id="formusr">
+                <label class="regtoplabel" for="username">New Username</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="username"
+                    name="username"
+                    type="text"
+                    required
+                  />
+                </div>
+                <br />
+                <label class="regtoplabel" for="password">Password</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="password"
+                    type="password"
+                    required
+                    name="password"
+                  />
+                </div>
+                <br />
+                <label class="regtoplabel" for="confirm-password"
+                  >Confirm Password</label
+                >
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="confirm-password"
+                    type="password"
+                    required
+                    name="confirm-password"
+                  />
+                </div>
+                <br />
+              </div>
+              <button type="submit" class="b-login">SET USERNAME</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+    <div class="bottomBanner"></div>
+    <script src="script.js"></script>
+  </body>
+</html>

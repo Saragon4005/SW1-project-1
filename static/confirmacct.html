@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="menuPartial.css" />
+
+    <title>Howdy, CashWash-er!</title>
+    <link rel="icon" href="CWIcon.png" type="image/x-icon" />
+  </head>
+
+  <div class="topBanner">
+    <div class="menu-btn">
+      <div class="btn-line"></div>
+      <div class="btn-line"></div>
+      <div class="btn-line"></div>
+    </div>
+  </div>
+
+  <!-- <div class="sidebar">
+    <ul class="menu-ctr-one">
+        <li><a href="">Open Account</a></li>
+        <hr class="menu-ln">
+        <li><a href="">Close Account</a></li>
+        <hr class="menu-ln">
+        <li><a href="">ATM</a></li>
+    </ul>
+    <ul class="menu-ctr-two">
+      <li><a href="">Account Settings</a></li>
+        <hr class="menu-ln">
+      <li><a href="index.html">Log Out</a></li>
+    </ul>
+</div> -->
+  <div id="menuPartial"></div>
+  <script src="menuPartial.html" defer></script>
+  <body>
+    <div class="bodySection">
+      <div class="ammountContainer">
+        <div class="box-image">
+          <div class="center2">
+            <p>Your Account Number is #<span class="colored">01234567</span></p>
+          </div>
+
+          <div class="center3">
+            <p>
+              <span class="colored3">Enter your ATM 4-digit PIN below</span>
+            </p>
+          </div>
+          <br />
+          <div class="loginContainer">
+            <form class="loginForm" id="form" action="#" method="POST" required>
+              <div class="formusr" id="formusr">
+                <label class="loginlabel" for="Pin">PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="Pin"
+                    type="password"
+                    required
+                    name="Pin"
+                  />
+                </div>
+                <br />
+                <label class="loginlabel" for="Pin2">Confirm Your PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="Pin2"
+                    type="password"
+                    required
+                    name="Pin2"
+                  />
+                </div>
+                <br />
+              </div>
+              <br />
+              <button class="member.html">Back to Home</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+    <div class="bottomBanner"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
