@@ -9,7 +9,7 @@ function reload(value){
         location.assign("/static/adminlogin.html");
     }
 }
-document.querySslector('.menu-btn').addEventListener('click', () => {
+document.querySelector('.menu-btn').addEventListener('click', () => {
     document.querySelector('.sidebar').classList.toggle('active');
     document.querySelector('.content').classList.toggle('active');
 });function reload(value){
