@@ -202,7 +202,98 @@ button:hover {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+.center2 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.colored {
+  color: #f7c331;
+}
 
+.center3 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.colored3 {
+  color: #066cb1;
+}
+.tab {
+  display: inline-block;
+  width: 40px;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+}
+
+.center4 {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.colored4 {
+  color: #066cb1;
+}
+
+.logo-image{
+  padding-top: 100px;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+/* 
+  .sidebar {
+  display: flex;
+  position: fixed;
+  top: 10%;
+  left: -250px;
+  height: 100%;
+  width: 250px;
+  transition: left 0.3s ease;
+  font-family: Arial, Helvetica, sans-serif;
+  z-index: 99;
+  background-color: #f7f3e8;
+  overflow:visible;
+  resize: both;
+}
+.sidebar.active {
+    left: 0;
+}
+.menu-ctr-one, .menu-ctr-two {
+  list-style-type: none;
+  padding-left: 0;
+}
+.menu-ctr-two {
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  bottom:-80%;
+  padding-top: 20px;
+  background-color: #066cb1;
+}
+.sidebar li {
+    padding: 10px;
+  } 
+
+.menu-ctr-one a {
+  color: #066cb1;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
+  text-decoration: none;
+}
+.menu-ctr-two a{
+  color: #f7c331;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
+  text-decoration: none;
+}
 .colored-text {
   background-color: #f7f3e8;
   padding: 20px;
@@ -231,7 +322,9 @@ hr {
   height: 2px;
   background-color: #066cb1; 
 }
-
+.menu-ln{
+  width: 248px;
+}
 .ammountContainer {
   width: 1000;
   height: 500;
@@ -245,18 +338,7 @@ hr {
   height: 300;
   max-width: 100%;
   max-height: 100%;
- 
 }
-
-.navbar {
-  background-color: #066cb1;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: left;
-  padding: 10px 20px;
-}
-
 .menu-btn {
   position: absolute;
   top: 5%;
@@ -292,4 +374,4 @@ hr {
 }
 .transact-btns .b-button {
   margin: 0 20px;
-}
+} */
