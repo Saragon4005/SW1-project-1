@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException, status, Form
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, RedirectResponse
-from typing import Annotated
 import sqlite3
+from typing import Annotated
+
+from fastapi import Cookie, FastAPI, Form, HTTPException, status
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
@@ -60,6 +61,18 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
         return HTMLResponse(
             content="<script>location.assign('/static/member.html')</script>"
         )
+
+
+@app.get("/balance")
+def getBalance(user: str = Cookie(None)):
+    account = cur.execute(
+        "SELECT account_numbers FROM users WHERE username=?", (user,)
+    ).fetchone()
+    if account[0] is None:
+        return {"No account exists yet"}
+    else:
+        # Stuff comes from the database.
+        return {"Balance"}
 
 
 @app.post("/ATMlogin")
