@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status, Form
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from typing import Annotated
 import sqlite3
 
@@ -14,7 +14,7 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 @app.get("/")
 @app.get("/index.html")
 def root():
-    return FileResponse("./static/index.html")
+    return RedirectResponse("/static/index.html", status_code=301)
 
 
 @app.post("/passwordError")
