@@ -9,6 +9,8 @@ function reload(value){
         location.assign("/static/adminlogin.html");
     }
 }
+
+
 function passwordvalidate(){
     //Learned how to change form action from https://stackoverflow.com/a/5361776
     let password = document.getElementById("password").value;
@@ -28,11 +30,17 @@ function passwordvalidate(){
        form.action= "/register";
     }
 }
+ async function yeah() {
+    // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+   var response = await fetch('/balance'); //Wait until the fetch request returns a promise
+   var balance = await response.json(); //Wait until we get a response.json promise
+   var string = JSON.stringify(balance);
+   document.getElementById("balance").innerHTML = string.substring(2, string.length -2);
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('.sidebar');
     const menuBtn = document.querySelector('.menu-btn');
-
     menuBtn.addEventListener('click', function() {
         sidebar.classList.toggle('active');
         document.body.classList.toggle('blur');
@@ -46,4 +54,5 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.remove('blur');
         }
     });
+
 });
