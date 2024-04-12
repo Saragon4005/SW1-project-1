@@ -8,6 +8,9 @@ function reload(value){
     else if(value === "adminlogin"){
         location.assign("/static/adminlogin.html");
     }
+    else if(value === "transfer"){
+        location.assign("/static/transferPage.html")
+    }
 }
 
 function passwordvalidate(){
