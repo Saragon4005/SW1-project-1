@@ -51,7 +51,10 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     ).fetchone()
 
     if user is None:
-        return {"Message": "Username or Password is incorrect, please try again"}
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Username or Password is incorrect, please try again",
+        )
     else:
         response = HTMLResponse(
             "<script>location.assign('/static/member.html')</script>"
