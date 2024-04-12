@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException, status, Form
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse
-from typing import Annotated
 import sqlite3
+from typing import Annotated
+
+from fastapi import Cookie, FastAPI, Form, HTTPException, status
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
@@ -14,7 +15,7 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 @app.get("/")
 @app.get("/index.html")
 def root():
-    return FileResponse("./static/index.html")
+    return RedirectResponse("/static/index.html", status_code=301)
 
 
 @app.post("/passwordError")
@@ -44,19 +45,34 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()])
 
 @app.post("/login")
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-    # db.get(table, "name of primary key") from the sqlachemy docs
+    # Cookie deleting, reading, and setting up from https://www.getorchestra.io/guides/fast-api-response-cookies-a-detailed-tutorial-with-python-code-examples
     user = cur.execute(
         "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
     ).fetchone()
+
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Username or Password is wrong",
+            detail="Username or Password is incorrect, please try again",
         )
     else:
-        return HTMLResponse(
-            content="<script>location.assign('/static/member.html')</script>"
+        response = HTMLResponse(
+            "<script>location.assign('/static/member.html')</script>"
         )
+        response.set_cookie(key="user", value=username)
+        return response
+
+
+@app.get("/balance")
+def getBalance(user: str = Cookie(None)):
+    account = cur.execute(
+        "SELECT account_numbers FROM users WHERE username=?", (user,)
+    ).fetchone()
+    if account[0] is None:
+        return {"No account exists yet"}
+    else:
+        # Stuff comes from the database.
+        return {"Balance"}
 
 
 @app.post("/ATMlogin")
