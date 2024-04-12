@@ -26,10 +26,7 @@ def load():
 
 @app.post("/register")
 # Form stuff is from https://fastapi.tiangolo.com/tutorial/request-forms/
-def register(
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()],
-):
+def register(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     # you can add the database stuff here
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user:
