@@ -48,19 +48,19 @@ def register(
 
 @app.post("/login")
 def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-    # db.get(table, "name of primary key") from the sqlachemy docs
+    # Cookie deleting, reading, and setting up from https://www.getorchestra.io/guides/fast-api-response-cookies-a-detailed-tutorial-with-python-code-examples
     user = cur.execute(
         "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
     ).fetchone()
+
     if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Username or Password is wrong",
-        )
+        return {"Message": "Username or Password is incorrect, please try again"}
     else:
-        return HTMLResponse(
-            content="<script>location.assign('/static/member.html')</script>"
+        response = HTMLResponse(
+            "<script>location.assign('/static/member.html')</script>"
         )
+        response.set_cookie(key="user", value=username)
+        return response
 
 
 @app.get("/balance")
