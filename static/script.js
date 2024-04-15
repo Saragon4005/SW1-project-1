@@ -8,6 +8,9 @@ function reload(value){
     else if(value === "adminlogin"){
         location.assign("/static/adminlogin.html");
     }
+    else if(value === "transfer"){
+        location.assign("/static/transferPage.html")
+    }
 }
 
 
@@ -31,6 +34,14 @@ function passwordvalidate(){
     }
 }
  async function yeah() {
+    // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+   var response = await fetch('/balance'); //Wait until the fetch request returns a promise
+   var balance = await response.json(); //Wait until we get a response.json promise
+   var string = JSON.stringify(balance);
+   document.getElementById("balance").innerHTML = string.substring(2, string.length -2);
+}
+
+async function updateBalance() {
     // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
    var response = await fetch('/balance'); //Wait until the fetch request returns a promise
    var balance = await response.json(); //Wait until we get a response.json promise
