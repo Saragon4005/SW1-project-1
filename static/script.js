@@ -36,9 +36,6 @@ function passwordvalidate(){
        form.action= "/register";
     }
 }
-function getAccountID() {
-
-}
 async function updateBalance() {
     // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
    var response = await fetch('/balance'); //Wait until the fetch request returns a promise
