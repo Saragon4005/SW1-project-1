@@ -9,7 +9,10 @@ function reload(value){
         location.assign("/static/adminlogin.html");
     }
     else if(value === "transfer"){
-        location.assign("/static/transferPage.html")
+        location.assign("/static/transferPage.html");
+    }
+    else if(value === "member") {
+        location.assign("/static/member.html");
     }
 }
 
@@ -33,14 +36,9 @@ function passwordvalidate(){
        form.action= "/register";
     }
 }
- async function yeah() {
-    // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-   var response = await fetch('/balance'); //Wait until the fetch request returns a promise
-   var balance = await response.json(); //Wait until we get a response.json promise
-   var string = JSON.stringify(balance);
-   document.getElementById("balance").innerHTML = string.substring(2, string.length -2);
-}
+function getAccountID() {
 
+}
 async function updateBalance() {
     // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
    var response = await fetch('/balance'); //Wait until the fetch request returns a promise
@@ -48,7 +46,50 @@ async function updateBalance() {
    var string = JSON.stringify(balance);
    document.getElementById("balance").innerHTML = string.substring(2, string.length -2);
 }
+async function getAccountID() {
+    var response = await fetch('/accountID');
+    var accountID = await response.json();
+    var string = JSON.stringify(accountID);
+    document.getElementById("number").innerText = string.substring(2, string.length -2);
+}
 
+ function validate() {
+    let  form = document.getElementById("formB");
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("cpassword").value;
+    if(password != confirmPassword) {
+        alert("Passwords do not match")
+        form.action = "/openError"
+    }
+    else {
+        form.action = "/openAccount"
+    }
+    
+
+}
+function pin() {
+    let pin = document.getElementById("Pin").value;
+    let cpin = document.getElementById("Pin2").value;
+    if(pin != cpin) {
+        alert("pins do not match");
+        form.action="/pinError";
+    }
+    else if(pin.length != 4) {
+        alert("pins are not 4 digits long");
+        form.action ="/pinError";
+    }
+    else if(isNaN(parseInt(pin))) {
+        alert("pins are not digits between 0-9");
+        form.action="/pinError";
+    }
+    else if(parseInt(pin) <= 1000) {
+        alert("pins must be number greater than 1000")
+        form.action="/pinError"
+    }
+    else {
+        form.action = "/pin";
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('.sidebar');
     const menuBtn = document.querySelector('.menu-btn');
