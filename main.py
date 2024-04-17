@@ -73,9 +73,7 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
 
 @app.get("/balance")
 def getBalance(user: str = Cookie(None)):
-    account = cur.execute(
-        "SELECT * FROM accounts WHERE username=?", (user,)
-    ).fetchmany()
+    account = cur.execute("SELECT * FROM accounts WHERE username=?", (user,)).fetchone()
     if account is None:
         return {"No account exists yet"}
     else:
