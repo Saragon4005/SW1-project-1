@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
         span.style.color = '#f7c331'; // Example color (change as needed)
 
         // Append the span to the "des" div
-        div.innerHTML = `Account Balance - # `;
+        div.innerHTML = `Account Balance - #`;
         div.appendChild(span);
     });
 
