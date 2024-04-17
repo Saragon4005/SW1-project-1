@@ -35,6 +35,7 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .ammountContainer:hover .transact-btns {
   display: flex; 
@@ -55,4 +56,21 @@ hr {
 }
 .transact-btns .b-button {
   margin: 0 20px;
+}
+.hover-text {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: #9e9170;
+  font-style: italic;
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 1;
+  transition: opacity 0.1s;
+}
+
+.ammountContainer:hover .hover-text {
+  opacity: 0; /* Hide the text on hover */
 }
