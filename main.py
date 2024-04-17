@@ -4,9 +4,12 @@ from typing import Annotated
 from fastapi import Cookie, FastAPI, Form, HTTPException, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
+import new_db
 
 app = FastAPI()
+
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
+new_db.script()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
@@ -16,6 +19,18 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 @app.get("/index.html")
 def root():
     return RedirectResponse("/static/index.html", status_code=301)
+
+
+@app.post("/pinError")
+def load():
+    html = "<script>location.assign('/static/confirmacct.html')</script>"
+    return HTMLResponse(content=html)
+
+
+@app.post("/openError")
+def load():
+    html = "<script>location.assign('/static/openAccount.html')</script>"
+    return HTMLResponse(content=html)
 
 
 @app.post("/passwordError")
@@ -66,12 +81,12 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
 @app.get("/balance")
 def getBalance(user: str = Cookie(None)):
     account = cur.execute(
-        "SELECT account_numbers FROM users WHERE username=?", (user,)
-    ).fetchone()
-    if account[0] is None:
+        "SELECT * FROM accounts WHERE username=?", (user,)
+    ).fetchmany()
+    if account is None:
         return {"No account exists yet"}
     else:
-        # Stuff comes from the database.
+        # Did not finish this part yet.
         return {"Balance"}
 
 
@@ -84,8 +99,21 @@ def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
 
 
 @app.post("/admin")
-def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+def adminPost(
+    username: Annotated[str, Form()],
+    password: Annotated[str, Form()],
+    user: str = Cookie(None),
+):
     return {"message": "Password incorrect, please try again "}
+
+
+@app.post("/openAccount")
+def open(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+    credentials = cur.execute(
+        "SELECT * FROM users WHERE username = ?", (username,)
+    ).fetchone()
+    if password == credentials[1]:
+        account = cur.execute("INSERT INTO accounts (a)")
 
 
 if __name__ == "__main__":
