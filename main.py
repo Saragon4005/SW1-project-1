@@ -10,6 +10,7 @@ app = FastAPI()
 
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
 new_db.script()
+
 database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
