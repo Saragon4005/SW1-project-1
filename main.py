@@ -22,19 +22,19 @@ def root():
 
 
 @app.post("/pinError")
-def load():
+def redirectPinError():
     html = "<script>location.assign('/static/confirmacct.html')</script>"
     return HTMLResponse(content=html)
 
 
 @app.post("/openError")
-def load():
+def redirectOpenError():
     html = "<script>location.assign('/static/openAccount.html')</script>"
     return HTMLResponse(content=html)
 
 
 @app.post("/passwordError")
-def load():
+def redirectPasswordError():
     html = "<script>location.assign('/static/registration.html')</script>"
     return HTMLResponse(content=html)
 
