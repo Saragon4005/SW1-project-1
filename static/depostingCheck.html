@@ -3,9 +3,12 @@
 <head>
   <link rel="stylesheet" href="index.css" />
   <link rel="stylesheet" href="member.css" />
-  <link rel="stylesheet" href="menuPartial.css" />
+  <link rel="stylesheet" href="menuPartial.css">
+  <link rel="stylesheet" href="depositCheck.css">
+
   <title>Bye, CashWash-er!</title>
   <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
+  <script src="script.js"></script>
 </head>
 
 <body>
@@ -23,50 +26,47 @@
   <div class="bodySection">
     <div class="ammountContainer">
       <div class="box-image">
-        <div class="center4"></div>
-        <div class="textDescription">
-          Electronics Check deposit
-          <br />
-          <span class="colored">Upload</span>
-          or <span class="colored">Drag</span>
-          your image below
-        </div>
-      <br><br><br><br><br>
+          <div class="center4">
+              <div class="textDescription">
+                  Electronics Check deposit
+                  <span class="colored">Upload</span>
+                  or <span class="colored">Drag</span>
+                  your image below
+              </div>
+          </div>
 
-        <div class="image-container">
-          <img src="pictures/uploadPicture.jpg" alt="Uploaded Image">
-        </div>
-        <br><br><br><br><br><br>
-        <form class="loginForm" id="form" action="/register" method="POST" required>
-          <div class="formusr" id="formusr">
-            
+          <div class="image-container">
+              <img src="pictures/uploadPicture.jpg" alt="Uploaded Image">
           </div>
-          <div class="formusr" id="formusr">
-            <label class="loginlabel" for="ammttp">Amount (in USD)</label>
-            <div class="form-control">
-              <input
-                class="loginput"
-                id="ammttp"
-                type="text"
-                placeholder="$0.00"
-                required
-                name="ammttp"
-              />
-            </div>
+
+          <form class="loginForm" id="form" action="/register" method="POST" required>
+              <div class="formusr" id="formusr">
+
+              </div>
+              <div class="formusr" id="formusr">
+                  <label class="loginlabel" for="ammttp">Amount (in USD)</label>
+                  <div class="form-control">
+                      <input class="loginput"
+                              id="ammttp"
+                              type="text"
+                              placeholder="$0.00"
+                              required
+                              name="ammttp" />
+                  </div>
+              </div>
+              <br>
+              <button type="submit" class="b-login" onclick="reload('')">Depost</button>
+              <br><br>
+              <button type="submit" class="b-login" onclick="reload('')">Cancel</button>
+          </form>
+          <div class="independent-button">
+              <a href="" class="b-button"> </a>
           </div>
-          <br>
-          <button type="submit" class="b-login" onclick="reload('')">Depost</button>
-          <br><br>
-          <button type="submit" class="b-login" onclick="reload('')">Cancel</button>
-        </form>
-        <div class="independent-button">
-          <a href="" class="b-button"> </a>
-        </div>
       </div>
     </div>
   </div>
 
   <div class="bottomBanner"></div>
-  <script src="script.js"></script>
+ <script src="script.js"></script>
 </body>
 </html>
