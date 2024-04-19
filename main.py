@@ -107,12 +107,47 @@ def adminPost(
 
 
 @app.post("/openAccount")
-def open(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-    credentials = cur.execute(
-        "SELECT * FROM users WHERE username = ?", (username,)
+def open(
+    username: Annotated[str, Form()],
+    password: Annotated[str, Form()],
+    user: str = Cookie(None),
+):
+    userInfo = cur.execute(
+        "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
     ).fetchone()
-    if password == credentials[1]:
-        account = cur.execute("INSERT INTO accounts (a)")
+    if userInfo is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Username or Password is incorrect, please try again",
+        )
+    if userInfo[0] != user:
+        return {
+            "Message": "Please login with this user if you want to open an account with this user."
+        }
+    else:
+        response = HTMLResponse(
+            "<script>location.assign('/static/confirmacct.html')</script>"
+        )
+        return response
+
+
+@app.post("/pin")
+def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
+    cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, Pin))
+    database.commit()
+    accountsNumber = cur.execute(
+        "SELECT account_number FROM accounts WHERE username=? AND pin=?", (user, Pin)
+    ).fetchone()
+    response = HTMLResponse(
+        "<script>location.assign('/static/generateAccountNumber.html')</script>"
+    )
+    response.set_cookie(key="currentAccountNumber", value=accountsNumber[0])
+    return response
+
+
+@app.get("/accountID")
+def getAccountID(currentAccountNumber: str = Cookie(None)):
+    return {currentAccountNumber}
 
 
 if __name__ == "__main__":
