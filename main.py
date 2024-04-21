@@ -81,12 +81,22 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
 
 @app.get("/balance")
 def getBalance(user: str = Cookie(None)):
-    account = cur.execute("SELECT * FROM accounts WHERE username=?", (user,)).fetchone()
-    if account is None:
-        return {"No account exists yet"}
+    accounts = cur.execute(
+        "SELECT * FROM accounts WHERE username=?", (user,)
+    ).fetchall()
+    if len(accounts) == 0:
+        return {"No account exists"}
     else:
-        # Did not finish this part yet.
-        return {"Balance"}
+        string = ""
+        for i in range(len(accounts)):
+            tuple = accounts[i]
+            id = str(tuple[0])
+            balance = "$" + str(tuple[3])
+            if i == 0:
+                string = id + ":" + balance
+            else:
+                string += " " + id + ":" + balance
+    return {string}
 
 
 @app.post("/ATMlogin")

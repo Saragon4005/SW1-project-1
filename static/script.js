@@ -166,10 +166,62 @@ function pin() {
         form.action = "/pin";
     }
 }
-document.addEventListener('DOMContentLoaded', function() {
-    // Test account numbers
-    const accountNumbers = ['6789', '4321', '3579'];
-
+document.addEventListener('DOMContentLoaded', async function() {
+    // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+    var response = await fetch('/balance'); //Wait until the fetch request returns a promise
+    var balance = await response.json(); //Wait until we get a response.json promise
+    var string = JSON.stringify(balance);
+    var result = string.substring(2, string.length-2);
+    var accountNumbers = [];
+    if(result === "No account exists") {
+      accountNumbers[0] = "NA";
+      accountNumbers[1] = "NA";
+      accountNumbers[2] = "NA";
+      for(let i = 1; i <= 3; i++) {
+        let string = "balance" + i;
+        document.getElementById(string).innerHTML = "NA";
+      }
+   }
+   else {
+       var accounts = result.split(" ")
+        if(accounts.length === 1) {
+            accountNumbers[0] = accounts[0].substring(0,1);
+            accountNumbers[1] = "NA";
+            accountNumbers[2] = "NA";
+            for(let i = 1; i <= 3; i++) {
+               let string = "balance" + i;
+               if(i == 1) {
+               document.getElementById(string).innerHTML = accounts[i-1].substring(2);
+               }
+               else {
+                document.getElementById(string).innerHTML = "NA";
+               }
+            }
+        }
+        else if(accounts.length === 2) {
+            accountNumbers[0] = accounts[0].substring(0,1);
+            accountNumbers[1] = accounts[1].substring(0,1);
+            accountNumbers[2] = "NA"
+            for(let i = 1; i <= 3; i++) {
+                let string = "balance" + i;
+                if(i == 1 || i==2) {
+                document.getElementById(string).innerHTML = accounts[i-1].substring(2);
+                }
+                else {
+                 document.getElementById(string).innerHTML = "NA";
+                }
+             }
+        }
+        else {
+            accountNumbers[0] = accounts[0].substring(0,1);
+            accountNumbers[1] = accounts[1].substring(0,1);
+            accountNumbers[2] = accounts[2].substring(0, 1);
+            for(let i = 1; i <= 3; i++) {
+                let string = "balance" + i;
+                document.getElementById(string).innerHTML = accounts[i-1].substring(2);
+             }
+        }
+    }
     // Gets all "des" div elements
     const desDivs = document.querySelectorAll('.des');
 
@@ -189,13 +241,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Get the dropdown element
-    const accountSelect = document.getElementById('accountSelect');
+    var accountSelect = document.getElementById('accountSelect');
 
     // Populate the dropdown menu with test account numbers
     accountNumbers.forEach((number, index) => {
-        const option = document.createElement('option');
+        var option = document.createElement('option');
         option.value = `Account ${index + 1}`;
-        option.textContent = `Account ${index + 1} - #${number}`;
+        option.textContent = `Account ${index+1} - #${number}`;
         accountSelect.appendChild(option);
     });
 
