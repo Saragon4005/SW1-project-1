@@ -37,7 +37,7 @@
           <img src="pictures/uploadPicture.jpg" alt="Uploaded Image">
         </div>
         <br><br><br><br><br><br>
-        <form class="loginForm" id="form" action="/register" method="POST" required>
+        <form class="loginForm" id="form"  onsubmit="depositValidate()" method="POST" required>
           <div class="formusr" id="formusr">
             
           </div>
@@ -55,7 +55,7 @@
             </div>
           </div>
           <br>
-          <button type="submit" class="b-login" onclick="reload('')">Depost</button>
+          <button type="submit" class="b-login" onclick="reload('')">Deposit</button>
           <br><br>
           <button type="submit" class="b-login" onclick="reload('')">Cancel</button>
         </form>

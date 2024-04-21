@@ -143,10 +143,13 @@ def open(
 
 @app.post("/pin")
 def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
+
     cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, Pin))
     database.commit()
+    #This get the last account inserted
     accountsNumber = cur.execute(
-        "SELECT account_number FROM accounts WHERE username=? AND pin=?", (user, Pin)
+        # SQL query adapted from https://stackoverflow.com/a/16043791/23765485
+        "SELECT account_number FROM accounts ORDER BY account_number DESC"
     ).fetchone()
     response = HTMLResponse(
         "<script>location.assign('/static/generateAccountNumber.html')</script>"
