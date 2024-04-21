@@ -75,12 +75,22 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
 
 @app.get("/balance")
 def getBalance(user: str = Cookie(None)):
-    account = cur.execute("SELECT * FROM accounts WHERE username=?", (user,)).fetchone()
-    if account is None:
-        return {"No account exists yet"}
+    accounts = cur.execute("SELECT * FROM accounts WHERE username=?", (user,)).fetchall()
+    if(len(accounts) == 0):
+        return{"No account exists"}
     else:
-        # Did not finish this part yet.
-        return {"Balance"}
+        string = ""
+        for i in range(len(accounts)):
+            tuple = accounts[i]
+            id = str(tuple[0])
+            balance = "$" + str(tuple[3])
+            if ( i == 0):
+                string = id + ":" + balance
+            else:
+                string += " " + id + ":" + balance
+    return{string}
+
+
 
 
 @app.post("/ATMlogin")
@@ -110,33 +120,12 @@ def open(username: Annotated[str, Form()], password: Annotated[str, Form()], use
     if userInfo[0] != user:
         return {"Message": "Please login with this user if you want to open an account with this user."}
     else:
+        accounts = cur.execute("SELECT * FROM accounts WHERE username=?", (user,)).fetchall()
+        if(len(accounts) >= 3):
+            return {"Message": "You cannot open any more accounts with this user"}
         response = HTMLResponse("<script>location.assign('/static/confirmacct.html')</script>")
         return response
 
-
-@app.post("/openAccount")
-def open(
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()],
-    user: str = Cookie(None),
-):
-    userInfo = cur.execute(
-        "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
-    ).fetchone()
-    if userInfo is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Username or Password is incorrect, please try again",
-        )
-    if userInfo[0] != user:
-        return {
-            "Message": "Please login with this user if you want to open an account with this user."
-        }
-    else:
-        response = HTMLResponse(
-            "<script>location.assign('/static/confirmacct.html')</script>"
-        )
-        return response
 
 
 @app.post("/pin")
