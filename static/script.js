@@ -8,13 +8,18 @@ function reload(value){
     else if(value === "adminlogin"){
         location.assign("/static/adminlogin.html");
     }
+    else if(value === "deposit") {
+        location.assign("/static/depositingCheck.html");
+    }
     else if(value === "transfer"){
         location.assign("/static/transferPage.html");
     }
     else if(value === "member") {
         location.assign("/static/member.html");
     }
+
 }
+
 
 function passwordvalidate(){
     //Learned how to change form action from https://stackoverflow.com/a/5361776
@@ -44,20 +49,21 @@ async function getAccountID() {
 }
 
  function validate() {
-    let  form = document.getElementById("formB");
+    let form = document.getElementById("formB");
     let password = document.getElementById("password").value;
     let confirmPassword = document.getElementById("cpassword").value;
     if(password != confirmPassword) {
-        alert("Passwords do not match")
-        form.action = "/openError"
+        alert("Passwords do not match");
+        form.action = "/openError";
     }
     else {
-        form.action = "/openAccount"
+        form.action = "/openAccount";
     }
     
 
 }
 function pin() {
+    let form = document.getElementById("formP");
     let pin = document.getElementById("Pin").value;
     let cpin = document.getElementById("Pin2").value;
     if(pin != cpin) {
@@ -73,12 +79,16 @@ function pin() {
         form.action="/pinError";
     }
     else if(parseInt(pin) <= 1000) {
-        alert("pins must be number greater than 1000")
-        form.action="/pinError"
+        alert("pins must be number greater than 1000");
+        form.action="/pinError";
     }
     else {
         form.action = "/pin";
     }
+}
+
+function depositValidate() {
+    let pin = document.getElementById("Pin").value;
 }
 document.addEventListener('DOMContentLoaded', async function() {
     // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
@@ -97,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
    }
    else {
-       var accounts = result.split(" ")
+       var accounts = result.split(" ");
         if(accounts.length === 1) {
             accountNumbers[0] = accounts[0].substring(0,1);
             accountNumbers[1] = "NA";
