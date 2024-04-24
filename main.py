@@ -159,6 +159,15 @@ def open(
         return response
 
 
+@app.post("/closeAccount")
+def closeAccount(username: str, accountID: int, pin: int):
+    # TODO Add feedback on success/fail
+    cur.execute(
+        "DELETE * FROM accounts WHERE username=? AND account_number=? AND pin=?",
+        (username, accountID, pin),
+    )
+
+
 @app.post("/pin")
 def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
 
