@@ -13,8 +13,10 @@ new_db.script()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+
 @app.get("/")
-@app.get("/index.html")    
+@app.get("/index.html")
 def root():
     return RedirectResponse("/static/index.html", status_code=301)
 
@@ -36,9 +38,13 @@ def redirectPasswordError():
     html = "<script>location.assign('/static/registration.html')</script>"
     return HTMLResponse(content=html)
 
+
 @app.post("/register")
 # Form stuff is from https://fastapi.tiangolo.com/tutorial/request-forms/
-def register(username: Annotated[str, Form()], password: Annotated[str, Form()],):
+def register(
+    username: Annotated[str, Form()],
+    password: Annotated[str, Form()],
+):
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user:
         raise HTTPException(
@@ -46,8 +52,8 @@ def register(username: Annotated[str, Form()], password: Annotated[str, Form()],
         )
     else:
         cur.execute(
-        "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
-         )
+            "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
+        )
         database.commit()
         html = "<script>location.assign('/index.html')</script>"
         return HTMLResponse(content=html)
@@ -75,30 +81,31 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
 
 @app.get("/balance")
 def getBalance(user: str = Cookie(None)):
-    accounts = cur.execute("SELECT * FROM accounts WHERE username=?", (user,)).fetchall()
-    if(len(accounts) == 0):
-        return{"No account exists"}
+    accounts = cur.execute(
+        "SELECT * FROM accounts WHERE username=?", (user,)
+    ).fetchall()
+    if len(accounts) == 0:
+        return {"No account exists"}
     else:
         string = ""
         for i in range(len(accounts)):
             tuple = accounts[i]
             id = str(tuple[0])
             balance = "$" + str(tuple[3])
-            if ( i == 0):
+            if i == 0:
                 string = id + ":" + balance
             else:
                 string += " " + id + ":" + balance
-    return{string}
-
-
+    return {string}
 
 
 @app.post("/ATMlogin")
-def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]): 
+def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
     # TODO: actually validate
     return HTMLResponse(
         content="<script>location.assign('/static/atmWithdraw.html')</script>"
     )
+
 
 @app.post("/admin")
 def adminPost(
@@ -107,8 +114,14 @@ def adminPost(
     user: str = Cookie(None),
 ):
     return {"message": "Password incorrect, please try again "}
+
+
 @app.post("/openAccount")
-def open(username: Annotated[str, Form()], password: Annotated[str, Form()], user: str=Cookie(None)):
+def open(
+    username: Annotated[str, Form()],
+    password: Annotated[str, Form()],
+    user: str = Cookie(None),
+):
     userInfo = cur.execute(
         "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
     ).fetchone()
@@ -118,14 +131,19 @@ def open(username: Annotated[str, Form()], password: Annotated[str, Form()], use
             detail="Username or Password is incorrect, please try again",
         )
     if userInfo[0] != user:
-        return {"Message": "Please login with this user if you want to open an account with this user."}
+        return {
+            "Message": "Please login with this user if you want to open an account with this user."
+        }
     else:
-        accounts = cur.execute("SELECT * FROM accounts WHERE username=?", (user,)).fetchall()
-        if(len(accounts) >= 3):
+        accounts = cur.execute(
+            "SELECT * FROM accounts WHERE username=?", (user,)
+        ).fetchall()
+        if len(accounts) >= 3:
             return {"Message": "You cannot open any more accounts with this user"}
-        response = HTMLResponse("<script>location.assign('/static/confirmacct.html')</script>")
+        response = HTMLResponse(
+            "<script>location.assign('/static/confirmacct.html')</script>"
+        )
         return response
-
 
 
 @app.post("/pin")
@@ -133,7 +151,7 @@ def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
 
     cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, Pin))
     database.commit()
-    #This get the last account inserted
+    # This get the last account inserted
     accountsNumber = cur.execute(
         # SQL query adapted from https://stackoverflow.com/a/16043791/23765485
         "SELECT account_number FROM accounts ORDER BY account_number DESC"
