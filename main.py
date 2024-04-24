@@ -83,17 +83,16 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
 
 @app.get("/balance")
 def getBalance(user: str = Cookie(None)):
-    accounts = cur.execute(
-        "SELECT * FROM accounts WHERE username=?", (user,)
+    accounts: list[tuple[int, float]] = cur.execute(
+        "SELECT `account_number`, `balance` FROM accounts WHERE username=?", (user,)
     ).fetchall()
     if len(accounts) == 0:
         return {"No account exists"}
     else:
         string = ""
-        for i in range(len(accounts)):
-            tuple = accounts[i]
-            id = str(tuple[0])
-            balance = "$" + str(tuple[3])
+        for i, account in enumerate(accounts):
+            id = str(account[0])
+            balance = "$" + str(account[1])
             if i == 0:
                 string = id + ":" + balance
             else:
