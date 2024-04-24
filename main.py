@@ -102,10 +102,22 @@ def getBalance(user: str = Cookie(None)):
 
 @app.post("/ATMlogin")
 def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
-    # TODO: actually validate
-    return HTMLResponse(
-        content="<script>location.assign('/static/atmWithdraw.html')</script>"
-    )
+
+    account = cur.execute(
+        "SELECT * FROM users WHERE account_number = ? and pin = ?", (accountID, pin)
+    ).fetchone()
+
+    if account is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Account Number or Pin is incorrect, please try again",
+        )
+    else:
+        response = HTMLResponse(
+            content="<script>location.assign('/static/atmWithdraw.html')</script>"
+        )
+        response.set_cookie(key="currentAccountNumber", value=accountID)
+        return response
 
 
 @app.post("/admin")
