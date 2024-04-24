@@ -42,8 +42,10 @@ def redirectPasswordError():
 
 @app.post("/register")
 # Form stuff is from https://fastapi.tiangolo.com/tutorial/request-forms/
-def register(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-    # you can add the database stuff here
+def register(
+    username: Annotated[str, Form()],
+    password: Annotated[str, Form()],
+):
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user:
         raise HTTPException(
@@ -135,6 +137,11 @@ def open(
             "Message": "Please login with this user if you want to open an account with this user."
         }
     else:
+        accounts = cur.execute(
+            "SELECT * FROM accounts WHERE username=?", (user,)
+        ).fetchall()
+        if len(accounts) >= 3:
+            return {"Message": "You cannot open any more accounts with this user"}
         response = HTMLResponse(
             "<script>location.assign('/static/confirmacct.html')</script>"
         )
@@ -146,7 +153,7 @@ def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
 
     cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, Pin))
     database.commit()
-    #This get the last account inserted
+    # This get the last account inserted
     accountsNumber = cur.execute(
         # SQL query adapted from https://stackoverflow.com/a/16043791/23765485
         "SELECT account_number FROM accounts ORDER BY account_number DESC"
