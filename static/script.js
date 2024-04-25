@@ -16,25 +16,164 @@ function reload(value){
     }
 }
 
-function passwordvalidate(){
-    //Learned how to change form action from https://stackoverflow.com/a/5361776
-    let password = document.getElementById("password").value;
-    let confirmPassword = document.getElementById("cpassword").value;
-    let form = document.getElementById("formR");
-    if(password.length < 10){
-        let numberOfmissing = 10-password.length;
-        alert("password too short by " + numberOfmissing + " characters");
-        form.action="/passwordError";
+function validateUsername(username) {
+    const usernameMessage = document.getElementById("usernameMessage");
+    const usernameInput = document.getElementById("username");
+
+    usernameMessage.innerHTML = "";
+
+    if (username.length < 3) {
+        appendMessage("Username should be at least 3 characters long", usernameMessage);
+        usernameInput.classList.add("invalid");
+    } else {
+        usernameInput.classList.remove("invalid");
     }
-    
-    else if(password != confirmPassword){
-        alert("passwords do not match");
-        form.action="/passwordError";
+
+    return username.trim().length >= 3; // Return whether the username meets the requirement
+}
+function validatePassword(password, confirmPassword) {
+    const passwordRequirements = document.getElementById("passwordRequirements");
+    const confirmPasswordMessage = document.getElementById("confirmPasswordMessage");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("cpassword");
+
+    passwordRequirements.innerHTML = "";
+    confirmPasswordMessage.innerHTML = "";
+
+    let isValid = true; // Flag to track if password meets all requirements
+
+    if (password.length < 10 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[^a-zA-Z0-9]/.test(password)) {
+        isValid = false; // Set flag to false if any requirement is not met
     }
-    else{
-       form.action= "/register";
+
+    if (isValid) {
+        passwordInput.classList.remove("invalid"); // Remove "invalid" class if all requirements are met
+    } else {
+        passwordInput.classList.add("invalid");
+        if (password.length < 10) {
+            appendMessage("Password should be at least 10 characters long", passwordRequirements);
+        }
+        if (!/[A-Z]/.test(password)) {
+            appendMessage("Password should contain at least one uppercase letter", passwordRequirements);
+        }
+        if (!/[a-z]/.test(password)) {
+            appendMessage("Password should contain at least one lowercase letter", passwordRequirements);
+        }
+        if (!/\d/.test(password)) {
+            appendMessage("Password should contain at least one number", passwordRequirements);
+        }
+        if (!/[^a-zA-Z0-9]/.test(password)) {
+            appendMessage("Password should contain at least one special character", passwordRequirements);
+        }
+    }
+
+    if (password !== confirmPassword) {
+        appendMessage("Passwords do not match", confirmPasswordMessage);
+        confirmPasswordInput.classList.add("invalid");
+    } else {
+        confirmPasswordInput.classList.remove("invalid");
+    }
+
+    // Add red border to confirm password input only when it's invalid and interacted with
+    if (confirmPasswordInput.classList.contains("invalid") && confirmPasswordInput.value !== "") {
+        confirmPasswordInput.classList.add("error");
+    } else {
+        confirmPasswordInput.classList.remove("error");
+    }
+
+    // Check if all password requirements are met and enable/disable register button
+    const registerButton = document.getElementById("registerButton");
+    registerButton.disabled = !(
+        isValid && // Check if isValid flag is true
+        password === confirmPassword &&
+        validateUsername(document.getElementById("username").value)
+    );
+}
+
+function handleFormSubmit(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("cpassword").value;
+
+    const isUsernameValid = validateUsername(username);
+    const isPasswordValid = validatePassword(password, confirmPassword);
+
+    if (isUsernameValid && isPasswordValid) {
+        // Success Message or Redirection to generateAccountNumber.html
+    } else {
+        // Fail Message or Alert Box
     }
 }
+
+function appendMessage(message, targetElement) {
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = `<i class="fa fa-exclamation-circle"></i> <span class="message">${message}</span>`;
+    targetElement.appendChild(paragraph);
+}
+// function validatePassword(password, confirmPassword) {
+//     const passwordRequirements = document.getElementById("passwordRequirements");
+//     const confirmPasswordMessage = document.getElementById("confirmPasswordMessage");
+//     const passwordInput = document.getElementById("password");
+//     const confirmPasswordInput = document.getElementById("cpassword");
+
+//     passwordRequirements.innerHTML = "";
+//     confirmPasswordMessage.innerHTML = "";
+
+//     let isValid = true; // Flag to track if password meets all requirements
+
+//     if (password.length < 10 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[^a-zA-Z0-9]/.test(password)) {
+//         isValid = false; // Set flag to false if any requirement is not met
+//     }
+
+//     if (isValid) {
+//         passwordInput.classList.remove("invalid"); // Remove "invalid" class if all requirements are met
+//     } else {
+//         passwordInput.classList.add("invalid");
+//         if (password.length < 10) {
+//             appendMessage("Password should be at least 10 characters long", passwordRequirements);
+//         }
+//         if (!/[A-Z]/.test(password)) {
+//             appendMessage("Password should contain at least one uppercase letter", passwordRequirements);
+//         }
+//         if (!/[a-z]/.test(password)) {
+//             appendMessage("Password should contain at least one lowercase letter", passwordRequirements);
+//         }
+//         if (!/\d/.test(password)) {
+//             appendMessage("Password should contain at least one number", passwordRequirements);
+//         }
+//         if (!/[^a-zA-Z0-9]/.test(password)) {
+//             appendMessage("Password should contain at least one special character", passwordRequirements);
+//         }
+//     }
+
+//     if (password !== confirmPassword) {
+//         appendMessage("Passwords do not match", confirmPasswordMessage);
+//         confirmPasswordInput.classList.add("invalid");
+//     } else {
+//         confirmPasswordInput.classList.remove("invalid");
+//     }
+
+//     // Add red border to confirm password input only when it's invalid and interacted with
+//     if (confirmPasswordInput.classList.contains("invalid") && confirmPasswordInput.value !== "") {
+//         confirmPasswordInput.classList.add("error");
+//     } else {
+//         confirmPasswordInput.classList.remove("error");
+//     }
+
+//     // Check if all password requirements are met and enable/disable register button
+//     const registerButton = document.getElementById("registerButton");
+//     registerButton.disabled = !(
+//         isValid && // Check if isValid flag is true
+//         password === confirmPassword
+//     );
+// }
+// function appendMessage(message, targetElement) {
+//     const paragraph = document.createElement("p");
+//     paragraph.innerHTML = `<i class="fa fa-exclamation-circle"></i> <span class="message">${message}</span>`;
+//     targetElement.appendChild(paragraph);
+// }
 
 async function updateBalance() {
     // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch

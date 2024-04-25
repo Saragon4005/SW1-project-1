@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="index.css" />
-    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="transfer_page.css" />
     <link rel="stylesheet" href="menuPartial.css">
     <title>Howdy, CashWash-er!</title>
     <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
@@ -17,7 +16,6 @@
     <div class="btn-line"></div>
   </div>
 </div>
-</div>
 
 <div id="menuPartial"></div>
 <script src="menuPartial.html" defer></script>
@@ -27,29 +25,25 @@
       <div class="ammountContainer">
         <div class="box-image">
             <div class="colored-text">
-                <div class="des">Account Balance</div>
-                <hr>
-                <br>
-                <div class="ammt">$10,000.47</div>
-            </div>  
+              <div class="des"></div>
+              <hr>
+            </div>
         </div>
       </div>
-      <br>
-
-    <span class="colored4"><p>You may <span class="colored">ONLY</span> transfer with other <span class="colored">CASHWA$H</span> members.<br /></span></span
-        ></p></span>
-
-
+     
+      <span class="colored4"><p>You may <span class="colored">ONLY</span> transfer funds to other <span class="colored">CASHWA$H</span> account owners.<br /></span></span
+      ></p></span>
       <div class="loginContainer">
-        <form
-          class="loginForm"
-          id="form"
-          action="/login"
-          method="POST"
-          required
-        >
+        <form class="loginForm" id="form" action="/login" method="POST" required>
+          <!-- Dropdown menu for account selection -->
           <div class="formusr" id="formusr">
-            <label class="loginlabel" for="ammttp">Ammount (in USD)</label>
+            
+            <label class="loginlabel" for="accountSelect">Account Source</label>
+            <div class="form-control">
+              <select class="loginput" id="accountSelect" name="accountSelect"></select>
+            </div>
+
+            <label class="loginlabel" for="ammttp">Amount (in USD)</label>
             <div class="form-control">
               <input
                 class="loginput"
@@ -60,36 +54,35 @@
                 name="ammttp"
               />
             </div>
-            <br />
+          
             <label class="loginlabel" for="recipientacctnum">Recipient Account Number</label>
             <div class="form-control">
               <input
                 class="loginput"
                 id="recipientacctnum"
                 type="text"
-                placeholder="#0123456"
+                placeholder="0123"
                 required
                 name="recipientacctnum"
               />
             </div>
+          </div>
         </form>
         <div class="transact-btns">
-            <a class="b-button">
-              <button class="b-Transfer" onclick="reload('transfer')">
-                TRANSFER
-              </button>
-            </a>
-            <a class="b-button">
-              <button class="b-Deposit" onclick="reload('')">
-                CANCEL
-              </button>
-            </a>          
-        </div>
+          <a class="b-button">
+            <button class="b-Transfer" onclick="reload('')">
+              TRANSFER
+            </button>
+          </a>
+          <a class="b-button">
+            <button class="b-Deposit" onclick="reload('')">
+              CANCEL
+            </button>
+          </a>          
         </div>
       </div>
+      </div>
     </div>
-    </div>
-    <div class="bottomBanner"></div>
-    
+    <div class="bottomBanner"></div>    
   </body>
 </html>
