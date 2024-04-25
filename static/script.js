@@ -19,7 +19,6 @@ function reload(value){
     }
 }
 
-
 function validateUsername(username) {
     const usernameMessage = document.getElementById("usernameMessage");
     const usernameInput = document.getElementById("username");
@@ -104,12 +103,10 @@ function handleFormSubmit(event) {
     const isUsernameValid = validateUsername(username);
     const isPasswordValid = validatePassword(password, confirmPassword);
 
-    let form = document.getElementById("formR");
-
     if (isUsernameValid && isPasswordValid) {
-        form.action = "/register";
+        // Success Message or Redirection to generateAccountNumber.html
     } else {
-        form.action = "/passwordError";
+        // Fail Message or Alert Box
     }
 }
 
@@ -118,6 +115,68 @@ function appendMessage(message, targetElement) {
     paragraph.innerHTML = `<i class="fa fa-exclamation-circle"></i> <span class="message">${message}</span>`;
     targetElement.appendChild(paragraph);
 }
+// function validatePassword(password, confirmPassword) {
+//     const passwordRequirements = document.getElementById("passwordRequirements");
+//     const confirmPasswordMessage = document.getElementById("confirmPasswordMessage");
+//     const passwordInput = document.getElementById("password");
+//     const confirmPasswordInput = document.getElementById("cpassword");
+
+//     passwordRequirements.innerHTML = "";
+//     confirmPasswordMessage.innerHTML = "";
+
+//     let isValid = true; // Flag to track if password meets all requirements
+
+//     if (password.length < 10 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password) || !/[^a-zA-Z0-9]/.test(password)) {
+//         isValid = false; // Set flag to false if any requirement is not met
+//     }
+
+//     if (isValid) {
+//         passwordInput.classList.remove("invalid"); // Remove "invalid" class if all requirements are met
+//     } else {
+//         passwordInput.classList.add("invalid");
+//         if (password.length < 10) {
+//             appendMessage("Password should be at least 10 characters long", passwordRequirements);
+//         }
+//         if (!/[A-Z]/.test(password)) {
+//             appendMessage("Password should contain at least one uppercase letter", passwordRequirements);
+//         }
+//         if (!/[a-z]/.test(password)) {
+//             appendMessage("Password should contain at least one lowercase letter", passwordRequirements);
+//         }
+//         if (!/\d/.test(password)) {
+//             appendMessage("Password should contain at least one number", passwordRequirements);
+//         }
+//         if (!/[^a-zA-Z0-9]/.test(password)) {
+//             appendMessage("Password should contain at least one special character", passwordRequirements);
+//         }
+//     }
+
+//     if (password !== confirmPassword) {
+//         appendMessage("Passwords do not match", confirmPasswordMessage);
+//         confirmPasswordInput.classList.add("invalid");
+//     } else {
+//         confirmPasswordInput.classList.remove("invalid");
+//     }
+
+//     // Add red border to confirm password input only when it's invalid and interacted with
+//     if (confirmPasswordInput.classList.contains("invalid") && confirmPasswordInput.value !== "") {
+//         confirmPasswordInput.classList.add("error");
+//     } else {
+//         confirmPasswordInput.classList.remove("error");
+//     }
+
+//     // Check if all password requirements are met and enable/disable register button
+//     const registerButton = document.getElementById("registerButton");
+//     registerButton.disabled = !(
+//         isValid && // Check if isValid flag is true
+//         password === confirmPassword
+//     );
+// }
+// function appendMessage(message, targetElement) {
+//     const paragraph = document.createElement("p");
+//     paragraph.innerHTML = `<i class="fa fa-exclamation-circle"></i> <span class="message">${message}</span>`;
+//     targetElement.appendChild(paragraph);
+// }
 
 async function updateBalance() {
     // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
