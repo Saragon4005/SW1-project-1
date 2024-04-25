@@ -100,10 +100,12 @@ function handleFormSubmit(event) {
     const isUsernameValid = validateUsername(username);
     const isPasswordValid = validatePassword(password, confirmPassword);
 
+    let form = document.getElementById("formR");
+
     if (isUsernameValid && isPasswordValid) {
-        event.target.action = "/register";
+        form.action = "/register";
     } else {
-        event.target.action = "/passwordError";
+        form.action = "/passwordError";
     }
 }
 
