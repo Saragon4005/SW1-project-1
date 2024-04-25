@@ -101,9 +101,9 @@ function handleFormSubmit(event) {
     const isPasswordValid = validatePassword(password, confirmPassword);
 
     if (isUsernameValid && isPasswordValid) {
-        // Success Message or Redirection to generateAccountNumber.html
+        event.target.action = "/register";
     } else {
-        // Fail Message or Alert Box
+        event.target.action = "/passwordError";
     }
 }
 
