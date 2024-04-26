@@ -18,7 +18,6 @@ cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 
-
 @app.get("/")
 @app.get("/index.html")
 def root():
@@ -130,16 +129,21 @@ def checkAccount(accountNum: str = Body()):
     response.set_cookie(key="check", value=accountNum)
     return response
 
+
 @app.post("/checkAmount")
-def update(amount: Annotated[float, Form()], check: int=Cookie(None)):
-     currentAmount = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (check,)).fetchone()
-     amount = currentAmount[0] + amount
-     cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (amount, check))
-     database.commit()
-     response = HTMLResponse(
-            content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
-      )
-     return response
+def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
+    currentAmount = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (check,)
+    ).fetchone()
+    amount = currentAmount[0] + amount
+    cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (amount, check))
+    database.commit()
+    response = HTMLResponse(
+        content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
+    )
+    return response
+
+
 @app.post("/admin")
 def adminPost(
     username: Annotated[str, Form()],
@@ -186,6 +190,7 @@ def closeAccount(username: str, accountID: int, pin: int):
         "DELETE * FROM accounts WHERE username=? AND account_number=? AND pin=?",
         (username, accountID, pin),
     )
+    database.commit()
 
 
 @app.post("/pin")
