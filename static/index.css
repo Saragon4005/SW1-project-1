@@ -311,3 +311,11 @@ button:hover {
 .message {
   color: red;
 }
+
+.colored52 {
+  text-align: center;
+  font-size: 36px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f7c331;
+  font-weight: bold;
+}
