@@ -292,3 +292,22 @@ button:hover {
   color: #f7c331;
   font-weight: bold;
 }
+#confirmPasswordMessage, #passwordRequirements, #usernameMessage{
+  font-family: Arial, Helvetica, sans-serif;
+  transform: translateX(50px);
+  text-align: left;
+  font-size: 12px;
+}
+.loginput.invalid,
+.regbox.invalid {
+  border: 2px solid red;
+}
+.regbox:focus {
+  border: 2px solid #066cb1;
+}
+.fa-exclamation-circle {
+  color: red;
+}
+.message {
+  color: red;
+}

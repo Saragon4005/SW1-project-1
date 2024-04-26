@@ -1,71 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <link rel="stylesheet" href="index.css" />
-  <link rel="stylesheet" href="member.css" />
-  <link rel="stylesheet" href="menuPartial.css" />
-  <title>Bye, CashWash-er!</title>
-  <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
-</head>
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="menuPartial.css" />
+    <title>Bye, CashWash-er!</title>
+    <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
+  </head>
 
-<body>
-  <div class="topBanner">
-    <div class="menu-btn">
-      <div class="btn-line"></div>
-      <div class="btn-line"></div>
-      <div class="btn-line"></div>
+  <body>
+    <div class="topBanner">
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
     </div>
-  </div>
 
-  <div id="menuPartial"></div>
-  <script src="menuPartial.html" defer></script>
+    <div id="menuPartial"></div>
+    <script src="menuPartial.html" defer></script>
 
-  <div class="bodySection">
-    <div class="ammountContainer">
-      <div class="box-image">
-        <div class="center4"></div>
-        <div class="textDescription">
-          Electronics Check deposit
-          <br />
-          <span class="colored">Upload</span>
-          or <span class="colored">Drag</span>
-          your image below
-        </div>
-      <br><br><br><br><br>
-
-        <div class="image-container">
-          <img src="pictures/uploadPicture.jpg" alt="Uploaded Image">
-        </div>
-        <br><br><br><br><br><br>
-        <form class="loginForm" id="form" action="/checkAmount" method="POST" required>
-          <div class="formusr" id="formusr">
+    <div class="bodySection">
+      <div class="ammountContainer">
+        <div class="box-image">
+          <div class="center4"></div>
+          <div class="textDescription">
+            Electronics Check deposit
+            <br />
+            <span class="colored">Upload</span>
+            or <span class="colored">Drag</span>
+            your image below
           </div>
-          <div class="formusr" id="formusr">
-            <label class="loginlabel"  for="ammttp">Amount (in USD)</label>
-            <div class="form-control">
-              <input
-                class="loginput"
-                id="ammttp"
-                type="text"
-                placeholder="$0.00"
-                required
-                name="amount"
-              />
+          <br /><br /><br /><br /><br />
+
+          <div class="image-container">
+            <img src="pictures/uploadPicture.jpg" alt="Uploaded Image" />
+          </div>
+          <br /><br /><br /><br /><br /><br />
+          <form
+            class="loginForm"
+            id="form"
+            action="/checkAmount"
+            method="POST"
+            required
+          >
+            <div class="formusr" id="formusr"></div>
+            <div class="formusr" id="formusr">
+              <label class="loginlabel" for="ammttp">Amount (in USD)</label>
+              <div class="form-control">
+                <input
+                  class="loginput"
+                  id="ammttp"
+                  type="text"
+                  placeholder="$0.00"
+                  required
+                  name="amount"
+                />
+              </div>
             </div>
+            <br />
+            <button type="submit" class="b-login" onclick="reload('')">
+              Deposit
+            </button>
+            <br /><br />
+            <button type="submit" class="b-login" onclick="reload('')">
+              Cancel
+            </button>
+          </form>
+          <div class="independent-button">
+            <a href="" class="b-button"> </a>
           </div>
-          <br>
-          <button type="submit" class="b-login" onclick="reload('')">Deposit</button>
-          <br><br>
-          <button type="submit" class="b-login" onclick="reload('')">Cancel</button>
-        </form>
-        <div class="independent-button">
-          <a href="" class="b-button"> </a>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="bottomBanner"></div>
-  <script src="script.js"></script>
-</body>
+    <div class="bottomBanner"></div>
+    <script src="script.js"></script>
+  </body>
 </html>
