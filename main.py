@@ -1,9 +1,11 @@
 import sqlite3
 from typing import Annotated
 
+
 from fastapi import Cookie, FastAPI, Form, HTTPException, status
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi import Body
 import new_db
 
 app = FastAPI()
@@ -14,6 +16,7 @@ new_db.script()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
 
 
 @app.get("/")
@@ -120,6 +123,23 @@ def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
         return response
 
 
+@app.post("/setCheckCookie")
+# receving fetch data in fastapi https://stackoverflow.com/a/73761724
+def checkAccount(accountNum: str = Body()):
+    response = JSONResponse("cookie")
+    response.set_cookie(key="check", value=accountNum)
+    return response
+
+@app.post("/checkAmount")
+def update(amount: Annotated[float, Form()], check: int=Cookie(None)):
+     currentAmount = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (check,)).fetchone()
+     amount = currentAmount[0] + amount
+     cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (amount, check))
+     database.commit()
+     response = HTMLResponse(
+            content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
+      )
+     return response
 @app.post("/admin")
 def adminPost(
     username: Annotated[str, Form()],

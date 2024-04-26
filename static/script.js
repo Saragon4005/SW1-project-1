@@ -172,6 +172,48 @@ function pin() {
     }
 }
 
+
+ async function account(num) {
+    if(num === '1'){
+    let value1= document.getElementById("accountNumber1");
+    //uploading json post request from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+    var response = await fetch('/setCheckCookie', {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify(value1.innerText),
+
+    });
+    }
+    else if(num === '2') {
+        let value2= document.getElementById("accountNumber2");
+        var response = await fetch('/setCheckCookie', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(value2.innerText),
+     
+         });
+    }
+    else {
+        let value3= document.getElementById("accountNumber3");
+        var response = await fetch('/setCheckCookie', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(value3.innerText),
+     
+         });
+    }
+    var string = await response.json();
+
+    location.assign("/static/depositingCheck.html")
+    
+
+ }
 function depositValidate() {
     let pin = document.getElementById("Pin").value;
 }
