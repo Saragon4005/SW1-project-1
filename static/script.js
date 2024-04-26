@@ -118,20 +118,26 @@ function validatePassword(password, confirmPassword) {
 }
 
 function handleFormSubmit(event) {
-  event.preventDefault(); // Prevent default form submission
+ 
+  // const username = document.getElementById("username").value;
+  // const password = document.getElementById("password").value;
+  // const confirmPassword = document.getElementById("cpassword").value;
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("cpassword").value;
+  // const isUsernameValid = validateUsername(username);
+  // const isPasswordValid = validatePassword(password, confirmPassword);
+  let username = event.target.username.value;
+  let password = event.target.password.value;
+  let confirmPassword = event.target.password.value;
+  //let form = document.getElementById("formR");
 
-  const isUsernameValid = validateUsername(username);
-  const isPasswordValid = validatePassword(password, confirmPassword);
-
-  if (isUsernameValid && isPasswordValid) {
     // Success Message or Redirection to generateAccountNumber.html
-  } else {
-    // Fail Message or Alert Box
-  }
+    //form.action="/register";
+    event.target.action = "/register";
+  
+  // else {
+  //   // Fail Message or Alert Box
+  //    form.action="/passwordError"
+  // }
 }
 
 function appendMessage(message, targetElement) {
