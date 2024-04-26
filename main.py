@@ -200,13 +200,19 @@ def open(
 
 
 @app.post("/closeAccount")
-def closeAccount(username: str, accountID: int, pin: int):
+def closeAccount(
+    usernameca: Annotated[str, Form()],
+    accountca: Annotated[int, Form()],
+    cpasswordca: Annotated[int, Form()],
+):
     # TODO Add feedback on success/fail
     cur.execute(
-        "DELETE * FROM accounts WHERE username=? AND account_number=? AND pin=?",
-        (username, accountID, pin),
+        "DELETE FROM accounts WHERE username=? AND account_number=? AND pin=?",
+        (usernameca, accountca, cpasswordca),
     )
     database.commit()
+    response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
+    return response
 
 
 @app.post("/pin")
