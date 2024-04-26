@@ -12,10 +12,10 @@ app = FastAPI()
 
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
 new_db.script()
-
 database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
 
 
 @app.get("/")
@@ -53,7 +53,6 @@ def register(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
         )
-    # Insert new user into database
     else:
         cur.execute(
             "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
@@ -144,6 +143,23 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
     return response
 
 
+@app.post("/setCheckCookie")
+# receving fetch data in fastapi https://stackoverflow.com/a/73761724
+def checkAccount(accountNum: str = Body()):
+    response = JSONResponse("cookie")
+    response.set_cookie(key="check", value=accountNum)
+    return response
+
+@app.post("/checkAmount")
+def update(amount: Annotated[float, Form()], check: int=Cookie(None)):
+     currentAmount = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (check,)).fetchone()
+     amount = currentAmount[0] + amount
+     cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (amount, check))
+     database.commit()
+     response = HTMLResponse(
+            content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
+      )
+     return response
 @app.post("/admin")
 def adminPost(
     username: Annotated[str, Form()],
