@@ -10,8 +10,9 @@ CREATE TABLE
 
 CREATE TABLE
   accounts (
-    account_number INTEGER PRIMARY KEY,
-    pin INTEGER NOT NULL,
+    account_number INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    pin  INTEGER NOT NULL,
     balance REAL NOT NULL DEFAULT 0 -- Default balance starts at 0
   );
 

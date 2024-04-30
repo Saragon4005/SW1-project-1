@@ -1,96 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Welcome Back!</title>
     <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
     <script src="script.js"></script>
-  </head>
-  <body>
-    <div class="topBanner"></div>
-    <div class="bodySection">
-      <div class="logoContainer">
+<body>
+<div class="topBanner"></div>
+<div class="bodySection">
+    <div class="logoContainer">
         <div class="logo-image">
-          <img src="pictures/Cashwash.png" />
+            <img src="pictures/Cashwash.png" />
         </div>
-      </div>
-
-      <div class="bottomHalf">
-        <div class="loginContainer">
-          <form
-            class="loginForm"
-            id="formR"
-            method="post"
-            required
-            onsubmit="passwordvalidate()"
-            autocomplete="off"
-          >
-            <div class="formusr" id="formusr">
-              <label class="regtoplabel" for="username">Username</label>
-              <div class="form-control">
-                <input
-                  class="loginput"
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="Enter Your Username"
-                  required
-                  autocomplete="off"
-                />
-              </div>
-              <br />
-              <label class="regtoplabel" for="password">Password</label>
-              <div class="form-control">
-                <input
-                  class="loginput"
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="Enter Your Password"
-                  required
-                />
-              </div>
-              <br />
-              <label class="regtoplabel" for="cpassword"
-                >Confirm Password</label
-              >
-              <div class="form-control">
-                <input
-                  class="loginput"
-                  id="cpassword"
-                  type="password"
-                  placeholder="Confirm Your Password"
-                  required
-                  name="cpassword"
-                />
-              </div>
-              <br />
-            </div>
-            <div id="checkbx">
-              <label class="reglabel">
-                I would like to sacrifice and give up my whole self
-                <input class="regbox" type="checkbox" required="true" />
-                <span class="regcheck"></span>
-              </label>
-              <br />
-            </div>
-            <div class="form-control3" id="log-in-option">
-              <em>
-                Already have an account?
-                <a href="index.html">Log In</a></em
-              >
-            </div>
-            <br />
-            <button type="submit" class="b-login">REGISTER</button>
-          </form>
-          <div class="independent-button">
-            <a href="" class="b-button"> </a>
-            <br />
-            <br />
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="bottomBanner"></div>
-  </body>
+
+    <div class="bottomHalf">
+        <div class="loginContainer">
+            <form class="loginForm" id="formR" method="post" required autocomplete="off" onsubmit="handleFormSubmit(event)">
+                <div class="formusr" id="formusr">
+                    <label class="regtoplabel" for="username">Username</label>
+                    <div class="form-control">
+                        <input
+                            class="loginput"
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder="Enter Your Username"
+                            required
+                            autocomplete="off"
+                            oninput="validateUsername(this.value)"
+                        />
+                        <div id="usernameMessage" class="error-message"></div>
+                    </div>
+                    <br />
+                    <label class="regtoplabel" for="password">Password</label>
+                    <div class="form-control">
+                        <input
+                            class="loginput"
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Enter Your Password"
+                            required
+                            oninput="validatePassword(this.value, document.getElementById('cpassword').value)"
+                        />
+                        <div id="passwordRequirements">
+                        </div>
+                    </div>
+                    <br />
+                    <label class="regtoplabel" for="cpassword">Confirm Password</label>
+                    <div class="form-control">
+                        <input
+                            class="loginput"
+                            id="cpassword"
+                            type="password"
+                            placeholder="Confirm Your Password"
+                            required
+                            name="cpassword"
+                            oninput="validatePassword(document.getElementById('password').value, this.value)"
+                        />
+                        <div id="confirmPasswordMessage">
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div id="checkbx">
+                    <label class="reglabel">
+                        I would like to sacrifice and give up my whole self
+                        <input class="regbox" type="checkbox" required="true" />
+                        <span class="regcheck"></span>
+                    </label>
+                    <br />
+                </div>
+                <div class="form-control3" id="log-in-option">
+                    <em>
+                        Already have an account?
+                        <a href="index.html">Log In</a></em
+                    >
+                </div>
+                <br />
+                <button type="submit" class="b-login" id="registerButton">REGISTER</button>
+            </form>
+            <div class="independent-button">
+                <a href="" class="b-button"> </a>
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottomBanner"></div>
+</body>
 </html>
