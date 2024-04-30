@@ -5,7 +5,14 @@ body {
   overflow: scroll;
   overflow-x: hidden;
 }
-
+.ammt{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bolder;
+  font-size: 5em;
+  color: #066cb1;
+  text-shadow: 3px 3px 3px #f7c331;
+  padding-top: 25px;
+}
 button {
   display: inline-block;
   width: 200px;
@@ -119,7 +126,6 @@ button:hover {
   text-align: center;
   font-family: Arial, sans-serif;
 }
-
 .des {
   text-align: left;
   font-family: Arial, Helvetica, sans-serif;

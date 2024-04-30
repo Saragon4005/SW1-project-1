@@ -234,59 +234,48 @@ async function account(num) {
 function depositValidate() {
   let pin = document.getElementById("Pin").value;
 }
-
-document.addEventListener("DOMContentLoaded", async function () {
+async function getAccounts() {
   // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   var response = await fetch("/balance"); //Wait until the fetch request returns a promise
   var balance = await response.json(); //Wait until we get a response.json promise
   var string = JSON.stringify(balance);
   var result = string.substring(2, string.length - 2);
-  var accountNumbers = [];
+  var accountsF = [];
   if (result === "No account exists") {
-    accountNumbers[0] = "NA";
-    accountNumbers[1] = "NA";
-    accountNumbers[2] = "NA";
-    for (let i = 1; i <= 3; i++) {
-      let string = "balance" + i;
-      document.getElementById(string).innerHTML = "NA";
-    }
-  } else {
+    accountsF[0] = "NA";
+    accountsF[1] = "NA";
+    accountsF[2] = "NA";
+  }
+  else {
     var accounts = result.split(" ");
     if (accounts.length === 1) {
-      accountNumbers[0] = accounts[0].substring(0, 1);
-      accountNumbers[1] = "NA";
-      accountNumbers[2] = "NA";
-      for (let i = 1; i <= 3; i++) {
-        let string = "balance" + i;
-        if (i == 1) {
-          document.getElementById(string).innerHTML =
-            accounts[i - 1].substring(2);
-        } else {
-          document.getElementById(string).innerHTML = "NA";
-        }
-      }
+      accountsF[0] = accounts[0];
+      accountsF[1] = "NA";
+      accountsF[2] = "NA";
     } else if (accounts.length === 2) {
-      accountNumbers[0] = accounts[0].substring(0, 1);
-      accountNumbers[1] = accounts[1].substring(0, 1);
-      accountNumbers[2] = "NA";
-      for (let i = 1; i <= 3; i++) {
-        let string = "balance" + i;
-        if (i == 1 || i == 2) {
-          document.getElementById(string).innerHTML =
-            accounts[i - 1].substring(2);
-        } else {
-          document.getElementById(string).innerHTML = "NA";
-        }
-      }
+      accountsF[0] = accounts[0];
+      accountsF[1] = accounts[1];
+      accountsF[2] = "NA";
     } else {
-      accountNumbers[0] = accounts[0].substring(0, 1);
-      accountNumbers[1] = accounts[1].substring(0, 1);
-      accountNumbers[2] = accounts[2].substring(0, 1);
-      for (let i = 1; i <= 3; i++) {
-        let string = "balance" + i;
-        document.getElementById(string).innerHTML =
-          accounts[i - 1].substring(2);
-      }
+      accountsF[0] = accounts[0];
+      accountsF[1] = accounts[1];
+      accountsF[2] = accounts[2];
+    }
+  }
+  return accountsF;
+}
+document.addEventListener("DOMContentLoaded", async function () {
+  var accounts = await getAccounts();
+  var accountNumbers = [];
+  for(let i = 0; i < accounts.length; i++) {
+     let string = "balance" + (i+1)
+    if(accounts[i] != "NA") {  
+       document.getElementById(string).innerHTML = accounts[i].substring(2);
+       accountNumbers[i] = accounts[i].substring(0,1);
+    }
+    else {
+      document.getElementById(string).innerHTML = "NA";
+      accountNumbers[i] = "NA";
     }
   }
   // Gets all "des" div elements
@@ -306,7 +295,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     div.innerHTML = `Account Balance - #`;
     div.appendChild(span);
   });
-
+});
+document.addEventListener("DOMContentLoaded", async function () {
+  var accounts = await getAccounts();
+  var accountNumbers = [];
+  for(let i = 0; i < accounts.length; i++) {
+     if(accounts[i] != "NA") {
+      accountNumbers[i] = accounts[i].substring(0,1);
+     }
+  }
   // Get the dropdown element
   var accountSelect = document.getElementById("accountSelect");
 
@@ -321,6 +318,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Get the "des" div element
   const desDiv = document.querySelector(".des");
 
+  //Get the balance 
+  var div = document.getElementById("balance");
+
   // Update balance based on selected account
   accountSelect.addEventListener("change", function () {
     const selectedOption = accountSelect.options[accountSelect.selectedIndex];
@@ -329,12 +329,12 @@ document.addEventListener("DOMContentLoaded", async function () {
       1;
     const selectedAccountNumber = accountNumbers[accountIndex];
     desDiv.innerHTML = `Account Balance - #<span style="color: #f7c331">${selectedAccountNumber}</span>`;
+    div.innerHTML = accounts[accountIndex].substring(2);
   });
 
   // Initially set the balance for the first account
   accountSelect.dispatchEvent(new Event("change"));
 });
-
 document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.querySelector(".sidebar");
   const menuBtn = document.querySelector(".menu-btn");
