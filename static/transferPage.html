@@ -20,7 +20,6 @@
 <div id="menuPartial"></div>
 <script src="menuPartial.html" defer></script>
 <body>
-  
     <div class="bodySection">
       <div class="ammountContainer">
         <div class="box-image">
@@ -31,11 +30,10 @@
             </div>
         </div>
       </div>
-     
       <span class="colored4"><p>You may <span class="colored">ONLY</span> transfer funds to other <span class="colored">CASHWA$H</span> account owners.<br /></span></span
       ></p></span>
       <div class="loginContainer">
-        <form class="loginForm" id="form" action="/login" method="POST" required>
+        <form class="loginForm" id="formT" method="POST" required>
           <!-- Dropdown menu for account selection -->
           <div class="formusr" id="formusr">
             
@@ -43,7 +41,6 @@
             <div class="form-control">
               <select class="loginput" id="accountSelect" name="accountSelect"></select>
             </div>
-
             <label class="loginlabel" for="ammttp">Amount (in USD)</label>
             <div class="form-control">
               <input
@@ -55,7 +52,6 @@
                 name="ammttp"
               />
             </div>
-          
             <label class="loginlabel" for="recipientacctnum">Recipient Account Number</label>
             <div class="form-control">
               <input
@@ -67,23 +63,23 @@
                 name="recipientacctnum"
               />
             </div>
-          </div>
+            <div class="transact-btns">
+              <a class="b-button">
+                <button id="transfer" class="b-Transfer">
+                  TRANSFER
+                </button>
+              </a>
+              <a class="b-button">
+                <button id="cancel" class="b-Deposit">
+                  CANCEL
+                </button>
+              </a>          
+            </div>
+          </div>           
         </form>
-        <div class="transact-btns">
-          <a class="b-button">
-            <button class="b-Transfer" onclick="reload('')">
-              TRANSFER
-            </button>
-          </a>
-          <a class="b-button">
-            <button class="b-Deposit" onclick="reload('')">
-              CANCEL
-            </button>
-          </a>          
-        </div>
       </div>
       </div>
     </div>
-    <div class="bottomBanner"></div>    
+    <div class="bottomBanner"></div>  
   </body>
 </html>

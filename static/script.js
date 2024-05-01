@@ -230,9 +230,15 @@ async function account(num) {
 
   location.assign("/static/depositingCheck.html");
 }
-function depositValidate() {
-  let pin = document.getElementById("Pin").value;
-}
+async function getCheck() {
+   var res = await fetch('/getCheckData');
+   var result = await res.json();
+   var string =  JSON.stringify(result);
+   var data = string.substring(2, string.length -2).split(",");
+   document.getElementById("accNum").innerText = data[0];
+   document.getElementById("amount").innerText = data[1];
+} 
+
 async function getAccounts() {
   // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   var response = await fetch("/balance"); //Wait until the fetch request returns a promise
@@ -263,6 +269,7 @@ async function getAccounts() {
   }
   return accountsF;
 }
+
 document.addEventListener("DOMContentLoaded", async function () {
   var accounts = await getAccounts();
   var accountNumbers = [];
@@ -330,7 +337,17 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Initially set the balance for the first account
   accountSelect.dispatchEvent(new Event("change"));
+  var form =  document.getElementById("formT");
+  var transfer = document.getElementById("transfer");
+  var cancel = document.getElementById("cancel");
+  transfer.addEventListener('click', function() {
+        form.action = "/transfer";
+  });
+  cancel.addEventListener('click', function() {
+        form.action = "/cancelTransfer";
+  });
 });
+
 document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.querySelector(".sidebar");
   const menuBtn = document.querySelector(".menu-btn");
