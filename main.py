@@ -230,7 +230,7 @@ def cancel():
 
 @app.post("/transfer")
 def transfer(accountSelect: Annotated[str, Form()], ammttp: Annotated[int, Form()], recipientacctnum: Annotated[int, Form()]):
-     return {"id": format, "amount": ammttp, "receiveId": recipientacctnum}
+     return {"id": accountSelect, "amount": ammttp, "receiveId": recipientacctnum}
 if __name__ == "__main__":
     import uvicorn
 
