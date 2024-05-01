@@ -238,6 +238,14 @@ async function getCheck() {
    document.getElementById("accNum").innerText = data[0];
    document.getElementById("amount").innerText = data[1];
 } 
+async function getTransferData() {
+  var res = await fetch('/getTransferData');
+  var result = await res.json();
+  var string =  JSON.stringify(result);
+  var data = string.substring(2, string.length -2).split(",");
+  document.getElementById("accId").innerText = data[0];
+  document.getElementById("amount").innerText = data[1];
+}
 
 async function getAccounts() {
   // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch

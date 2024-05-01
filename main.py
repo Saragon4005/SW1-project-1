@@ -141,12 +141,28 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
     response = HTMLResponse(
         content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
     )
-    response.set_cookie(key="checkAmmount", value=input)
+    response.set_cookie(key="amount", value=input)
     return response
 
+
 @app.get("/getCheckData")
-def getCheckData(checkAmmount: str = Cookie(None), check: str = Cookie(None)):
-    return {check + "," + checkAmmount}
+def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
+    return {check + "," + amount}
+
+
+@app.post("/checkAmount")
+def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
+    currentAmount = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (check,)
+    ).fetchone()
+    amount = currentAmount[0] + amount
+    cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (amount, check))
+    database.commit()
+    response = HTMLResponse(
+        content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
+    )
+    return response
+
 
 @app.post("/setCheckCookie")
 # receving fetch data in fastapi https://stackoverflow.com/a/73761724
@@ -241,14 +257,60 @@ def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
 def getAccountID(currentAccountNumber: str = Cookie(None)):
     return {currentAccountNumber}
 
+
 @app.post("/cancelTransfer")
 def cancel():
     response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
     return response
 
+
 @app.post("/transfer")
-def transfer(accountSelect: Annotated[str, Form()], ammttp: Annotated[int, Form()], recipientacctnum: Annotated[int, Form()]):
-     return {"id": accountSelect, "amount": ammttp, "receiveId": recipientacctnum}
+def transfer(
+    accountSelect: Annotated[int, Form()],
+    pin: Annotated[int, Form()],
+    ammttp: Annotated[float, Form()],
+    recipientacctnum: Annotated[int, Form()],
+):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=? AND pin=?",
+        (accountSelect, pin),
+    ).fetchone()
+    if balance is None:
+        return {"Message": "pin was incorrect, go back and enter correct pin"}
+    if ammttp > balance[0]:
+        return {"Message": "Balance insufficient, go back and try again"}
+    recipientBalance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (recipientacctnum,)
+    ).fetchone()
+    if recipientBalance is None:
+        return {
+            "Message": "Recipient account does not exist, go back and enter correct number"
+        }
+    else:
+        newRecBalance = recipientBalance[0] + ammttp
+        cur.execute(
+            "UPDATE accounts SET balance=? WHERE account_number=?",
+            (newRecBalance, recipientacctnum),
+        )
+        newBalance = balance[0] - ammttp
+        cur.execute(
+            "UPDATE accounts SET balance=? WHERE account_number=?",
+            (newBalance, accountSelect),
+        )
+        database.commit()
+        response = HTMLResponse(
+            "<script>location.assign('/static/successfulfundtransfer.html')</script>"
+        )
+        response.set_cookie(key="recipient", value=recipientacctnum)
+        response.set_cookie(key="amount", value=ammttp)
+        return response
+
+
+@app.get("/getTransferData")
+def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
+    return {recipient + "," + amount}
+
+
 if __name__ == "__main__":
     import uvicorn
 

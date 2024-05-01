@@ -36,7 +36,6 @@
         <form class="loginForm" id="formT" method="POST" required>
           <!-- Dropdown menu for account selection -->
           <div class="formusr" id="formusr">
-            
             <label class="loginlabel" for="accountSelect">Account Source</label>
             <div class="form-control">
               <select class="loginput" id="accountSelect" name="accountSelect"></select>
@@ -50,6 +49,17 @@
                 placeholder="$0.00"
                 required
                 name="ammttp"
+              />
+            </div>
+            <label class="loginlabel" for="pin">Enter Source Pin</label>
+            <div class="form-control">
+              <input
+                class="loginput"
+                id="pin"
+                type="password"
+                placecholer="1234"
+                required
+                name="pin"
               />
             </div>
             <label class="loginlabel" for="recipientacctnum">Recipient Account Number</label>
