@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Populate the dropdown menu with test account numbers
   accountNumbers.forEach((number, index) => {
     var option = document.createElement("option");
-    option.value = `Account ${index + 1}`;
+    option.value = `${number}`;
     option.textContent = `Account ${index + 1} - #${number}`;
     accountSelect.appendChild(option);
   });
