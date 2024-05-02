@@ -105,7 +105,7 @@ def getBalance(user: str = Cookie(None)):
 def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
 
     account = cur.execute(
-        "SELECT * FROM users WHERE account_number = ? and pin = ?", (accountID, pin)
+        "SELECT * FROM accounts WHERE account_number = ? and pin = ?", (accountID, pin)
     ).fetchone()
 
     if account is None:
@@ -260,6 +260,7 @@ def transfer(accountSelect: Annotated[int, Form()], pin: Annotated[int, Form()],
 def getTransferData(amount: str=Cookie(None), recipient: str=Cookie(None)):
     return{recipient + "," + amount}
      
+
 if __name__ == "__main__":
     import uvicorn
 

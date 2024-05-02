@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="index.css" />
-    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="transfer_page.css" />
     <link rel="stylesheet" href="menuPartial.css" />
     <link rel="stylesheet" href="atm.css" />
     <title>Howdy, CashWash-er!</title>
@@ -21,7 +21,7 @@
   <div id="menuPartial"></div>
   <script src="menuPartial.html" defer></script>
   <body>
-    <div class="bodySection">
+  <div class="bodySection">
       <div class="balanceContainer">
         <div class="box-image">
           <div class="colored-text">
@@ -33,9 +33,13 @@
         </div>
       </div>
       <br />
+      <br />
+   <div class="loginContainer">
+    <form class="loginForm" id="formT" method="POST" required>
+     <div class="formusr">
       <div class="ammountInput">
         <label class="regtoplabel" for="username"
-          >Ammount To Withdraw (In USD):</label
+          >Amount To Withdraw (In USD):</label
         >
         <div class="form-control">
           <input
@@ -43,20 +47,23 @@
             id="username"
             name="username"
             type="text"
-            placeholder="Enter Your Username"
+            placeholder="0.00"
             required
           />
         </div>
       </div>
       <div class="transact-btns">
         <a class="b-button">
-          <button class="b-Withdraw" onclick="reload('')">WITHDRAW</button>
+          <button class="b-Withdraw" >WITHDRAW</button>
         </a>
         <a class="b-button">
-          <button class="b-Cancel" onclick="reload('')">CANCEL</button>
+          <button class="b-Cancel" onclick="reload('member')">CANCEL</button>
         </a>
       </div>
+     </div>
+     </form>
     </div>
-    <div class="bottomBanner"></div>
+  </div>
+  <div class="bottomBanner"></div>
   </body>
 </html>
