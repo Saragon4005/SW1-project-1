@@ -330,7 +330,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   // Get the "des" div element
-  const desDiv = document.querySelector(".des");
+  var desDiv = document.querySelector(".des");
 
   //Get the balance 
   var div = document.getElementById("balance");
