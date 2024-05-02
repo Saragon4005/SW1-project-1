@@ -17,7 +17,6 @@ cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 
-
 @app.get("/")
 @app.get("/index.html")
 def root():
@@ -143,23 +142,6 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
     return response
 
 
-@app.post("/setCheckCookie")
-# receving fetch data in fastapi https://stackoverflow.com/a/73761724
-def checkAccount(accountNum: str = Body()):
-    response = JSONResponse("cookie")
-    response.set_cookie(key="check", value=accountNum)
-    return response
-
-@app.post("/checkAmount")
-def update(amount: Annotated[float, Form()], check: int=Cookie(None)):
-     currentAmount = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (check,)).fetchone()
-     amount = currentAmount[0] + amount
-     cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (amount, check))
-     database.commit()
-     response = HTMLResponse(
-            content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
-      )
-     return response
 @app.post("/admin")
 def adminPost(
     username: Annotated[str, Form()],
