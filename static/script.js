@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   // Get the "des" div element
-  const desDiv = document.querySelector(".des");
+  var desDiv = document.querySelector(".des");
 
   //Get the balance 
   var div = document.getElementById("balance");
@@ -339,12 +339,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Update balance based on selected account
   accountSelect.addEventListener("change", function () {
     const selectedOption = accountSelect.options[accountSelect.selectedIndex];
-    const accountIndex =
-      parseInt(selectedOption.value.charAt(selectedOption.value.length - 1)) -
-      1;
-    const selectedAccountNumber = accountNumbers[accountIndex];
+    const selectedAccountNumber = selectedOption.value;
     desDiv.innerHTML = `Account Balance - #<span style="color: #f7c331">${selectedAccountNumber}</span>`;
-    div.innerHTML = accounts[accountIndex].substring(2);
+    div.innerHTML = accounts[accountSelect.selectedIndex].substring(2);
   });
 
   // Initially set the balance for the first account
