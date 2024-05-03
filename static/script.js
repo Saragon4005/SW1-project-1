@@ -349,3 +349,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+//For file upload field without DOMContentLoaded event listener
+const fileLabel = document.getElementById("file-label");
+const fileInput = document.getElementById("file-input");
+
+  // Add event listener for file user input change event
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    handleFileUpload(file);
+  });
+
+  // Handles file upload
+  function handleFileUpload(file) {
+    console.log("File uploaded:", file);
+
+    // Display the uploaded image
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const imageUrl = event.target.result;
+      const uploadedImage = document.createElement("img");
+      uploadedImage.src = imageUrl;
+
+      // Remove any existing image from the label
+      const existingImage = fileLabel.querySelector("img");
+      if (existingImage) {
+        fileLabel.removeChild(existingImage);
+      }
+
+      // Append the uploaded image to the label
+      fileLabel.appendChild(uploadedImage);
+    };
+    reader.readAsDataURL(file);
+  }
