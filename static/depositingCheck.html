@@ -29,12 +29,15 @@
                To electronically deposit your check, please
             <span class="coloredX"> UPLOAD </span> or <span class="coloredX"> DRAG </span> your image file below 
             <div>
-              (.jpg, .jpeg, .png)
+              (acceptable formats: .jpg, .jpeg, .png)
             </div>
             </div>
           </div>
-          <div class="image-container">
-            <img src="pictures/uploadPicture.jpg" alt="Uploaded Image" />
+          <div class="image-upload">
+            <label for="file-input">
+              <img src="pictures/uploadPicture.jpg" alt="Uploaded Image" />
+            </label>
+            <input class="file-input" id="file-input" type="file" hidden accept="image/png, image/jpeg" />
           </div>
           <form
             class="loginForm"
