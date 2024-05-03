@@ -188,9 +188,6 @@ button:hover {
   font-family: Arial, Helvetica, sans-serif;
   color: #066cb1;
 }
-.colored {
-  color: #f7c331;
-}
 .center3 {
   text-align: center;
   font-size: 20px;
@@ -215,9 +212,6 @@ button:hover {
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 }
-.colored4 {
-  color: #066cb1;
-}
 .logo-image{
   padding-top: 100px;
   width: auto;
@@ -237,9 +231,8 @@ button:hover {
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
   color: #f7c331;
-  font-weight: bold;
+  font-weight: bold; 
 }
-
 .colored4 {
   text-align: center;
   font-size: 16px;
@@ -247,9 +240,8 @@ button:hover {
   color: #066cb1;
 }
 .textDescription{
-  padding-top: 20%;
-  margin-bottom: 3%;
-  width: 70%;
+  padding-top: 5%;
+  margin-bottom: 1%;
   height: auto;
   text-align: center;
   color: #066cb1; 
@@ -257,20 +249,11 @@ button:hover {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20px;
 }
+
 .textDescription1{
   padding-top: 20%;
   margin-bottom: 3%;
   width: 70%;
-  height: auto;
-  text-align: center;
-  color: #066cb1; 
-  justify-self: center;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 30px;
-  
-  font-weight: bold;
-}
-.textDescription1{
   height: auto;
   text-align: center;
   color: #066cb1; 
@@ -320,7 +303,13 @@ button:hover {
   color: #f7c331;
   font-weight: bold;
 }
-
+.coloredX{
+  text-align: center;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f7c331;
+  font-weight: bold;
+}
 table {
   width: 100%;
   border-collapse: collapse;
