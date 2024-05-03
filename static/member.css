@@ -34,6 +34,10 @@ hr {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+.ammountContainer:hover .transact-btns {
+  display: flex; 
 }
 .ammountContainer:hover .transact-btns {
   display: flex; 
