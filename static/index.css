@@ -186,6 +186,7 @@ button:hover {
   font-size: 32px;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
+  color: #066cb1;
 }
 .center3 {
   text-align: center;
@@ -308,4 +309,18 @@ button:hover {
   font-family: Arial, Helvetica, sans-serif;
   color: #f7c331;
   font-weight: bold;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
 }
