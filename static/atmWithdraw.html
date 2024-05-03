@@ -35,25 +35,28 @@
       <br />
       <div class="ammountInput">
         <label class="regtoplabel" for="username"
-          >Ammount To Withdraw (In USD):</label
+          >Amount to Withdraw (in USD):</label
         >
+        <br>
         <div class="form-control">
           <input
             class="loginput"
             id="username"
             name="username"
             type="text"
-            placeholder="Enter Your Username"
+            placeholder="0.00"
             required
           />
         </div>
       </div>
-      <div class="transact-btns">
+      <div class="atm-transact-btns">
         <a class="b-button">
-          <button class="b-Withdraw" onclick="reload('')">WITHDRAW</button>
+          <button class="b-Transfer" onclick="reload('')">
+            WITHDRAW
+          </button>
         </a>
         <a class="b-button">
-          <button class="b-Cancel" onclick="reload('')">CANCEL</button>
+          <button class="b-Deposit" onclick="reload('')">EXIT</button>
         </a>
       </div>
     </div>
