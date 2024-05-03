@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="member.css" />
     <link rel="stylesheet" href="menuPartial.css" />
     <link rel="stylesheet" href="openAccount.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>Howdy, CashWash-er!</title>
     <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
     <script src="script.js"></script>
@@ -13,8 +14,8 @@
   <body>
     <div class="topBanner">
       <a href="login.html" class="button">
-        <div class="icon"></div>
-    </a>
+        <span class="glyphicon glyphicon-log-out"></span>
+      </a>
     </div>
 
     <div id="menuPartial"></div>
@@ -22,32 +23,31 @@
 
     <div class="atmbodySection">
       <div class="left-side">
-        <div class="leftside"></div>
         <div class="rightside">
-            <div class="ammountContainer">
-                <div class="box-image">
-                  <div class="colored-text3">
-                    <span class="colored52">
-                    Independent Member Data
-                    </span>
-                    <div class="des"></div>
-                    <hr />
-                    <div class="colored4">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Account Number</th>
-                                    <th>Account Balance</th>
-                                    <th>Average Monthly Transaction</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>123456</td>
-                                    <td>$1000.00</td>
-                                    <td>70</td>
-                                </tr>
-                                <tr>
+          <div class="ammountContainer">
+            <div class="box-image">
+              <div class="colored-text3">
+                <span class="colored52">
+                  Independent Member Data
+                </span>
+                <div class="des"></div>
+                <hr />
+                <div class="colored4">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Account Number</th>
+                        <th>Account Balance</th>
+                        <th>Average Monthly Transaction</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>123456</td>
+                        <td>$1000.00</td>
+                        <td>70</td>
+                    </tr>
+                    <tr>
                                     <td>123456</td>
                                     <td>$2000.00</td>
                                     <td>70</td>
@@ -75,33 +75,24 @@
                             </tbody>
                         </table>
                   </div>
-                </div>
-                </div>
               </div>
-              
-          <div class="loginContainer">
-            </form>
-            <div class="independent-button">
-              <a href="" class="b-button"> </a>
-              <br />
-              <br />
             </div>
           </div>
         </div>
-        
-      <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
       </div>
+      
       <div class="right-side">
         <div class="ammountContainer">
-            <div class="box-image">
-              <div class="colored-text4">
+            <div class="emp-box-image">
+              <!-- <div class="colored-text4"> -->
                 <span class="colored52">
                 This Month's User Analytics
                 </span>
                 <div class="des"></div>
                 <hr />
                 <span class="colored84">
-                    New Users this Month:
+                    New Users:
                 </span>
                 <br>
                 <br>
@@ -111,7 +102,7 @@
                 <br>
                 <br>
                 <span class="colored84">
-                    Account Opened this month:
+                    Accounts Opened:
                 </span>
                 <br>
                 <br>
@@ -119,16 +110,15 @@
                     3
                 </span>
                 <div class="colored4">
-              </div>
+              <!-- </div> -->
             </div>
             </div>
         </div>
-          </div>
-    </div>
-        <div class="leftside">
-            
-        <div class="rightside"></div>
       </div>
+    </div>
+    <div class="low-leftside">
+      <div id="pie-chart"></div>  
+    </div>
     </div>
     <div class="bottomBanner"></div>
   </body>

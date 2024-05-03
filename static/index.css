@@ -314,18 +314,14 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
-
 th, td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
-
 th {
   background-color: #f2f2f2;
 }
-
-
 .colored84 {
   text-align: center;
   font-size: 16px;
@@ -333,7 +329,6 @@ th {
   color: #000000;
   font-weight: bold;
 }
-
 .colored48 {
   text-align: center;
   font-size: 28px;
@@ -358,4 +353,17 @@ th {
   height: 43px;
   background-image: url(pictures/exitdoor.png); 
   background-size: cover;
+}
+.emp-box-image{
+  text-align: right;
+}
+#pie-chart {
+  margin-left: 40%;
+  height: 350px;
+  width: 350px;
+  border-radius: 50%;
+  background: conic-gradient( rgb(208, 226, 243) 6.08% 13.68%, #dad1b9 13.68% 23.27%, #f7c331 23.27% 40.47%, #066cb1 40.47%);
+}
+.lowleft-side{
+  align-items: center;
 }
