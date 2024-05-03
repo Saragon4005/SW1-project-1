@@ -350,8 +350,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-<<<<<<< HEAD
-=======
 //For file upload field without DOMContentLoaded event listener
 const fileLabel = document.getElementById("file-label");
 const fileInput = document.getElementById("file-input");
@@ -384,4 +382,3 @@ const fileInput = document.getElementById("file-input");
     };
     reader.readAsDataURL(file);
   }
->>>>>>> 70bda0c5a0fc2bae412bbb49a00cb7284bb1c1d1
