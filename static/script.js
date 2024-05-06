@@ -11,6 +11,8 @@ function reload(value) {
     location.assign("/static/transferPage.html");
   } else if (value === "member") {
     location.assign("/static/member.html");
+  } else if (value === "atm") {
+        location.assign("/static/atmLogin.html");
   }
 }
 
