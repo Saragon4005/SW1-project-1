@@ -148,31 +148,65 @@ function validate() {
   let form = document.getElementById("formB");
   let password = document.getElementById("password").value;
   let confirmPassword = document.getElementById("cpassword").value;
+  const errorMessage = document.getElementById("errorMessage");
+
   if (password != confirmPassword) {
-    alert("Passwords do not match");
+    errorMessage.innerHTML = "Passwords do not match";
+    document.getElementById("cpassword").classList.add("error");
     form.action = "/openError";
+    return false; // Preventssubmission
   } else {
-    form.action = "/openAccount";
+    errorMessage.innerHTML = "";
+    document.getElementById("cpassword").classList.remove("error"); 
+    return true; 
   }
 }
 function pin() {
   let form = document.getElementById("formP");
   let pin = document.getElementById("Pin").value;
   let cpin = document.getElementById("Pin2").value;
+  const pinRequirements = document.getElementById("pinRequirements");
+  const submitButton = document.getElementById("submitPIN");
+
+  pinRequirements.innerHTML = "";
+
+  let isValid = true;
+
   if (pin != cpin) {
-    alert("pins do not match");
+    appendMessage("PINs do not match", pinRequirements);
+    isValid = false;
+    //alert("PINs do not match");
     form.action = "/pinError";
-  } else if (pin.length != 4) {
-    alert("pins are not 4 digits long");
+  }
+  
+  if (pin.length != 4) {
+    appendMessage("PIN must be four digits long", pinRequirements);
+    isValid = false;
+    //alert("Your PIN must be four digits long");
     form.action = "/pinError";
-  } else if (isNaN(parseInt(pin))) {
-    alert("pins are not digits between 0-9");
+  }
+  
+  if (isNaN(parseInt(pin))) {
+    appendMessage("PIN should only contain numerical values (0 to 9)", pinRequirements);
+    isValid = false;
+    //alert("PIN should only contain numerical values (0 to 9)");
     form.action = "/pinError";
-  } else if (parseInt(pin) <= 1000) {
-    alert("pins must be number greater than 1000");
+  }
+  
+  if (parseInt(pin) <= (0o0)) {
+    appendMessage("PIN can only be between '0000' and '9999'");
+    isValid = false;
+    //alert("pins must be number greater than 0000");
     form.action = "/pinError";
-  } else {
+  }
+
+  submitButton.disabled = !isValid;
+
+  if (isValid){
     form.action = "/pin";
+  }
+  else{
+    form.action = "/pinError";
   }
 }
 

@@ -51,11 +51,11 @@
                   />
                 </div>
                 <br />
-                <label class="regtoplabel" for="password">Password</label>
+                <label class="regtoplabel" for="password">Old PIN</label>
                 <div class="form-control">
                   <input
                     class="loginput"
-                    id="password"
+                    id="pin"
                     type="password"
                     required
                     name="password"
@@ -70,11 +70,13 @@
                     type="password"
                     required
                     name="new-pin"
+                    oninput="pin()"
                   />
                 </div>
+                <div id="pinRequirements"></div>
                 <br />
               </div>
-              <button type="submit" class="b-login">SET PIN</button>
+              <button type="submit" class="b-login" id="submitButton" disabled>SET PIN</button>
             </form>
           </div>
         </div>
