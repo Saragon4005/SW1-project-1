@@ -156,7 +156,7 @@ function validate() {
     form.action = "/openError";
     return false; // Preventssubmission
   } else {
-    errorMessage.innerHTML = "";
+    errorMessage.innerHTML = ""; 
     document.getElementById("cpassword").classList.remove("error"); 
     return true; 
   }
