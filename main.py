@@ -140,7 +140,7 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
     response = HTMLResponse(
         content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
     )
-    response.set_cookie(key="amount", value=input)
+    response.set_cookie(key="amount", value=input)  # type: ignore
     return response
 
 @app.get("/getCheckData")
@@ -309,8 +309,8 @@ def transfer(
         response = HTMLResponse(
             "<script>location.assign('/static/successfulfundtransfer.html')</script>"
         )
-        response.set_cookie(key="recipient", value=recipientacctnum)
-        response.set_cookie(key="amount", value=ammttp)
+        response.set_cookie(key="recipient", value=recipientacctnum)  # type: ignore
+        response.set_cookie(key="amount", value=ammttp)  # type: ignore
         return response
 
 
