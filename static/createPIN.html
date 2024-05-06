@@ -24,9 +24,6 @@
 
     <div class="bodySection">
       <div class="left-side">
-        <!-- <div class="leftside"></div>
-        <div class="rightside"> -->
-          
           <div class="loginContainer">
             <div class="textDescription">
               <div class="colored4">
@@ -36,7 +33,7 @@
             <form
               class="loginForm"
               id="formB"
-              onsubmit="validate()"
+              onsubmit="return validatePIN(event)"
               method="POST"
               required
             >
@@ -50,8 +47,10 @@
                     type="text"
                     placeholder="Between '0000' and '9999'"
                     required
+                    oninput="pin(this.value, document.getElementById('pin2').value)"
                   />
                 </div>
+                <div id="pinRequirements"></div>
                 <br />
                 <label class="regtoplabel" for="pin2">Confirm PIN</label>
                 <div class="form-control">
@@ -62,8 +61,10 @@
                     type="password"
                     placeholder="Confirm your PIN"
                     required
+                    oninput="pin(document.getElementById('pin').value, this.value)"
                   />
                 </div>
+                <div id="cpinRequirements"></div>
                 <br />
               </div>
               <br />
@@ -77,38 +78,8 @@
               <br />
             </div>
           </div>
-        <!-- </div> -->
       </div>
-      <!-- <div class="vertical-line"></div>
-      <div class="right-side">
-        <div class="leftside">
-          <div class="textDescription">
-            Electronics Check deposit
-            <br />
-            <span class="colored">Upload</span>
-            or <span class="colored">Drag</span>
-            your image below
-          </div>
-          <div class="image-container">
-            <img
-              src="pictures/uploadPicture.jpg"
-              alt="Uploaded Image"
-            />
-          </div>
-          <div class="ammountInput">
-            <label class="regtoplabel" for="username">Ammount (in USD):</label>
-            <div class="form-control">
-              <input
-                class="loginput"
-                id="username"
-                name="username"
-                type="text"
-                required
-              />
-            </div>
-          </div>
-        </div>
-        <div class="rightside"></div> -->
+      
       </div>
     </div>
     <div class="bottomBanner"></div>

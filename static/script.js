@@ -161,53 +161,60 @@ function validate() {
     return true; 
   }
 }
-function pin() {
-  let form = document.getElementById("formP");
-  let pin = document.getElementById("Pin").value;
-  let cpin = document.getElementById("Pin2").value;
+function pin(pin, cpin) {
+  const pinInput = document.getElementById("pin");
+  const cpinInput = document.getElementById("pin2");
   const pinRequirements = document.getElementById("pinRequirements");
-  const submitButton = document.getElementById("submitPIN");
+  const cpinRequirements = document.getElementById("cpinRequirements");
 
   pinRequirements.innerHTML = "";
+  cpinRequirements.innerHTML = "";
 
   let isValid = true;
-
-  if (pin != cpin) {
-    appendMessage("PINs do not match", pinRequirements);
-    isValid = false;
-    //alert("PINs do not match");
-    form.action = "/pinError";
-  }
   
-  if (pin.length != 4) {
-    appendMessage("PIN must be four digits long", pinRequirements);
+  if (pin.length !== 4) {
+    appendMessage("PIN must ONLY be four digits long", pinRequirements);
     isValid = false;
-    //alert("Your PIN must be four digits long");
-    form.action = "/pinError";
+    pinInput.classList.add("error");
+  } else {
+    pinInput.classList.remove("error");
   }
   
   if (isNaN(parseInt(pin))) {
     appendMessage("PIN should only contain numerical values (0 to 9)", pinRequirements);
     isValid = false;
-    //alert("PIN should only contain numerical values (0 to 9)");
-    form.action = "/pinError";
+    pinInput.classList.add("error"); 
+  } else {
+    pinInput.classList.remove("error");
   }
   
-  if (parseInt(pin) <= (0o0)) {
-    appendMessage("PIN can only be between '0000' and '9999'");
+  if (parseInt(pin) < 0 || parseInt(pin) > 9999) {
+    appendMessage("PIN can only be between '0000' and '9999'", pinRequirements);
     isValid = false;
-    //alert("pins must be number greater than 0000");
-    form.action = "/pinError";
+    pinInput.classList.add("error");
+  } else {
+    pinInput.classList.remove("error");
   }
 
-  submitButton.disabled = !isValid;
+  if (pin !== cpin) {
+    appendMessage("PINs do not match", cpinRequirements);
+    isValid = false;
+    cpinInput.classList.add("error");
+  } else {
+    cpinInput.classList.remove("error");
+  }
 
-  if (isValid){
-    form.action = "/pin";
-  }
-  else{
-    form.action = "/pinError";
-  }
+  return isValid;
+}
+
+// Validate function for the form submission
+function validatePIN(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const pinInput = document.getElementById("pin").value;
+  const cpinInput = document.getElementById("pin2").value;
+  
+  return pin(pinInput, cpinInput);
 }
 
 async function account(num) {
