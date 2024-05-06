@@ -140,27 +140,13 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
     response = HTMLResponse(
         content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
     )
-    response.set_cookie(key="amount", value=input)
+    response.set_cookie(key="amount", value=input)  # type: ignore
     return response
 
 
 @app.get("/getCheckData")
 def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
     return {check + "," + amount}
-
-
-@app.post("/checkAmount")
-def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
-    currentAmount = cur.execute(
-        "SELECT balance FROM accounts WHERE account_number=?", (check,)
-    ).fetchone()
-    amount = currentAmount[0] + amount
-    cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (amount, check))
-    database.commit()
-    response = HTMLResponse(
-        content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
-    )
-    return response
 
 
 @app.post("/admin")
@@ -257,34 +243,42 @@ def transfer(
         "SELECT balance FROM accounts WHERE account_number=? AND pin=?",
         (accountSelect, pin),
     ).fetchone()
+
     if balance is None:
         return {"Message": "pin was incorrect, go back and enter correct pin"}
+
     if ammttp > balance[0]:
         return {"Message": "Balance insufficient, go back and try again"}
+
     recipientBalance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=?", (recipientacctnum,)
     ).fetchone()
+
     if recipientBalance is None:
         return {
             "Message": "Recipient account does not exist, go back and enter correct number"
         }
     else:
         newRecBalance = recipientBalance[0] + ammttp
-        cur.execute(
-            "UPDATE accounts SET balance=? WHERE account_number=?",
-            (newRecBalance, recipientacctnum),
-        )
-        newBalance = balance[0] - ammttp
-        cur.execute(
-            "UPDATE accounts SET balance=? WHERE account_number=?",
-            (newBalance, accountSelect),
-        )
-        database.commit()
+        try:
+            cur.execute(
+                "UPDATE accounts SET balance=? WHERE account_number=?",
+                (newRecBalance, recipientacctnum),
+            )
+            newBalance = balance[0] - ammttp
+            cur.execute(
+                "UPDATE accounts SET balance=? WHERE account_number=?",
+                (newBalance, accountSelect),
+            )
+            database.commit()
+        except sqlite3.Error as e:
+            database.rollback()
+            raise e
         response = HTMLResponse(
             "<script>location.assign('/static/successfulfundtransfer.html')</script>"
         )
-        response.set_cookie(key="recipient", value=recipientacctnum)
-        response.set_cookie(key="amount", value=ammttp)
+        response.set_cookie(key="recipient", value=recipientacctnum)  # type: ignore
+        response.set_cookie(key="amount", value=ammttp)  # type: ignore
         return response
 
 
@@ -296,4 +290,4 @@ def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app=app, host="127.0.0.1", port=8000)
