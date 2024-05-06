@@ -233,26 +233,7 @@ def cancel():
     response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
     return response
 
-@app.post("/transfer")
-def transfer(accountSelect: Annotated[int, Form()], pin: Annotated[int, Form()], ammttp: Annotated[float, Form()], recipientacctnum: Annotated[int, Form()]):
-     balance = cur.execute("SELECT balance FROM accounts WHERE account_number=? AND pin=?", (accountSelect,pin)).fetchone()
-     if balance is None:
-         return{"Message" : "pin was incorrect, go back and enter correct pin"}
-     if(ammttp > balance[0]):
-         return{"Message": "Balance insufficient, go back and try again"}
-     recipientBalance = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (recipientacctnum,)).fetchone()
-     if recipientBalance is None:
-         return{"Message": "Recipient account does not exist, go back and enter correct number"}
-     else:
-         newRecBalance = recipientBalance[0] + ammttp
-         cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (newRecBalance, recipientacctnum))
-         newBalance = balance[0] - ammttp
-         cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (newBalance, accountSelect))
-         database.commit()
-         response = HTMLResponse("<script>location.assign('/static/successfulfundtransfer.html')</script>")
-         response.set_cookie(key="recipient", value=recipientacctnum)
-         response.set_cookie(key="amount", value=ammttp)
-         return response
+
 @app.get("/getTransferData")
 def getTransferData(amount: str=Cookie(None), recipient: str=Cookie(None)):
     return{recipient + "," + amount}
