@@ -139,7 +139,6 @@ function handleFormSubmit(event) {
   //    form.action="/passwordError"
   // }
 }
-
 function appendMessage(message, targetElement) {
   const paragraph = document.createElement("p");
   paragraph.innerHTML = `<i class="fa fa-exclamation-circle"></i> <span class="message">${message}</span>`;
