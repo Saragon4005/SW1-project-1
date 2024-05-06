@@ -39,8 +39,9 @@
      <div class="formusr">
       <div class="ammountInput">
         <label class="regtoplabel" for="username"
-          >Amount To Withdraw (In USD):</label
+          >Amount to Withdraw (in USD):</label
         >
+        <br>
         <div class="form-control">
           <input
             class="loginput"
@@ -52,12 +53,14 @@
           />
         </div>
       </div>
-      <div class="transact-btns">
+      <div class="atm-transact-btns">
         <a class="b-button">
-          <button class="b-Withdraw" >WITHDRAW</button>
+          <button class="b-Transfer" onclick="reload('')">
+            WITHDRAW
+          </button>
         </a>
         <a class="b-button">
-          <button class="b-Cancel" onclick="reload('member')">CANCEL</button>
+          <button class="b-Deposit" onclick="reload('member')">EXIT</button>
         </a>
       </div>
      </div>

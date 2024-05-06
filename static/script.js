@@ -116,28 +116,8 @@ function validatePassword(password, confirmPassword) {
     validateUsername(document.getElementById("username").value)
   );
 }
-
 function handleFormSubmit(event) {
- 
-  // const username = document.getElementById("username").value;
-  // const password = document.getElementById("password").value;
-  // const confirmPassword = document.getElementById("cpassword").value;
-
-  // const isUsernameValid = validateUsername(username);
-  // const isPasswordValid = validatePassword(password, confirmPassword);
-  let username = event.target.username.value;
-  let password = event.target.password.value;
-  let confirmPassword = event.target.password.value;
-  //let form = document.getElementById("formR");
-
-    // Success Message or Redirection to generateAccountNumber.html
-    //form.action="/register";
-    event.target.action = "/register";
-  
-  // else {
-  //   // Fail Message or Alert Box
-  //    form.action="/passwordError"
-  // }
+  event.target.action = "/register";
 }
 function appendMessage(message, targetElement) {
   const paragraph = document.createElement("p");
@@ -374,3 +354,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+//For file upload field without DOMContentLoaded event listener
+const fileLabel = document.getElementById("file-label");
+const fileInput = document.getElementById("file-input");
+
+  // Add event listener for file user input change event
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    handleFileUpload(file);
+  });
+
+  // Handles file upload
+  function handleFileUpload(file) {
+    console.log("File uploaded:", file);
+
+    // Display the uploaded image
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const imageUrl = event.target.result;
+      const uploadedImage = document.createElement("img");
+      uploadedImage.src = imageUrl;
+
+      // Remove any existing image from the label
+      const existingImage = fileLabel.querySelector("img");
+      if (existingImage) {
+        fileLabel.removeChild(existingImage);
+      }
+
+      // Append the uploaded image to the label
+      fileLabel.appendChild(uploadedImage);
+    };
+    reader.readAsDataURL(file);
+  }
