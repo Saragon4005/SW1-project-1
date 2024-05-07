@@ -269,12 +269,19 @@ function formatAmount(input) {
   }
 }
 
-function removeInputErrorHighlight(inputElement) {
-  const errorElement = inputElement.nextElementSibling;
-  // Clear existing error messages
-  errorElement.innerHTML = "";
-  inputElement.style.borderColor = ''; // Reset border color
+// Function to ensure user input allows only numbers
+function transferAcctRec(input) {
+  input.addEventListener('input', function(event) {
+    // Remove any non-numeric characters
+    this.value = this.value.replace(/[^\d]/g, '');
+  });
 }
+
+// Apply transferAcctRec to the input field in transferPage.html
+document.addEventListener("DOMContentLoaded", function () {
+  const recipientAcctNumInput = document.getElementById("recipientacctnum");
+  transferAcctRec(recipientAcctNumInput);
+});
 
 async function account(num) {
   if (num === "1") {
