@@ -50,12 +50,13 @@
                 class="loginput"
                 id="ammttp"
                 type="text"
-                placeholder="$0.00"
+                placeholder="0.00"
                 required
                 name="ammttp"
+                onblur="validateAmountInput('ammttp')"
               />
             </div>
-          
+            <div id="amountErrorMessage" class="error-message"></div>
             <label class="loginlabel" for="recipientacctnum">Recipient Account Number</label>
             <div class="form-control">
               <input
@@ -65,6 +66,7 @@
                 placeholder="0123"
                 required
                 name="recipientacctnum"
+                
               />
             </div>
           </div>

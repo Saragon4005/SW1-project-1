@@ -44,7 +44,7 @@
             id="form"
             action="/checkAmount"
             method="POST"
-            required
+            onsubmit="return validateForm()"
           >
             <div class="formusr" id="formusr">
               <label class="loginlabel" for="ammttp">Amount (in USD)</label>
@@ -56,8 +56,10 @@
                   placeholder="0.00"
                   required
                   name="amount"
+                  onblur="formatAmount(this)"
                 />
               </div>
+              <div id="amountErrorMessage" class="error-message"></div>
             </div>
             <br />
             <button type="submit" class="b-button" onclick="reload('')">

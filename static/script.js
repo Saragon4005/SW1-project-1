@@ -229,6 +229,52 @@ function validatePIN(event) {
   }
   //return pin(pinInput, cpinInput);
 }
+function validateForm() {
+  const fileInput = document.getElementById("file-input");
+  const amountInput = document.getElementById("ammttp");
+
+  if (fileInput.files.length === 0) {
+    alert("Please upload a photo for check deposit.");
+    return false;
+  }
+
+  if (!validateAmountInput()) {
+    return false;
+  }
+
+  return true;
+}
+
+function formatAmount(input) {
+  let errorDisplayed = false; // Flag to track if error message has been displayed
+  
+  // Remove non-numeric characters except the dot
+  input.addEventListener('input', function(event) {
+    // Remove any non-numeric characters
+    this.value = this.value.replace(/[^\d.]/g, '');
+  });
+
+  // Check if input is a valid number
+  if (isNaN(input.value) || input.value.trim() === '') {
+    input.value = '';
+    // Display error message only if it hasn't been displayed before
+    if (!isFinite(input.value) && !errorDisplayed) {
+      appendMessage("Amount should be a valid number.", document.getElementById("amountErrorMessage"));
+      errorDisplayed = true; // Set flag to true to indicate that error message has been displayed
+    }
+  } else {
+    input.value = parseFloat(input.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    // If input becomes valid, reset error flag
+    errorDisplayed = false;
+  }
+}
+
+function removeInputErrorHighlight(inputElement) {
+  const errorElement = inputElement.nextElementSibling;
+  // Clear existing error messages
+  errorElement.innerHTML = "";
+  inputElement.style.borderColor = ''; // Reset border color
+}
 
 async function account(num) {
   if (num === "1") {
