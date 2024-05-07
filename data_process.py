@@ -19,7 +19,6 @@ def getAccounts(user: str) -> list[int]:
     return out
 
 
-
 def generateStats():
     accounts: list[tuple[int, str, int, float]] = cur.execute(
         "SELECT account_number, username, pin, balance FROM accounts"
@@ -38,20 +37,28 @@ def generateStats():
     dataString = ""
     userAccounts = 0
     for user in users.keys():
-         currentList = users[user]
-         userAccounts = len(currentList)
-         userTotalBalance = 0
-         stro = ""
-         for tup in currentList:
-             stro += "({0},{1})".format(tup[0], tup[1]) + " "
-             userTotalBalance += tup[1]
-         totalsString = "({0},{1})".format(userAccounts, userTotalBalance)
-         string = '"username":"{use}", "accounts":"{accounts}", "totals":"{totals}"'
-         stro = stro.strip()
-         formattedString = "{" + string.format(use=user, accounts=stro, totals=totalsString) + "}"
-         dataString += formattedString + ";"
-    constantsString = '"numOfaccounts":"{0}", "totalBalance":"{1}", "largestAccountNum":"{2}"'
-    formattedString = "{" + constantsString.format(numOfaccounts, totalBalance, largestAccountNum) + "}"
+        currentList = users[user]
+        userAccounts = len(currentList)
+        userTotalBalance = 0
+        stro = ""
+        for tup in currentList:
+            stro += "({0},{1})".format(tup[0], tup[1]) + " "
+            userTotalBalance += tup[1]
+        totalsString = "({0},{1})".format(userAccounts, userTotalBalance)
+        string = '"username":"{use}", "accounts":"{accounts}", "totals":"{totals}"'
+        stro = stro.strip()
+        formattedString = (
+            "{" + string.format(use=user, accounts=stro, totals=totalsString) + "}"
+        )
+        dataString += formattedString + ";"
+    constantsString = (
+        '"numOfaccounts":"{0}", "totalBalance":"{1}", "largestAccountNum":"{2}"'
+    )
+    formattedString = (
+        "{"
+        + constantsString.format(numOfaccounts, totalBalance, largestAccountNum)
+        + "}"
+    )
     dataString += formattedString + ";"
     print(dataString)
     return (
@@ -60,5 +67,6 @@ def generateStats():
         largestAccountNum,
         totalBalance,
     )
+
 
 generateStats()
