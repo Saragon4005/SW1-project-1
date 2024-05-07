@@ -11,7 +11,7 @@
     <script src="script.js"></script>
   </head>
 
-  <body>
+  <body onload="getCustomerData()">
     <div class="topBanner">
       <a href="index.html" class="button">
         <span class="glyphicon glyphicon-log-out"></span>
@@ -33,16 +33,17 @@
                 <div class="des"></div>
                 <hr />
                 <div class="colored4">
-                  <table>
+                  <table id="database">
                     <thead>
                       <tr>
                         <th>Account Number</th>
                         <th>Account Balance</th>
-                        <th>Average Monthly Transaction</th>
+                        <th>Account User</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      <!-- The table rows are added in the javascript-->
+                      <!--<tr>
                         <td>123456</td>
                         <td>$1000.00</td>
                         <td>70</td>
@@ -71,7 +72,7 @@
                                     <td>123456</td>
                                     <td>$2000.00</td>
                                     <td>70</td>
-                                </tr>
+                                </tr>-->
                             </tbody>
                         </table>
                   </div>
@@ -92,11 +93,11 @@
                 <div class="des"></div>
                 <hr />
                 <span class="colored84">
-                    New Users:
+                    Largest Account Num:
                 </span>
                 <br>
                 <br>
-                <span class="colored48">
+                <span id="largest" class="colored48">
                     23
                 </span>
                 <br>
@@ -106,11 +107,22 @@
                 </span>
                 <br>
                 <br>
-                <span class="colored48">
+                <span id="totalAccounts" class="colored48">
                     3
+                </span>
+                <br>
+                <br>
+                <span class="colored84">
+                  Total Balance:
+                </span>
+                <br>
+                <br>
+                <span id="totalBalance" class="colored48">
+                  3
                 </span>
                 <div class="colored4">
               <!-- </div> -->
+
             </div>
             </div>
         </div>
@@ -118,6 +130,7 @@
     </div>
     <div class="low-leftside">
       <div id="pie-chart"></div>  
+      </div>
     </div>
     <br><br><br><br><br><br><br><br><br><br>
     </div>

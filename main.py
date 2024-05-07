@@ -13,7 +13,7 @@ app = FastAPI()
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
 new_db.script()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
-cur: sqlite3.Cursor = database.cursor()
+cur = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 
@@ -154,11 +154,13 @@ def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
 
 @app.post("/admin")
 def adminPost(
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()],
-    user: str = Cookie(None),
+    employeeUsername: Annotated[str, Form()],
+    empPassword: Annotated[str, Form()],
 ):
-    return {"message": "Password incorrect, please try again "}
+    response = HTMLResponse(
+            "<script>location.assign('/static/adminMain.html')</script>") 
+    
+    return response
 
 
 @app.post("/openAccount")
@@ -298,6 +300,46 @@ def transfer(
 @app.get("/getTransferData")
 def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
     return {recipient + "," + amount}
+
+
+@app.get("/getCustomerData")
+def generateStats():
+    accounts: list[tuple[int, str, int, float]] = cur.execute(
+        "SELECT account_number, username, pin, balance FROM accounts"
+    ).fetchall()
+    users: dict[str, list[tuple[int, float]]] = {}
+    numOfaccounts = len(accounts)
+    largestAccountNum = 0
+    totalBalance = 0.0
+    for account in accounts:
+        if account[0] > largestAccountNum:
+            largestAccountNum = account[0]
+        totalBalance += account[3]
+        user = users.get(account[1], [])
+        user.append((account[0], account[3]))
+        users[account[1]] = user
+    dataString = ""
+    for user in users.keys():
+         currentList = users[user]
+         userAccounts = len(currentList)
+         userTotalBalance = 0
+         stro = ""
+         for tup in currentList:
+             stro += "({0},{1})".format(tup[0], tup[1]) + " "
+             userTotalBalance += tup[1]
+         totalsString = "({0},{1})".format(userAccounts, userTotalBalance)
+         string = '"username":"{use}", "accounts":"{accounts}", "totals":"{totals}"'
+         # Takes out the last space
+         stro = stro.strip()
+         formattedString = "{" + string.format(use=user, accounts=stro, totals=totalsString) + "}"
+         dataString += formattedString + ";"
+    constantsString = '"numOfaccounts":"{0}", "totalBalance":"{1}", "largestAccountNum":"{2}"'
+    formattedString = "{" + constantsString.format(numOfaccounts, totalBalance, largestAccountNum) + "}"
+    # Creating a string in JSON format, so that I can parse it using JSON.parse() and split with semicolons in javascript.
+    dataString += formattedString
+    return dataString
+
+        
 
 
 if __name__ == "__main__":

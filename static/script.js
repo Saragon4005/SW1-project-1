@@ -258,6 +258,40 @@ async function getAccounts() {
   return accountsF;
 }
 
+async function getCustomerData() {
+   var response = await fetch("/getCustomerData")
+   var result = await response.json();
+   var arr = result.split(";");
+   var table = document.getElementById("database")
+   for(let i = 0; i < arr.length-1; i++) {
+      //using json parse https://www.w3schools.com/js/js_json_parse.asp
+       var obj = JSON.parse(arr[i])
+       var accounts = obj.accounts.split(" ")
+       for(let j = 0; j < accounts.length; j++) {
+       var accountNumber = accounts[j].substring(1,2)   
+       var balance = accounts[j].substring(3,accounts[j].length-1)
+        //using insert Row https://www.w3schools.com/jsref/met_table_insertrow.asp#:~:text=The%20insertRow()%20method%20creates,method%20to%20remove%20a%20row.
+       var row = table.insertRow(-1)
+       var aN = row.insertCell(0)
+       var bal = row.insertCell(1)
+       var user = row.insertCell(2)
+       aN.innerHTML = accountNumber
+       bal.innerHTML = balance
+       user.innerHTML = obj.username
+       }
+       var tRow = table.insertRow(-1)
+       var userTotalBalance =  tRow.insertCell(0)
+       var userTotalAccounts = tRow.insertCell(1)
+       userTotalAccounts.innerHTML = "User accounts: " + obj.totals.substring(1,2)
+       userTotalBalance.innerHTML = "User Balance: " + obj.totals.substring(3,obj.totals.length-1)
+   }
+      var constantsObj = JSON.parse(arr[arr.length-1])
+      document.getElementById("totalBalance").innerText = constantsObj.totalBalance
+      document.getElementById("largest").innerText = constantsObj.largestAccountNum
+      document.getElementById("totalAccounts").innerText = constantsObj.numOfaccounts
+   
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
   var accounts = await getAccounts();
   var accountNumbers = [];
@@ -387,3 +421,4 @@ const fileInput = document.getElementById("file-input");
     };
     reader.readAsDataURL(file);
   }
+
