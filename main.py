@@ -2,7 +2,7 @@ import sqlite3
 from typing import Annotated
 
 
-from fastapi import Cookie, FastAPI, Form, HTTPException, status
+from fastapi import Cookie, FastAPI, Form
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import Body
@@ -15,6 +15,12 @@ new_db.script()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
 cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+
+def errorPage(message: str) -> HTMLResponse:
+    return HTMLResponse(
+        content=f"<script> alert('{message}'); history.back();</script>"
+    )
 
 
 @app.get("/")
@@ -49,9 +55,7 @@ def register(
 ):
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
-        )
+        return errorPage("Username already exists")
     else:
         cur.execute(
             "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
@@ -69,10 +73,7 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     ).fetchone()
 
     if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Username or Password is incorrect, please try again",
-        )
+        return errorPage("Username or Password is incorrect, please try again")
     else:
         response = HTMLResponse(
             "<script>location.assign('/static/member.html')</script>"
@@ -87,7 +88,7 @@ def getBalance(user: str = Cookie(None)):
         "SELECT `account_number`, `balance` FROM accounts WHERE username=?", (user,)
     ).fetchall()
     if len(accounts) == 0:
-        return {"No account exists"}
+        return errorPage("No account exists")
     else:
         string = ""
         for i, account in enumerate(accounts):
@@ -108,10 +109,7 @@ def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
     ).fetchone()
 
     if account is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Account Number or Pin is incorrect, please try again",
-        )
+        return errorPage("Account Number or Pin is incorrect, please try again")
     else:
         response = HTMLResponse(
             content="<script>location.assign('/static/atmWithdraw.html')</script>"
@@ -130,6 +128,8 @@ def checkAccount(accountNum: str = Body()):
 
 @app.post("/checkAmount")
 def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
+    if amount < 0.01:
+        return errorPage("Deposit amount must be at least $0.01")
     currentAmount = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=?", (check,)
     ).fetchone()
@@ -150,11 +150,19 @@ def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
 
 
 @app.post("/admin")
-def adminPost(
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()],
-    user: str = Cookie(None),
-):
+def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+    admin = cur.execute(
+        "SELECT * FROM admins WHERE username = ? and password = ?", (username, password)
+    ).fetchone()
+
+    if admin is None:
+        return errorPage("Username or Password is incorrect, please try again")
+    else:
+        response = HTMLResponse(
+            "<script>location.assign('/static/admin.html')</script>"  # TODO: change to admin page
+        )
+        response.set_cookie(key="admin", value=username)
+        return response
     return {"message": "Password incorrect, please try again "}
 
 
@@ -168,20 +176,17 @@ def open(
         "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
     ).fetchone()
     if userInfo is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Username or Password is incorrect, please try again",
-        )
+        return errorPage("Username or Password is incorrect, please try again")
     if userInfo[0] != user:
-        return {
-            "Message": "Please login with this user if you want to open an account with this user."
-        }
+        return errorPage(
+            "Please login with this user if you want to open an account with this user."
+        )
     else:
         accounts = cur.execute(
             "SELECT * FROM accounts WHERE username=?", (user,)
         ).fetchall()
         if len(accounts) >= 3:
-            return {"Message": "You cannot open any more accounts with this user"}
+            return errorPage("You cannot open any more accounts with this user")
         response = HTMLResponse(
             "<script>location.assign('/static/confirmacct.html')</script>"
         )
@@ -239,16 +244,18 @@ def transfer(
     ammttp: Annotated[float, Form()],
     recipientacctnum: Annotated[int, Form()],
 ):
+    if ammttp < 0.01:
+        return errorPage("Transfer amount must be at least $0.01")
     balance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=? AND pin=?",
         (accountSelect, pin),
     ).fetchone()
 
     if balance is None:
-        return {"Message": "pin was incorrect, go back and enter correct pin"}
+        return errorPage("pin was incorrect, go back and enter correct pin")
 
     if ammttp > balance[0]:
-        return {"Message": "Balance insufficient, go back and try again"}
+        return errorPage("Balance insufficient, go back and try again")
 
     recipientBalance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=?", (recipientacctnum,)
@@ -256,7 +263,9 @@ def transfer(
 
     if recipientBalance is None:
         return {
-            "Message": "Recipient account does not exist, go back and enter correct number"
+            errorPage(
+                "Recipient account does not exist, go back and enter correct number"
+            )
         }
     else:
         newRecBalance = recipientBalance[0] + ammttp
