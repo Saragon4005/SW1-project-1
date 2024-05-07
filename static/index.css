@@ -366,8 +366,8 @@ th {
 
 .icon {
   display: inline-block;
-  width: 50px; 
-  height: 43px;
+  width: 10px; 
+  height: 10px;
   background-image: url(pictures/exitdoor.png); 
   background-size: cover;
 }
