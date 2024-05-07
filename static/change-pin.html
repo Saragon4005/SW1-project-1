@@ -38,6 +38,7 @@
               action="/change-pin"
               method="POST"
               required
+              oninput="return validatePIN(event)"
             >
               <div class="formusr" id="formusr">
                 <label class="regtoplabel" for="username">Username</label>
@@ -51,29 +52,42 @@
                   />
                 </div>
                 <br />
-                <label class="regtoplabel" for="password">Old PIN</label>
+                <label class="regtoplabel" for="o-pin">Old PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="o-pin"
+                    type="password"
+                    required
+                    name="o-pin"
+                  />
+                </div>
+                <br />
+                <label class="regtoplabel" for="pin">New PIN</label>
                 <div class="form-control">
                   <input
                     class="loginput"
                     id="pin"
                     type="password"
                     required
-                    name="password"
-                  />
-                </div>
-                <br />
-                <label class="regtoplabel" for="new-pin">New PIN</label>
-                <div class="form-control">
-                  <input
-                    class="loginput"
-                    id="new-pin"
-                    type="password"
-                    required
-                    name="new-pin"
-                    oninput="pin()"
+                    name="pin"
+                    oninput="pin(this.value, document.getElementById('pin2').value)"
                   />
                 </div>
                 <div id="pinRequirements"></div>
+                <br />
+                <label class="regtoplabel" for="pin2">Confirm New PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="pin2"
+                    type="password"
+                    required
+                    name="pin2"
+                    oninput="pin(document.getElementById('pin').value, this.value)"
+                  />
+                </div>
+                <div id="cpinRequirements"></div>
                 <br />
               </div>
               <button type="submit" class="b-login" id="submitButton" disabled>SET PIN</button>

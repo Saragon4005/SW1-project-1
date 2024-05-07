@@ -33,7 +33,7 @@
             <form
               class="loginForm"
               id="formB"
-              onsubmit="return validatePIN(event)"
+              oninput="return validatePIN(event)"
               method="POST"
               required
             >
@@ -68,7 +68,7 @@
                 <br />
               </div>
               <br />
-              <button type="submit" class="b-login">
+              <button type="submit" class="b-login" id="submitButton" disabled>
                 OPEN ACCOUNT
               </button>
             </form>

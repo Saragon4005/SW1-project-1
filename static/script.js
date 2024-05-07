@@ -216,7 +216,18 @@ function validatePIN(event) {
   const pinInput = document.getElementById("pin").value;
   const cpinInput = document.getElementById("pin2").value;
   
-  return pin(pinInput, cpinInput);
+  const isValidPIN = pin(pinInput, cpinInput);
+
+  // Get the submit button
+  const submitButton = document.getElementById("submitButton");
+
+  // Enable or disable the submit button based on the PIN validation result
+  if (isValidPIN) {
+    submitButton.removeAttribute("disabled");
+  } else {
+    submitButton.setAttribute("disabled", "disabled");
+  }
+  //return pin(pinInput, cpinInput);
 }
 
 async function account(num) {
