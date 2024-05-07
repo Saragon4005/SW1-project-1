@@ -17,6 +17,12 @@ cur: sqlite3.Cursor = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 
+def errorPage(message: str) -> HTMLResponse:
+    return HTMLResponse(
+        content=f"<script> alert('{message}'); history.back();</script>"
+    )
+
+
 @app.get("/")
 @app.get("/index.html")
 def root():
