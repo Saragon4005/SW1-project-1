@@ -134,6 +134,11 @@ async function updateBalance() {
     string.length - 2
   );
 }
+function withdraw() {
+   var form = document.getElementById("formW");
+   form.action = "/withdraw"
+   
+}
 async function getAccountID() {
   var response = await fetch("/accountID");
   var accountID = await response.json();

@@ -147,10 +147,6 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
 def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
     return {check + "," + amount}
 
-@app.get("/getCheckData")
-def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
-    return {check + "," + amount}
-
 
 @app.post("/admin")
 def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
@@ -242,13 +238,6 @@ def cancel():
 def getTransferData(amount: str=Cookie(None), recipient: str=Cookie(None)):
     return{recipient + "," + amount}
      
-
-@app.post("/cancelTransfer")
-def cancel():
-    response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
-    return response
-
-
 @app.post("/transfer")
 def transfer(
     accountSelect: Annotated[int, Form()],
@@ -302,10 +291,6 @@ def transfer(
         response.set_cookie(key="amount", value=ammttp)  # type: ignore
         return response
 
-
-@app.get("/getTransferData")
-def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
-    return {recipient + "," + amount}
 
 
 @app.get("/getCustomerData")

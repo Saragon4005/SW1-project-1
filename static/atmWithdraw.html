@@ -35,7 +35,7 @@
       <br />
       <br />
    <div class="loginContainer">
-    <form class="loginForm" id="formT" method="POST" required>
+    <form class="loginForm" onsubmit="withdraw()" id="formW" method="POST" required>
      <div class="formusr">
       <div class="ammountInput">
         <label class="regtoplabel" for="username"
@@ -55,7 +55,7 @@
       </div>
       <div class="atm-transact-btns">
         <a class="b-button">
-          <button class="b-Transfer" onclick="reload('')">
+          <button class="b-Transfer" onclick="withdraw()">
             WITHDRAW
           </button>
         </a>
