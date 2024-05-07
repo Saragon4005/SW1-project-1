@@ -166,7 +166,6 @@ def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]
         )
         response.set_cookie(key="admin", value=username)
         return response
-    return {"message": "Password incorrect, please try again "}
 
 
 @app.post("/openAccount")
