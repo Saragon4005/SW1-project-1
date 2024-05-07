@@ -22,9 +22,11 @@ function validateUsername(username) {
 
   usernameMessage.innerHTML = "";
 
-  if (username.length < 3) {
+  const hasSymbols = /[^\w]/.test(username); // sCheck for symbols
+
+  if (username.length < 3 || hasSymbols) {
     appendMessage(
-      "Username should be at least 3 characters long",
+      "Username should be at least 3 characters long and contain only letters, numbers, or underscores",
       usernameMessage
     );
     usernameInput.classList.add("invalid");
@@ -32,7 +34,7 @@ function validateUsername(username) {
     usernameInput.classList.remove("invalid");
   }
 
-  return username.trim().length >= 3; // Return whether the username meets the requirement
+  return username.trim().length >= 3 && !hasSymbols; // Return whether the username meets the requirement and has no symbols
 }
 function validatePassword(password, confirmPassword) {
   const passwordRequirements = document.getElementById("passwordRequirements");
