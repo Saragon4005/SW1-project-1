@@ -150,11 +150,22 @@ def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
 
 
 @app.post("/admin")
-def adminPost(
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()],
-    user: str = Cookie(None),
-):
+def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+    admin = cur.execute(
+        "SELECT * FROM admins WHERE username = ? and password = ?", (username, password)
+    ).fetchone()
+
+    if admin is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Username or Password is incorrect, please try again",
+        )
+    else:
+        response = HTMLResponse(
+            "<script>location.assign('/static/admin.html')</script>"  # TODO: change to admin page
+        )
+        response.set_cookie(key="admin", value=username)
+        return response
     return {"message": "Password incorrect, please try again "}
 
 
