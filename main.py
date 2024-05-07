@@ -88,7 +88,7 @@ def getBalance(user: str = Cookie(None)):
         "SELECT `account_number`, `balance` FROM accounts WHERE username=?", (user,)
     ).fetchall()
     if len(accounts) == 0:
-        return errorPage("No account exists")
+        return {"No account exists"}
     else:
         string = ""
         for i, account in enumerate(accounts):
