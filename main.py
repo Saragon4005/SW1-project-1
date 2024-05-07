@@ -244,6 +244,8 @@ def transfer(
     ammttp: Annotated[float, Form()],
     recipientacctnum: Annotated[int, Form()],
 ):
+    if ammttp < 0.01:
+        return errorPage("Transfer amount must be at least $0.01")
     balance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=? AND pin=?",
         (accountSelect, pin),
