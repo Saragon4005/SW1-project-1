@@ -172,6 +172,7 @@ function validate() {
   } else {
     errorMessage.innerHTML = ""; 
     document.getElementById("cpassword").classList.remove("error"); 
+    form.action = "/openAccount"
     return true; 
   }
 }

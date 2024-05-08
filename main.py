@@ -223,7 +223,7 @@ def open(
         if len(accounts) >= 3:
             return errorPage("You cannot open any more accounts with this user")
         response = HTMLResponse(
-            "<script>location.assign('/static/confirmacct.html')</script>"
+            "<script>location.assign('/static/createPin.html')</script>"
         )
         return response
 
@@ -235,11 +235,11 @@ def closeAccount(
     cpasswordca: Annotated[int, Form()],
 ):
     account = cur.execute(
-        "SELECT username, account_number, pin FROM accounts WHERE account_number=? AND pin=?",
+        "SELECT username, account_number, pin FROM accounts WHERE username=? AND account_number=? AND pin=?",
         (usernameca, accountca, cpasswordca),
     ).fetchone()
     if account is None:
-        return errorPage("Account Number or Pin is incorrect, please try again")
+        return errorPage("Account Number, username or Pin is incorrect, please try again")
     if account[0] != usernameca:
         return errorPage(
             "Please login with the user which owns the account to close it."
@@ -254,9 +254,9 @@ def closeAccount(
 
 
 @app.post("/pin")
-def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
+def insert(pin: Annotated[int, Form()], user: str = Cookie(None)):
 
-    cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, Pin))
+    cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, pin))
     database.commit()
     # This get the last account inserted
     accountsNumber = cur.execute(
