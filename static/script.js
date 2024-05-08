@@ -12,6 +12,9 @@ function reload(value) {
   } else if (value === "member") {
     location.assign("/static/member.html");
   }
+  else if(value === "atm") {
+     location.assign("/static/atmLogin.html")
+  }
 }
 
 function validateUsername(username) {
@@ -134,10 +137,12 @@ async function updateBalance() {
     string.length - 2
   );
 }
-function withdraw() {
+
+function withdrawValidate() {
    var form = document.getElementById("formW");
+   //validation
    form.action = "/withdraw"
-   
+
 }
 async function getAccountID() {
   var response = await fetch("/accountID");
@@ -231,7 +236,18 @@ async function getTransferData() {
   document.getElementById("accId").innerText = data[0];
   document.getElementById("amount").innerText = data[1];
 }
-
+async function getWithdrawData(parameter) {
+   var res = await fetch('/getWithdrawBalance')
+   var result = await res.json()
+   var obj = JSON.parse(result)
+   if(parameter === "before") {
+   document.getElementById("number").innerText = "Account Balance #" + obj.accountNumber
+   document.getElementById("ammt").innerHTML =  "$" + obj.balance
+   }
+   else {
+    document.getElementById("ammt").innerHTML =  "$" + obj.balance
+   }
+}
 async function getAccounts() {
   // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   var response = await fetch("/balance"); //Wait until the fetch request returns a promise

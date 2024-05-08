@@ -117,6 +117,24 @@ def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
         response.set_cookie(key="currentAccountNumber", value=accountID)
         return response
 
+@app.get("/getWithdrawBalance")
+def withdrawBalance(currentAccountNumber: int=Cookie(None)):
+    balance = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)).fetchone()
+    string = '"accountNumber":"{0}", "balance":"{1}"'
+    formattedString = "{" + string.format(currentAccountNumber, balance[0]) + "}"
+    return formattedString
+
+@app.post("/withdraw")
+def withdraw(amount: Annotated[int, Form()], currentAccountNumber: int=Cookie(None)):
+    balance = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)).fetchone()
+    if(amount > balance[0]):
+        errorPage("Balance insufficient")
+    else:
+        newBalance = balance[0] - amount
+        cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (newBalance, currentAccountNumber))
+        database.commit()
+        response = HTMLResponse("<script>location.assign('/static/atmAfterWithdraw.html')</script>")
+        return response
 
 @app.post("/setCheckCookie")
 # receving fetch data in fastapi https://stackoverflow.com/a/73761724
