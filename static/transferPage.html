@@ -52,32 +52,33 @@
                 onblur="formatAmount(this)"
               />
             </div>
-            <label class="loginlabel" for="pin">Enter Source Pin</label>
+            <label class="loginlabel" for="transferPin">Enter Source PIN</label>
             <div class="form-control">
               <input
                 class="loginput"
-                id="pin"
+                id="transferPin"
                 type="password"
-                placecholer="1234"
+                placeholder="1234"
                 required
-                name="pin"
+                name="transferPin"
               />
             </div>
+            <div id="invalidMessage" class="error-message"></div>
             <label class="loginlabel" for="recipientacctnum">Recipient Account Number</label>
             <div class="form-control">
               <input
                 class="loginput"
                 id="recipientacctnum"
                 type="text"
-                placeholder="0123"
+                placeholder="0123456..."
                 required
                 name="recipientacctnum"
-                
               />
             </div>
+            <div id="recAcctMessage" class="error-message"></div>
             <div class="transact-btns">
               <a class="b-button">
-                <button id="transfer" class="b-Transfer">
+                <button id="transfer" class="b-Transfer" disabled>
                   TRANSFER
                 </button>
               </a>
