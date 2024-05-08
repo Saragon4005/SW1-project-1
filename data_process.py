@@ -1,3 +1,4 @@
+import json
 import sqlite3
 
 
@@ -19,7 +20,6 @@ def getAccounts(user: str) -> list[int]:
     return out
 
 
-
 def generateStats():
     accounts: list[tuple[int, str, int, float]] = cur.execute(
         "SELECT account_number, username, pin, balance FROM accounts"
@@ -35,23 +35,38 @@ def generateStats():
         user = users.get(account[1], [])
         user.append((account[0], account[3]))
         users[account[1]] = user
+
     dataString = ""
     userAccounts = 0
-    for user in users.keys():
-         currentList = users[user]
-         userAccounts = len(currentList)
-         userTotalBalance = 0
-         stro = ""
-         for tup in currentList:
-             stro += "({0},{1})".format(tup[0], tup[1]) + " "
-             userTotalBalance += tup[1]
-         totalsString = "({0},{1})".format(userAccounts, userTotalBalance)
-         string = '"username":"{use}", "accounts":"{accounts}", "totals":"{totals}"'
-         stro = stro.strip()
-         formattedString = "{" + string.format(use=user, accounts=stro, totals=totalsString) + "}"
-         dataString += formattedString + ";"
-    constantsString = '"numOfaccounts":"{0}", "totalBalance":"{1}", "largestAccountNum":"{2}"'
-    formattedString = "{" + constantsString.format(numOfaccounts, totalBalance, largestAccountNum) + "}"
+
+    for user, currentList in users.items():
+        userAccounts = len(currentList)
+        userTotalBalance = 0
+        for tup in currentList:
+            userTotalBalance += tup[1]
+
+        stro1 = " ".join([f"({tup[0]},{tup[1]})" for tup in currentList])
+
+        dataString += (
+            json.dumps(
+                {
+                    "username": user,
+                    "accounts": stro1,
+                    "totals": str((userAccounts, userTotalBalance)).replace(" ", ""),
+                },
+                separators=(", ", ":"),
+            )
+            + ";"
+        )
+
+    formattedString = json.dumps(
+        {
+            "numOfaccounts": str(numOfaccounts),
+            "totalBalance": str(totalBalance),
+            "largestAccountNum": str(largestAccountNum),
+        },
+        separators=(", ", ":"),
+    )
     dataString += formattedString + ";"
     print(dataString)
     return (
@@ -61,4 +76,9 @@ def generateStats():
         totalBalance,
     )
 
+
 generateStats()
+
+"""
+{"username":"Sza", "accounts":"(1,9261.0) (3,123.01)", "totals":"(2,9384.01)"};{"numOfaccounts":"2", "totalBalance":"9384.01", "largestAccountNum":"3"};
+"""

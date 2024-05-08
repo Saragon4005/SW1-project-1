@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from typing import Annotated
 
@@ -88,6 +89,7 @@ def getBalance(user: str = Cookie(None)):
         "SELECT `account_number`, `balance` FROM accounts WHERE username=?", (user,)
     ).fetchall()
     if len(accounts) == 0:
+        # this one has to be json
         return {"No account exists"}
     else:
         string = ""
@@ -117,24 +119,37 @@ def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
         response.set_cookie(key="currentAccountNumber", value=accountID)
         return response
 
+
 @app.get("/getWithdrawBalance")
-def withdrawBalance(currentAccountNumber: int=Cookie(None)):
-    balance = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)).fetchone()
-    string = '"accountNumber":"{0}", "balance":"{1}"'
-    formattedString = "{" + string.format(currentAccountNumber, balance[0]) + "}"
-    return formattedString
+def withdrawBalance(currentAccountNumber: int = Cookie(None)):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
+    ).fetchone()
+    return json.dumps(
+        {"accountNumber": str(currentAccountNumber), "balance": str(balance[0])},
+        separators=(", ", ":"),
+    )
+
 
 @app.post("/withdraw")
-def withdraw(amount: Annotated[int, Form()], currentAccountNumber: int=Cookie(None)):
-    balance = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)).fetchone()
-    if(amount > balance[0]):
+def withdraw(amount: Annotated[int, Form()], currentAccountNumber: int = Cookie(None)):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
+    ).fetchone()
+    if amount > balance[0]:
         errorPage("Balance insufficient")
     else:
         newBalance = balance[0] - amount
-        cur.execute("UPDATE accounts SET balance=? WHERE account_number=?", (newBalance, currentAccountNumber))
+        cur.execute(
+            "UPDATE accounts SET balance=? WHERE account_number=?",
+            (newBalance, currentAccountNumber),
+        )
         database.commit()
-        response = HTMLResponse("<script>location.assign('/static/atmAfterWithdraw.html')</script>")
+        response = HTMLResponse(
+            "<script>location.assign('/static/atmAfterWithdraw.html')</script>"
+        )
         return response
+
 
 @app.post("/setCheckCookie")
 # receving fetch data in fastapi https://stackoverflow.com/a/73761724
@@ -161,24 +176,25 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
     response.set_cookie(key="amount", value=input)  # type: ignore
     return response
 
+
 @app.get("/getCheckData")
 def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
     return {check + "," + amount}
 
 
 @app.post("/admin")
-def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+def adminPost(employeeUsername: Annotated[str, Form()], empPassword: Annotated[str, Form()]):
     admin = cur.execute(
-        "SELECT * FROM admins WHERE username = ? and password = ?", (username, password)
+        "SELECT * FROM admins WHERE username = ? and password = ?", (employeeUsername, empPassword)
     ).fetchone()
 
     if admin is None:
         return errorPage("Username or Password is incorrect, please try again")
     else:
         response = HTMLResponse(
-            "<script>location.assign('/static/admin.html')</script>"  # TODO: change to admin page
+            "<script>location.assign('/static/adminMain.html')</script>"  # TODO: change to admin page
         )
-        response.set_cookie(key="admin", value=username)
+        response.set_cookie(key="admin", value=employeeUsername)
         return response
 
 
@@ -246,6 +262,7 @@ def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
 def getAccountID(currentAccountNumber: str = Cookie(None)):
     return {currentAccountNumber}
 
+
 @app.post("/cancelTransfer")
 def cancel():
     response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
@@ -253,9 +270,10 @@ def cancel():
 
 
 @app.get("/getTransferData")
-def getTransferData(amount: str=Cookie(None), recipient: str=Cookie(None)):
-    return{recipient + "," + amount}
-     
+def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
+    return {recipient + "," + amount}
+
+
 @app.post("/transfer")
 def transfer(
     accountSelect: Annotated[int, Form()],
@@ -310,7 +328,6 @@ def transfer(
         return response
 
 
-
 @app.get("/getCustomerData")
 def generateStats():
     accounts: list[tuple[int, str, int, float]] = cur.execute(
@@ -327,28 +344,41 @@ def generateStats():
         user = users.get(account[1], [])
         user.append((account[0], account[3]))
         users[account[1]] = user
+
     dataString = ""
-    for user in users.keys():
-         currentList = users[user]
-         userAccounts = len(currentList)
-         userTotalBalance = 0
-         stro = ""
-         for tup in currentList:
-             stro += "({0},{1})".format(tup[0], tup[1]) + " "
-             userTotalBalance += tup[1]
-         totalsString = "({0},{1})".format(userAccounts, userTotalBalance)
-         string = '"username":"{use}", "accounts":"{accounts}", "totals":"{totals}"'
-         # Takes out the last space
-         stro = stro.strip()
-         formattedString = "{" + string.format(use=user, accounts=stro, totals=totalsString) + "}"
-         dataString += formattedString + ";"
-    constantsString = '"numOfaccounts":"{0}", "totalBalance":"{1}", "largestAccountNum":"{2}"'
-    formattedString = "{" + constantsString.format(numOfaccounts, totalBalance, largestAccountNum) + "}"
+    userAccounts = 0
+
+    for user, currentList in users.items():
+        userAccounts = len(currentList)
+        userTotalBalance = 0
+        for tup in currentList:
+            userTotalBalance += tup[1]
+
+        stro1 = " ".join([f"({tup[0]},{tup[1]})" for tup in currentList])
+
+        dataString += (
+            json.dumps(
+                {
+                    "username": user,
+                    "accounts": stro1,
+                    "totals": str((userAccounts, userTotalBalance)).replace(" ", ""),
+                },
+                separators=(", ", ":"),
+            )
+            + ";"
+        )
+
+    formattedString = json.dumps(
+        {
+            "numOfaccounts": str(numOfaccounts),
+            "totalBalance": str(totalBalance),
+            "largestAccountNum": str(largestAccountNum),
+        },
+        separators=(", ", ":"),
+    )
     # Creating a string in JSON format, so that I can parse it using JSON.parse() and split with semicolons in javascript.
     dataString += formattedString
     return dataString
-
-        
 
 
 if __name__ == "__main__":
