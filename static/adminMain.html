@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="member.css" />
+    <link rel="stylesheet" href="menuPartial.css" />
+    <link rel="stylesheet" href="openAccount.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Howdy, CashWash-er!</title>
+    <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
+    <script src="script.js"></script>
+  </head>
+
+  <body onload="getCustomerData()">
+    <div class="topBanner">
+      <a href="index.html" class="button">
+        <span class="glyphicon glyphicon-log-out"></span>
+      </a>
+    </div>
+
+    <div id="menuPartial"></div>
+    <script src="menuPartial.html" defer></script>
+
+    <div class="atmbodySection">
+      <div class="left-side">
+        <div class="rightside">
+          <div class="ammountContainer">
+            <div class="box-image">
+              <div class="colored-text3">
+                <span class="colored52">
+                  Independent Member Data
+                </span>
+                <div class="des"></div>
+                <hr />
+                <div class="colored4">
+                  <table id="database">
+                    <thead>
+                      <tr>
+                        <th>Account Number</th>
+                        <th>Account Balance</th>
+                        <th>Account User</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- The table rows are added in the javascript-->
+                      <!--<tr>
+                        <td>123456</td>
+                        <td>$1000.00</td>
+                        <td>70</td>
+                    </tr>
+                    <tr>
+                                    <td>123456</td>
+                                    <td>$2000.00</td>
+                                    <td>70</td>
+                                </tr>
+                                <tr>
+                                    <td>123456</td>
+                                    <td>$2000.00</td>
+                                    <td>70</td>
+                                </tr>
+                                <tr>
+                                    <td>123456</td>
+                                    <td>$2000.00</td>
+                                    <td>70</td>
+                                </tr>
+                                <tr>
+                                    <td>123456</td>
+                                    <td>$2000.00</td>
+                                    <td>70</td>
+                                </tr>
+                                <tr>
+                                    <td>123456</td>
+                                    <td>$2000.00</td>
+                                    <td>70</td>
+                                </tr>-->
+                            </tbody>
+                        </table>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vertical-line"></div>
+      </div>
+      
+      <div class="right-side">
+        <div class="ammountContainer">
+            <div class="emp-box-image">
+              <!-- <div class="colored-text4"> -->
+                <span class="colored52">
+                This Month's User Analytics
+                </span>
+                <div class="des"></div>
+                <hr />
+                <span class="colored84">
+                    Largest Account Num:
+                </span>
+                <br>
+                <br>
+                <span id="largest" class="colored48">
+                    23
+                </span>
+                <br>
+                <br>
+                <span class="colored84">
+                    Accounts Opened:
+                </span>
+                <br>
+                <br>
+                <span id="totalAccounts" class="colored48">
+                    3
+                </span>
+                <br>
+                <br>
+                <span class="colored84">
+                  Total Balance:
+                </span>
+                <br>
+                <br>
+                <span id="totalBalance" class="colored48">
+                  3
+                </span>
+                <div class="colored4">
+              <!-- </div> -->
+
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="low-leftside">
+      <div id="pie-chart"></div>  
+      </div>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <div class="bottomBanner"></div>
+  </body>
+</html>
+
+

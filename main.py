@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from typing import Annotated
 
@@ -13,7 +14,7 @@ app = FastAPI()
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
 new_db.script()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
-cur: sqlite3.Cursor = database.cursor()
+cur = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 
@@ -119,6 +120,37 @@ def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
         return response
 
 
+@app.get("/getWithdrawBalance")
+def withdrawBalance(currentAccountNumber: int = Cookie(None)):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
+    ).fetchone()
+    return json.dumps(
+        {"accountNumber": str(currentAccountNumber), "balance": str(balance[0])},
+        separators=(", ", ":"),
+    )
+
+
+@app.post("/withdraw")
+def withdraw(amount: Annotated[int, Form()], currentAccountNumber: int = Cookie(None)):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
+    ).fetchone()
+    if amount > balance[0]:
+        errorPage("Balance insufficient")
+    else:
+        newBalance = balance[0] - amount
+        cur.execute(
+            "UPDATE accounts SET balance=? WHERE account_number=?",
+            (newBalance, currentAccountNumber),
+        )
+        database.commit()
+        response = HTMLResponse(
+            "<script>location.assign('/static/atmAfterWithdraw.html')</script>"
+        )
+        return response
+
+
 @app.post("/setCheckCookie")
 # receving fetch data in fastapi https://stackoverflow.com/a/73761724
 def checkAccount(accountNum: str = Body()):
@@ -151,20 +183,22 @@ def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
 
 
 @app.post("/admin")
-def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+def adminPost(
+    employeeUsername: Annotated[str, Form()], empPassword: Annotated[str, Form()]
+):
     admin = cur.execute(
-        "SELECT * FROM admins WHERE username = ? and password = ?", (username, password)
+        "SELECT * FROM admins WHERE username = ? and password = ?",
+        (employeeUsername, empPassword),
     ).fetchone()
 
     if admin is None:
         return errorPage("Username or Password is incorrect, please try again")
     else:
         response = HTMLResponse(
-            "<script>location.assign('/static/admin.html')</script>"  # TODO: change to admin page
+            "<script>location.assign('/static/adminMain.html')</script>"  # TODO: change to admin page
         )
-        response.set_cookie(key="admin", value=username)
+        response.set_cookie(key="admin", value=employeeUsername)
         return response
-    return {"message": "Password incorrect, please try again "}
 
 
 @app.post("/openAccount")
@@ -200,7 +234,16 @@ def closeAccount(
     accountca: Annotated[int, Form()],
     cpasswordca: Annotated[int, Form()],
 ):
-    # TODO Add feedback on success/fail
+    account = cur.execute(
+        "SELECT username, account_number, pin FROM accounts WHERE account_number=? AND pin=?",
+        (usernameca, accountca, cpasswordca),
+    ).fetchone()
+    if account is None:
+        return errorPage("Account Number or Pin is incorrect, please try again")
+    if account[0] != usernameca:
+        return errorPage(
+            "Please login with the user which owns the account to close it."
+        )
     cur.execute(
         "DELETE FROM accounts WHERE username=? AND account_number=? AND pin=?",
         (usernameca, accountca, cpasswordca),
@@ -236,6 +279,11 @@ def getAccountID(currentAccountNumber: str = Cookie(None)):
 def cancel():
     response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
     return response
+
+
+@app.get("/getTransferData")
+def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
+    return {recipient + "," + amount}
 
 
 @app.post("/transfer")
@@ -292,9 +340,57 @@ def transfer(
         return response
 
 
-@app.get("/getTransferData")
-def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
-    return {recipient + "," + amount}
+@app.get("/getCustomerData")
+def generateStats():
+    accounts: list[tuple[int, str, int, float]] = cur.execute(
+        "SELECT account_number, username, pin, balance FROM accounts"
+    ).fetchall()
+    users: dict[str, list[tuple[int, float]]] = {}
+    numOfaccounts = len(accounts)
+    largestAccountNum = 0
+    totalBalance = 0.0
+    for account in accounts:
+        if account[0] > largestAccountNum:
+            largestAccountNum = account[0]
+        totalBalance += account[3]
+        user = users.get(account[1], [])
+        user.append((account[0], account[3]))
+        users[account[1]] = user
+
+    dataString = ""
+    userAccounts = 0
+
+    for user, currentList in users.items():
+        userAccounts = len(currentList)
+        userTotalBalance = 0
+        for tup in currentList:
+            userTotalBalance += tup[1]
+
+        stro1 = " ".join([f"({tup[0]},{tup[1]})" for tup in currentList])
+
+        dataString += (
+            json.dumps(
+                {
+                    "username": user,
+                    "accounts": stro1,
+                    "totals": str((userAccounts, userTotalBalance)).replace(" ", ""),
+                },
+                separators=(", ", ":"),
+            )
+            + ";"
+        )
+
+    formattedString = json.dumps(
+        {
+            "numOfaccounts": str(numOfaccounts),
+            "totalBalance": str(totalBalance),
+            "largestAccountNum": str(largestAccountNum),
+        },
+        separators=(", ", ":"),
+    )
+    # Creating a string in JSON format, so that I can parse it using JSON.parse() and split with semicolons in javascript.
+    dataString += formattedString
+    return dataString
 
 
 if __name__ == "__main__":

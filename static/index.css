@@ -186,9 +186,7 @@ button:hover {
   font-size: 32px;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
-}
-.colored {
-  color: #f7c331;
+  color: #066cb1;
 }
 .center3 {
   text-align: center;
@@ -214,9 +212,6 @@ button:hover {
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 }
-.colored4 {
-  color: #066cb1;
-}
 .logo-image{
   padding-top: 100px;
   width: auto;
@@ -236,9 +231,8 @@ button:hover {
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
   color: #f7c331;
-  font-weight: bold;
+  font-weight: bold; 
 }
-
 .colored4 {
   text-align: center;
   font-size: 16px;
@@ -246,9 +240,8 @@ button:hover {
   color: #066cb1;
 }
 .textDescription{
-  padding-top: 20%;
-  margin-bottom: 3%;
-  width: 70%;
+  padding-top: 5%;
+  margin-bottom: 1%;
   height: auto;
   text-align: center;
   color: #066cb1; 
@@ -256,20 +249,11 @@ button:hover {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20px;
 }
+
 .textDescription1{
   padding-top: 20%;
   margin-bottom: 3%;
   width: 70%;
-  height: auto;
-  text-align: center;
-  color: #066cb1; 
-  justify-self: center;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 30px;
-  
-  font-weight: bold;
-}
-.textDescription1{
   height: auto;
   text-align: center;
   color: #066cb1; 
@@ -318,4 +302,68 @@ button:hover {
   font-family: Arial, Helvetica, sans-serif;
   color: #f7c331;
   font-weight: bold;
+}
+.coloredX{
+  text-align: center;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f7c331;
+  font-weight: bold;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+th {
+  background-color: #f2f2f2;
+}
+.colored84 {
+  text-align: center;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+  font-weight: bold;
+}
+.colored48 {
+  text-align: center;
+  font-size: 28px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #585757;
+  font-weight: bold;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #066cb1;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.icon {
+  display: inline-block;
+  width: 10px; 
+  height: 10px;
+  background-image: url(pictures/exitdoor.png); 
+  background-size: cover;
+}
+.emp-box-image{
+  text-align: right;
+}
+#pie-chart {
+  margin-left: 40%;
+  height: 350px;
+  width: 350px;
+  border-radius: 50%;
+  background: conic-gradient( rgb(208, 226, 243) 6.08% 13.68%, #dad1b9 13.68% 23.27%, #f7c331 23.27% 40.47%, #066cb1 40.47%);
+}
+.lowleft-side{
+  align-items: center;
 }

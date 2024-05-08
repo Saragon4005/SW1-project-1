@@ -12,6 +12,9 @@ function reload(value) {
   } else if (value === "member") {
     location.assign("/static/member.html");
   }
+  else if(value === "atm") {
+     location.assign("/static/atmLogin.html")
+  }
 }
 
 function validateUsername(username) {
@@ -116,28 +119,8 @@ function validatePassword(password, confirmPassword) {
     validateUsername(document.getElementById("username").value)
   );
 }
-
 function handleFormSubmit(event) {
- 
-  // const username = document.getElementById("username").value;
-  // const password = document.getElementById("password").value;
-  // const confirmPassword = document.getElementById("cpassword").value;
-
-  // const isUsernameValid = validateUsername(username);
-  // const isPasswordValid = validatePassword(password, confirmPassword);
-  let username = event.target.username.value;
-  let password = event.target.password.value;
-  let confirmPassword = event.target.password.value;
-  //let form = document.getElementById("formR");
-
-    // Success Message or Redirection to generateAccountNumber.html
-    //form.action="/register";
-    event.target.action = "/register";
-  
-  // else {
-  //   // Fail Message or Alert Box
-  //    form.action="/passwordError"
-  // }
+  event.target.action = "/register";
 }
 function appendMessage(message, targetElement) {
   const paragraph = document.createElement("p");
@@ -153,6 +136,13 @@ async function updateBalance() {
     2,
     string.length - 2
   );
+}
+
+function withdrawValidate() {
+   var form = document.getElementById("formW");
+   //validation
+   form.action = "/withdraw"
+
 }
 async function getAccountID() {
   var response = await fetch("/accountID");
@@ -246,7 +236,18 @@ async function getTransferData() {
   document.getElementById("accId").innerText = data[0];
   document.getElementById("amount").innerText = data[1];
 }
-
+async function getWithdrawData(parameter) {
+   var res = await fetch('/getWithdrawBalance')
+   var result = await res.json()
+   var obj = JSON.parse(result)
+   if(parameter === "before") {
+   document.getElementById("number").innerText = "Account Balance #" + obj.accountNumber
+   document.getElementById("ammt").innerHTML =  "$" + obj.balance
+   }
+   else {
+    document.getElementById("ammt").innerHTML =  "$" + obj.balance
+   }
+}
 async function getAccounts() {
   // fetch setup code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   var response = await fetch("/balance"); //Wait until the fetch request returns a promise
@@ -276,6 +277,40 @@ async function getAccounts() {
     }
   }
   return accountsF;
+}
+
+async function getCustomerData() {
+   var response = await fetch("/getCustomerData")
+   var result = await response.json();
+   var arr = result.split(";");
+   var table = document.getElementById("database")
+   for(let i = 0; i < arr.length-1; i++) {
+      //using json parse https://www.w3schools.com/js/js_json_parse.asp
+       var obj = JSON.parse(arr[i])
+       var accounts = obj.accounts.split(" ")
+       for(let j = 0; j < accounts.length; j++) {
+       var accountNumber = accounts[j].substring(1,2)   
+       var balance = accounts[j].substring(3,accounts[j].length-1)
+        //using insert Row https://www.w3schools.com/jsref/met_table_insertrow.asp#:~:text=The%20insertRow()%20method%20creates,method%20to%20remove%20a%20row.
+       var row = table.insertRow(-1)
+       var aN = row.insertCell(0)
+       var bal = row.insertCell(1)
+       var user = row.insertCell(2)
+       aN.innerHTML = accountNumber
+       bal.innerHTML = balance
+       user.innerHTML = obj.username
+       }
+       var tRow = table.insertRow(-1)
+       var userTotalBalance =  tRow.insertCell(0)
+       var userTotalAccounts = tRow.insertCell(1)
+       userTotalAccounts.innerHTML = "User accounts: " + obj.totals.substring(1,2)
+       userTotalBalance.innerHTML = "User Balance: " + obj.totals.substring(3,obj.totals.length-1)
+   }
+      var constantsObj = JSON.parse(arr[arr.length-1])
+      document.getElementById("totalBalance").innerText = constantsObj.totalBalance
+      document.getElementById("largest").innerText = constantsObj.largestAccountNum
+      document.getElementById("totalAccounts").innerText = constantsObj.numOfaccounts
+   
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -374,3 +409,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+//For file upload field without DOMContentLoaded event listener
+const fileLabel = document.getElementById("file-label");
+const fileInput = document.getElementById("file-input");
+
+  // Add event listener for file user input change event
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    handleFileUpload(file);
+  });
+
+  // Handles file upload
+  function handleFileUpload(file) {
+    console.log("File uploaded:", file);
+
+    // Display the uploaded image
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const imageUrl = event.target.result;
+      const uploadedImage = document.createElement("img");
+      uploadedImage.src = imageUrl;
+
+      // Remove any existing image from the label
+      const existingImage = fileLabel.querySelector("img");
+      if (existingImage) {
+        fileLabel.removeChild(existingImage);
+      }
+
+      // Append the uploaded image to the label
+      fileLabel.appendChild(uploadedImage);
+    };
+    reader.readAsDataURL(file);
+  }
+
