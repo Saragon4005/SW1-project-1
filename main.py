@@ -344,30 +344,37 @@ def generateStats():
         user = users.get(account[1], [])
         user.append((account[0], account[3]))
         users[account[1]] = user
+
     dataString = ""
-    for user in users.keys():
-        currentList = users[user]
+    userAccounts = 0
+
+    for user, currentList in users.items():
         userAccounts = len(currentList)
         userTotalBalance = 0
-        stro = ""
         for tup in currentList:
-            stro += "({0},{1})".format(tup[0], tup[1]) + " "
             userTotalBalance += tup[1]
-        totalsString = "({0},{1})".format(userAccounts, userTotalBalance)
-        string = '"username":"{use}", "accounts":"{accounts}", "totals":"{totals}"'
-        # Takes out the last space
-        stro = stro.strip()
-        formattedString = (
-            "{" + string.format(use=user, accounts=stro, totals=totalsString) + "}"
+
+        stro1 = " ".join([f"({tup[0]},{tup[1]})" for tup in currentList])
+
+        dataString += (
+            json.dumps(
+                {
+                    "username": user,
+                    "accounts": stro1,
+                    "totals": str((userAccounts, userTotalBalance)).replace(" ", ""),
+                },
+                separators=(", ", ":"),
+            )
+            + ";"
         )
-        dataString += formattedString + ";"
-    constantsString = (
-        '"numOfaccounts":"{0}", "totalBalance":"{1}", "largestAccountNum":"{2}"'
-    )
-    formattedString = (
-        "{"
-        + constantsString.format(numOfaccounts, totalBalance, largestAccountNum)
-        + "}"
+
+    formattedString = json.dumps(
+        {
+            "numOfaccounts": str(numOfaccounts),
+            "totalBalance": str(totalBalance),
+            "largestAccountNum": str(largestAccountNum),
+        },
+        separators=(", ", ":"),
     )
     # Creating a string in JSON format, so that I can parse it using JSON.parse() and split with semicolons in javascript.
     dataString += formattedString
