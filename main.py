@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from typing import Annotated
 
@@ -118,11 +119,15 @@ def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
         return response
 
 @app.get("/getWithdrawBalance")
-def withdrawBalance(currentAccountNumber: int=Cookie(None)):
-    balance = cur.execute("SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)).fetchone()
-    string = '"accountNumber":"{0}", "balance":"{1}"'
-    formattedString = "{" + string.format(currentAccountNumber, balance[0]) + "}"
-    return formattedString
+def withdrawBalance(currentAccountNumber: int = Cookie(None)):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
+    ).fetchone()
+    return json.dumps(
+        {"accountNumber": str(currentAccountNumber), "balance": str(balance[0])},
+        separators=(", ", ":"),
+    )
+
 
 @app.post("/withdraw")
 def withdraw(amount: Annotated[int, Form()], currentAccountNumber: int=Cookie(None)):
