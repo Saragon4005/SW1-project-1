@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="index.css" />
+    <!-- <link rel="stylesheet" href="member.css" /> -->
+    <link rel="stylesheet" href="menuPartial.css" />
+    <link rel="stylesheet" href="openAccount.css" />
+    <title>Howdy, CashWash-er!</title>
+    <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <div class="topBanner">
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
+    </div>
+
+    <div id="menuPartial"></div>
+    <script src="menuPartial.html" defer></script>
+
+    <div class="bodySection">
+      <div class="left-side">
+          <div class="loginContainer">
+            <div class="textDescription">
+              <div class="colored4">
+                Create a <span class=coloredX>4-digit PIN</span>
+              </div>
+            </div>
+            <form
+              class="loginForm"
+              id="formB"
+              oninput="return validatePIN(event)"
+              method="POST"
+              required
+            >
+              <div class="formusr" id="formusr">
+                <label class="regtoplabel" for="pin">PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="pin"
+                    name="pin"
+                    type="text"
+                    placeholder="Between '0000' and '9999'"
+                    required
+                    oninput="pin(this.value, document.getElementById('pin2').value)"
+                  />
+                </div>
+                <div id="pinRequirements"></div>
+                <br />
+                <label class="regtoplabel" for="pin2">Confirm PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="pin2"
+                    name="pin2"
+                    type="password"
+                    placeholder="Confirm your PIN"
+                    required
+                    oninput="pin(document.getElementById('pin').value, this.value)"
+                  />
+                </div>
+                <div id="cpinRequirements"></div>
+                <br />
+              </div>
+              <br />
+              <button type="submit" class="b-login" id="submitButton" disabled>
+                OPEN ACCOUNT
+              </button>
+            </form>
+            <div class="independent-button">
+              <a href="" class="b-button"> </a>
+              <br />
+              <br />
+            </div>
+          </div>
+      </div>
+      
+      </div>
+    </div>
+    <div class="bottomBanner"></div>
+  </body>
+</html>

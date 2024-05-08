@@ -11,6 +11,8 @@ function reload(value) {
     location.assign("/static/transferPage.html");
   } else if (value === "member") {
     location.assign("/static/member.html");
+  } else if (value === "atm") {
+        location.assign("/static/atmLogin.html");
   }
   else if(value === "atm") {
      location.assign("/static/atmLogin.html")
@@ -23,9 +25,11 @@ function validateUsername(username) {
 
   usernameMessage.innerHTML = "";
 
-  if (username.length < 3) {
+  const hasSymbols = /[^\w]/.test(username); // sCheck for symbols
+
+  if (username.length < 3 || hasSymbols) {
     appendMessage(
-      "Username should be at least 3 characters long",
+      "Username should be at least 3 characters long and contain only letters, numbers, or underscores",
       usernameMessage
     );
     usernameInput.classList.add("invalid");
@@ -33,7 +37,7 @@ function validateUsername(username) {
     usernameInput.classList.remove("invalid");
   }
 
-  return username.trim().length >= 3; // Return whether the username meets the requirement
+  return username.trim().length >= 3 && !hasSymbols; // Return whether the username meets the requirement and has no symbols
 }
 function validatePassword(password, confirmPassword) {
   const passwordRequirements = document.getElementById("passwordRequirements");
@@ -158,33 +162,138 @@ function validate() {
   let form = document.getElementById("formB");
   let password = document.getElementById("password").value;
   let confirmPassword = document.getElementById("cpassword").value;
+  const errorMessage = document.getElementById("errorMessage");
+
   if (password != confirmPassword) {
-    alert("Passwords do not match");
+    errorMessage.innerHTML = "Passwords do not match";
+    document.getElementById("cpassword").classList.add("error");
     form.action = "/openError";
+    return false; // Preventssubmission
   } else {
-    form.action = "/openAccount";
+    errorMessage.innerHTML = ""; 
+    document.getElementById("cpassword").classList.remove("error"); 
+    return true; 
   }
 }
-function pin() {
-  let form = document.getElementById("formP");
-  let pin = document.getElementById("Pin").value;
-  let cpin = document.getElementById("Pin2").value;
-  if (pin != cpin) {
-    alert("pins do not match");
-    form.action = "/pinError";
-  } else if (pin.length != 4) {
-    alert("pins are not 4 digits long");
-    form.action = "/pinError";
-  } else if (isNaN(parseInt(pin))) {
-    alert("pins are not digits between 0-9");
-    form.action = "/pinError";
-  } else if (parseInt(pin) <= 1000) {
-    alert("pins must be number greater than 1000");
-    form.action = "/pinError";
+function pin(pin, cpin) {
+  const pinInput = document.getElementById("pin");
+  const cpinInput = document.getElementById("pin2");
+  const pinRequirements = document.getElementById("pinRequirements");
+  const cpinRequirements = document.getElementById("cpinRequirements");
+
+  pinRequirements.innerHTML = "";
+  cpinRequirements.innerHTML = "";
+
+  let isValid = true;
+  
+  if (pin.length !== 4) {
+    appendMessage("PIN must ONLY be four digits long", pinRequirements);
+    isValid = false;
+    pinInput.classList.add("error");
   } else {
-    form.action = "/pin";
+    pinInput.classList.remove("error");
+  }
+  
+  if (isNaN(parseInt(pin))) {
+    appendMessage("PIN should only contain numerical values (0 to 9)", pinRequirements);
+    isValid = false;
+    pinInput.classList.add("error"); 
+  } else {
+    pinInput.classList.remove("error");
+  }
+  
+  if (parseInt(pin) < 0 || parseInt(pin) > 9999) {
+    appendMessage("PIN can only be between '0000' and '9999'", pinRequirements);
+    isValid = false;
+    pinInput.classList.add("error");
+  } else {
+    pinInput.classList.remove("error");
+  }
+
+  if (pin !== cpin) {
+    appendMessage("PINs do not match", cpinRequirements);
+    isValid = false;
+    cpinInput.classList.add("error");
+  } else {
+    cpinInput.classList.remove("error");
+  }
+
+  return isValid;
+}
+
+// Validate function for the form submission
+function validatePIN(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const pinInput = document.getElementById("pin").value;
+  const cpinInput = document.getElementById("pin2").value;
+  
+  const isValidPIN = pin(pinInput, cpinInput);
+
+  // Get the submit button
+  const submitButton = document.getElementById("submitButton");
+
+  // Enable or disable the submit button based on the PIN validation result
+  if (isValidPIN) {
+    submitButton.removeAttribute("disabled");
+  } else {
+    submitButton.setAttribute("disabled", "disabled");
+  }
+  //return pin(pinInput, cpinInput);
+}
+function validateForm() {
+  const fileInput = document.getElementById("file-input");
+  const amountInput = document.getElementById("ammttp");
+
+  if (fileInput.files.length === 0) {
+    alert("Please upload a photo for check deposit.");
+    return false;
+  }
+
+  if (!validateAmountInput()) {
+    return false;
+  }
+
+  return true;
+}
+
+function formatAmount(input) {
+  let errorDisplayed = false; // Flag to track if error message has been displayed
+  
+  // Remove non-numeric characters except the dot
+  input.addEventListener('input', function(event) {
+    // Remove any non-numeric characters
+    this.value = this.value.replace(/[^\d.]/g, '');
+  });
+
+  // Check if input is a valid number
+  if (isNaN(input.value) || input.value.trim() === '') {
+    input.value = '';
+    // Display error message only if it hasn't been displayed before
+    if (!isFinite(input.value) && !errorDisplayed) {
+      appendMessage("Amount should be a valid number.", document.getElementById("amountErrorMessage"));
+      errorDisplayed = true; // Set flag to true to indicate that error message has been displayed
+    }
+  } else {
+    input.value = parseFloat(input.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    // If input becomes valid, reset error flag
+    errorDisplayed = false;
   }
 }
+
+// Function to ensure user input allows only numbers
+function transferAcctRec(input) {
+  input.addEventListener('input', function(event) {
+    // Remove any non-numeric characters
+    this.value = this.value.replace(/[^\d]/g, '');
+  });
+}
+
+// Apply transferAcctRec to the input field in transferPage.html
+document.addEventListener("DOMContentLoaded", function () {
+  const recipientAcctNumInput = document.getElementById("recipientacctnum");
+  transferAcctRec(recipientAcctNumInput);
+});
 
 async function account(num) {
   if (num === "1") {

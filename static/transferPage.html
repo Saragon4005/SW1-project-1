@@ -46,9 +46,10 @@
                 class="loginput"
                 id="ammttp"
                 type="text"
-                placeholder="$0.00"
+                placeholder="0.00"
                 required
                 name="ammttp"
+                onblur="formatAmount(this)"
               />
             </div>
             <label class="loginlabel" for="pin">Enter Source Pin</label>
@@ -71,6 +72,7 @@
                 placeholder="0123"
                 required
                 name="recipientacctnum"
+                
               />
             </div>
             <div class="transact-btns">
