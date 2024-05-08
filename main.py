@@ -183,9 +183,12 @@ def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
 
 
 @app.post("/admin")
-def adminPost(employeeUsername: Annotated[str, Form()], empPassword: Annotated[str, Form()]):
+def adminPost(
+    employeeUsername: Annotated[str, Form()], empPassword: Annotated[str, Form()]
+):
     admin = cur.execute(
-        "SELECT * FROM admins WHERE username = ? and password = ?", (employeeUsername, empPassword)
+        "SELECT * FROM admins WHERE username = ? and password = ?",
+        (employeeUsername, empPassword),
     ).fetchone()
 
     if admin is None:
@@ -231,7 +234,16 @@ def closeAccount(
     accountca: Annotated[int, Form()],
     cpasswordca: Annotated[int, Form()],
 ):
-    # TODO Add feedback on success/fail
+    account = cur.execute(
+        "SELECT username, account_number, pin FROM accounts WHERE account_number=? AND pin=?",
+        (usernameca, accountca, cpasswordca),
+    ).fetchone()
+    if account is None:
+        return errorPage("Account Number or Pin is incorrect, please try again")
+    if account[0] != usernameca:
+        return errorPage(
+            "Please login with the user which owns the account to close it."
+        )
     cur.execute(
         "DELETE FROM accounts WHERE username=? AND account_number=? AND pin=?",
         (usernameca, accountca, cpasswordca),
