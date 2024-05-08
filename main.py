@@ -183,18 +183,18 @@ def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
 
 
 @app.post("/admin")
-def adminPost(username: Annotated[str, Form()], password: Annotated[str, Form()]):
+def adminPost(employeeUsername: Annotated[str, Form()], empPassword: Annotated[str, Form()]):
     admin = cur.execute(
-        "SELECT * FROM admins WHERE username = ? and password = ?", (username, password)
+        "SELECT * FROM admins WHERE username = ? and password = ?", (employeeUsername, empPassword)
     ).fetchone()
 
     if admin is None:
         return errorPage("Username or Password is incorrect, please try again")
     else:
         response = HTMLResponse(
-            "<script>location.assign('/static/admin.html')</script>"  # TODO: change to admin page
+            "<script>location.assign('/static/adminMain.html')</script>"  # TODO: change to admin page
         )
-        response.set_cookie(key="admin", value=username)
+        response.set_cookie(key="admin", value=employeeUsername)
         return response
 
 
