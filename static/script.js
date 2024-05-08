@@ -176,6 +176,50 @@ function validate() {
     return true; 
   }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const acctNumInput = document.getElementById("accountca");
+    const closeAcctMessageElement = document.getElementById("closeAcctMessage");
+    const submitButton = document.getElementById("submitButton");
+
+    // Function to validate account number
+    function validateAcctNum() {
+        const acctNum = acctNumInput.value;
+        let isAcctNumValid = true;
+        let closeAcctMessage = "";
+
+        // Validate account number
+        if (
+            (acctNumInput.validity.valid || acctNumInput.value === "") &&
+            !/^\d+$/.test(acctNum)
+        ) {
+            closeAcctMessage = "Account Number may only contain numerical values";
+            isAcctNumValid = false;
+        }
+
+        // Update error message display
+        closeAcctMessageElement.innerHTML = closeAcctMessage;
+
+        return isAcctNumValid;
+    }
+
+    // Add event listener to the form submission
+    document.getElementById("form").addEventListener("submit", function (event) {
+        // Prevent form submission if account number validation fails
+        if (!validateAcctNum()) {
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+
+    // Add event listener to the account number input field
+    acctNumInput.addEventListener("input", function () {
+        // Enable or disable the submit button based on the validation result
+        submitButton.disabled = !validateAcctNum();
+    });
+});
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
   const oPinInput = document.getElementById("transferPin");
   const recipientAcctNumInput = document.getElementById("recipientacctnum");
