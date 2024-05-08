@@ -176,72 +176,143 @@ function validate() {
     return true; 
   }
 }
-function pin(pin, cpin) {
-  const pinInput = document.getElementById("pin");
-  const cpinInput = document.getElementById("pin2");
-  const pinRequirements = document.getElementById("pinRequirements");
-  const cpinRequirements = document.getElementById("cpinRequirements");
+document.addEventListener("DOMContentLoaded", function() {
+  const oPinInput = document.getElementById("transferPin");
+  const recipientAcctNumInput = document.getElementById("recipientacctnum");
+  const transferButton = document.getElementById("transfer");
 
-  pinRequirements.innerHTML = "";
-  cpinRequirements.innerHTML = "";
+  let invalidMessage = "";
+  let recAcctMessage = "";
+
+  function validateInputs() {
+    const oPin = oPinInput.value;
+    const recipientAcctNum = recipientAcctNumInput.value;
+    const invalidMessageElement = document.getElementById("invalidMessage");
+    const recAcctMessageElement = document.getElementById("recAcctMessage");
+
+    let isPinValid = true;
+    let isRecipientAcctNumValid = true;
+
+    // Validate PIN
+    if (oPinInput.touched && ((oPinInput.validity.valid || oPinInput.value === "") && (parseInt(oPin) < 0 || parseInt(oPin) > 9999 || isNaN(parseInt(oPin)) || oPin.length !== 4))) {
+      invalidMessage = "Invalid PIN: You should know this by now";
+      isPinValid = false;
+    } else {
+      invalidMessage = "";
+    }
+
+    // Validate recipient account number
+    if (recipientAcctNumInput.touched && ((recipientAcctNumInput.validity.valid || recipientAcctNumInput.value === "") && !/^\d+$/.test(recipientAcctNum))) {
+      recAcctMessage = "Recipient Account Number may only contain numerical values";
+      isRecipientAcctNumValid = false;
+    } else {
+      recAcctMessage = "";
+    }
+
+    // Enable or disable submit button based on validation results
+    transferButton.disabled = !(isPinValid && isRecipientAcctNumValid);
+
+    invalidMessageElement.innerHTML = invalidMessage;
+    recAcctMessageElement.innerHTML = recAcctMessage;
+  }
+
+  oPinInput.addEventListener("input", function() {
+    oPinInput.touched = true;
+    validateInputs();
+  });
+
+  recipientAcctNumInput.addEventListener("input", function() {
+    recipientAcctNumInput.touched = true;
+    validateInputs();
+  });
+});
+function validateOldPIN() {
+  const oldPin = document.getElementById("oldPin").value;
+  const invalidMessage = document.getElementById("invalidMessage");
+
+  invalidMessage.innerHTML = "";
 
   let isValid = true;
-  
-  if (pin.length !== 4) {
-    appendMessage("PIN must ONLY be four digits long", pinRequirements);
-    isValid = false;
-    pinInput.classList.add("error");
-  } else {
-    pinInput.classList.remove("error");
-  }
-  
-  if (isNaN(parseInt(pin))) {
-    appendMessage("PIN should only contain numerical values (0 to 9)", pinRequirements);
-    isValid = false;
-    pinInput.classList.add("error"); 
-  } else {
-    pinInput.classList.remove("error");
-  }
-  
-  if (parseInt(pin) < 0 || parseInt(pin) > 9999) {
-    appendMessage("PIN can only be between '0000' and '9999'", pinRequirements);
-    isValid = false;
-    pinInput.classList.add("error");
-  } else {
-    pinInput.classList.remove("error");
-  }
 
-  if (pin !== cpin) {
-    appendMessage("PINs do not match", cpinRequirements);
+  if (parseInt(oldPin) < 0 || parseInt(oldPin) > 9999 || isNaN(parseInt(oldPin)) || oldPin.length !== 4) {
+    appendMessage("Invalid PIN: You should know this by now", invalidMessage);
     isValid = false;
-    cpinInput.classList.add("error");
-  } else {
-    cpinInput.classList.remove("error");
   }
-
-  return isValid;
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const oldPinInput = document.getElementById("oldPin");
+    const pinInput = document.getElementById("pin");
+    const cpinInput = document.getElementById("pin2");
+    const submitButton = document.getElementById("submitButton");
 
-// Validate function for the form submission
-function validatePIN(event) {
-  event.preventDefault(); // Prevent form submission
+    // Attach event listeners to individual inputs
+    oldPinInput.addEventListener("input", validateOldPIN);
+    pinInput.addEventListener("input", validatePIN);
+    cpinInput.addEventListener("input", validatePIN);
 
-  const pinInput = document.getElementById("pin").value;
-  const cpinInput = document.getElementById("pin2").value;
-  
-  const isValidPIN = pin(pinInput, cpinInput);
+    // Function to validate the old PIN
+    function validateOldPIN() {
+        const oldPin = oldPinInput.value;
+        const invalidMessage = document.getElementById("invalidMessage");
+        invalidMessage.textContent = ""; // Clear existing error message
 
-  // Get the submit button
-  const submitButton = document.getElementById("submitButton");
+        let isValid = true;
 
-  // Enable or disable the submit button based on the PIN validation result
-  if (isValidPIN) {
-    submitButton.removeAttribute("disabled");
-  } else {
-    submitButton.setAttribute("disabled", "disabled");
-  }
-  //return pin(pinInput, cpinInput);
-}
+        // Validate old PIN
+        if (parseInt(oldPin) < 0 || parseInt(oldPin) > 9999 || isNaN(parseInt(oldPin)) || oldPin.length !== 4) {
+            appendMessage("Invalid Old PIN: You should know this by now", invalidMessage);
+            isValid = false;
+        }
+
+        // Enable or disable submit button based on validation result
+        submitButton.disabled = !isValid;
+
+        return isValid; // Return validation result
+    }
+
+    // Function to validate the new PINs
+    function validatePIN() {
+        const pin = pinInput.value;
+        const cpin = cpinInput.value;
+        const pinRequirements = document.getElementById("pinRequirements");
+        const cpinRequirements = document.getElementById("cpinRequirements");
+
+        pinRequirements.textContent = ""; // Clear existing error messages
+        cpinRequirements.textContent = "";
+
+        let isValid = true;
+
+        // Validate new PIN
+        if (pin.length !== 4) {
+            appendMessage("New PIN must be exactly four digits long", pinRequirements);
+            isValid = false;
+        }
+        if (isNaN(parseInt(pin))) {
+            appendMessage("New PIN should only contain numerical values (0 to 9)", pinRequirements);
+            isValid = false;
+        }
+        if (parseInt(pin) < 0 || parseInt(pin) > 9999) {
+            appendMessage("New PIN can only be between '0000' and '9999'", pinRequirements);
+            isValid = false;
+        }
+        if (pin !== cpin) {
+            appendMessage("New PINs do not match", cpinRequirements);
+            isValid = false;
+        }
+
+        // Enable or disable submit button based on validation result
+        submitButton.disabled = !isValid;
+
+        return isValid; // Return validation result
+    }
+    // Event listener for form submission
+    document.getElementById("form").addEventListener("submit", function (event) {
+        // Prevent form submission if old PIN validation fails
+        if (!validateOldPIN()) {
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+});
 function validateForm() {
   const fileInput = document.getElementById("file-input");
   const amountInput = document.getElementById("ammttp");
@@ -261,7 +332,6 @@ function validateForm() {
 function formatAmount(input) {
   let errorDisplayed = false; // Flag to track if error message has been displayed
   
-  // Remove non-numeric characters except the dot
   input.addEventListener('input', function(event) {
     // Remove any non-numeric characters
     this.value = this.value.replace(/[^\d.]/g, '');
@@ -276,25 +346,25 @@ function formatAmount(input) {
       errorDisplayed = true; // Set flag to true to indicate that error message has been displayed
     }
   } else {
-    input.value = parseFloat(input.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    input.value = parseFloat(input.value).toFixed(2);
     // If input becomes valid, reset error flag
     errorDisplayed = false;
   }
 }
 
-// Function to ensure user input allows only numbers
-function transferAcctRec(input) {
-  input.addEventListener('input', function(event) {
-    // Remove any non-numeric characters
-    this.value = this.value.replace(/[^\d]/g, '');
-  });
-}
+// // Function to ensure user input allows only numbers
+// function transferAcctRec(input) {
+//   input.addEventListener('input', function(event) {
+//     // Remove any non-numeric characters
+//     this.value = this.value.replace(/[^\d]/g, '');
+//   });
+// }
 
-// Apply transferAcctRec to the input field in transferPage.html
-document.addEventListener("DOMContentLoaded", function () {
-  const recipientAcctNumInput = document.getElementById("recipientacctnum");
-  transferAcctRec(recipientAcctNumInput);
-});
+// // Apply transferAcctRec to the input field in transferPage.html
+// document.addEventListener("DOMContentLoaded", function () {
+//   const recipientAcctNumInput = document.getElementById("recipientacctnum");
+//   transferAcctRec(recipientAcctNumInput);
+// });
 
 async function account(num) {
   if (num === "1") {

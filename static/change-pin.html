@@ -38,7 +38,7 @@
               action="/change-pin"
               method="POST"
               required
-              oninput="return validatePIN(event)"
+              
             >
               <div class="formusr" id="formusr">
                 <label class="regtoplabel" for="username">Username</label>
@@ -52,16 +52,18 @@
                   />
                 </div>
                 <br />
-                <label class="regtoplabel" for="o-pin">Old PIN</label>
+                <label class="regtoplabel" for="oldPin">Old PIN</label>
                 <div class="form-control">
                   <input
                     class="loginput"
-                    id="o-pin"
+                    id="oldPin"
                     type="password"
                     required
-                    name="o-pin"
+                    name="oldPin"
+                   
                   />
                 </div>
+                <div id="invalidMessage" class="error-message"></div>
                 <br />
                 <label class="regtoplabel" for="pin">New PIN</label>
                 <div class="form-control">
@@ -71,7 +73,7 @@
                     type="password"
                     required
                     name="pin"
-                    oninput="pin(this.value, document.getElementById('pin2').value)"
+                    
                   />
                 </div>
                 <div id="pinRequirements"></div>
@@ -84,7 +86,7 @@
                     type="password"
                     required
                     name="pin2"
-                    oninput="pin(document.getElementById('pin').value, this.value)"
+                    
                   />
                 </div>
                 <div id="cpinRequirements"></div>
