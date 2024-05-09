@@ -48,7 +48,7 @@
                     type="text"
                     placeholder="Between '0000' and '9999'"
                     required
-                    oninput="pin(this.value, document.getElementById('pin2').value)"
+                    oninput="pin(document.getElementById('pin').value, this.value)"
                   />
                 </div>
                 <div id="pinRequirements"></div>
@@ -62,7 +62,8 @@
                     type="password"
                     placeholder="Confirm your PIN"
                     required
-                    oninput="pin(document.getElementById('pin').value, this.value)"
+                    oninput="pin(this.value, document.getElementById('pin2').value)"
+                    
                   />
                 </div>
                 <div id="cpinRequirements"></div>

@@ -176,7 +176,70 @@ function validate() {
     return true; 
   }
 }
+function pin(pin, cpin) {
+  const pinInput = document.getElementById("pin");
+  const cpinInput = document.getElementById("pin2");
+  const pinRequirements = document.getElementById("pinRequirements");
+  const cpinRequirements = document.getElementById("cpinRequirements");
 
+  pinRequirements.innerHTML = "";
+  cpinRequirements.innerHTML = "";
+
+  let isValid = true;
+  
+  if (pin.length !== 4) {
+    appendMessage("PIN must ONLY be four digits long", pinRequirements);
+    isValid = false;
+    pinInput.classList.add("error");
+  } else {
+    pinInput.classList.remove("error");
+  }
+  
+  if (isNaN(parseInt(pin))) {
+    appendMessage("PIN should only contain numerical values (0 to 9)", pinRequirements);
+    isValid = false;
+    pinInput.classList.add("error"); 
+  } else {
+    pinInput.classList.remove("error");
+  }
+  
+  if (parseInt(pin) < 0 || parseInt(pin) > 9999) {
+    appendMessage("PIN can only be between '0000' and '9999'", pinRequirements);
+    isValid = false;
+    pinInput.classList.add("error");
+  } else {
+    pinInput.classList.remove("error");
+  }
+
+  if (pin !== cpin) {
+    appendMessage("PINs do not match", cpinRequirements);
+    isValid = false;
+    cpinInput.classList.add("error");
+  } else {
+    cpinInput.classList.remove("error");
+  }
+
+  return isValid;
+}
+function validatePIN(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const pinInput = document.getElementById("pin").value;
+  const cpinInput = document.getElementById("pin2").value;
+  
+  const isValidPIN = pin(pinInput, cpinInput);
+
+  // Get the submit button
+  const submitButton = document.getElementById("submitButton");
+
+  // Enable or disable the submit button based on the PIN validation result
+  if (isValidPIN) {
+    submitButton.removeAttribute("disabled");
+  } else {
+    submitButton.setAttribute("disabled", "disabled");
+  }
+  //return pin(pinInput, cpinInput);
+}
 document.addEventListener("DOMContentLoaded", function () {
     const acctNumInput = document.getElementById("accountID");
     const closeAcctMessageElement = document.getElementById("closeAcctMessage");
@@ -334,7 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return isValid; // Return validation result
     }
-
+   
     // Function to validate the new PINs
     function validatePIN() {
         const pin = pinInput.value;
@@ -534,8 +597,8 @@ async function getCustomerData() {
        var obj = JSON.parse(arr[i])
        var accounts = obj.accounts.split(" ")
        for(let j = 0; j < accounts.length; j++) {
-       var accountNumber = accounts[j].substring(1,2)   
-       var balance = accounts[j].substring(3,accounts[j].length-1)
+       var accountNumber = accounts[j].substring(1,accounts[j].search(","))   
+       var balance = accounts[j].substring(accounts[j].search(",")+1,accounts[j].length-1)
         //using insert Row https://www.w3schools.com/jsref/met_table_insertrow.asp#:~:text=The%20insertRow()%20method%20creates,method%20to%20remove%20a%20row.
        var row = table.insertRow(-1)
        var aN = row.insertCell(0)
@@ -548,8 +611,8 @@ async function getCustomerData() {
        var tRow = table.insertRow(-1)
        var userTotalBalance =  tRow.insertCell(0)
        var userTotalAccounts = tRow.insertCell(1)
-       userTotalAccounts.innerHTML = "User accounts: " + obj.totals.substring(1,2)
-       userTotalBalance.innerHTML = "User Balance: " + obj.totals.substring(3,obj.totals.length-1)
+       userTotalAccounts.innerHTML = "User accounts: " + obj.totals.substring(1,obj.totals.search(","))
+       userTotalBalance.innerHTML = "User Balance: " + obj.totals.substring(obj.totals.search(",")+1,obj.totals.length-1)
    }
       var constantsObj = JSON.parse(arr[arr.length-1])
       document.getElementById("totalBalance").innerText = constantsObj.totalBalance
@@ -566,10 +629,10 @@ document.addEventListener("DOMContentLoaded", async function () {
      let transfer = "transfer" + (i+1)
      let deposit = "deposit" + (i+1)
     if(accounts[i] != "NA") {  
-       document.getElementById(string).innerHTML = accounts[i].substring(2);
+       document.getElementById(string).innerHTML = accounts[i].substring(accounts[i].search(":") + 1);
        document.getElementById(transfer).style.display = "block";
       document.getElementById(deposit).style.display = "block";
-       accountNumbers[i] = accounts[i].substring(0,1);
+       accountNumbers[i] = accounts[i].substring(0,accounts[i].search(":"));
     }
     else {
       document.getElementById(string).innerHTML = "NA";
@@ -601,7 +664,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   var accountNumbers = [];
   for(let i = 0; i < accounts.length; i++) {
      if(accounts[i] != "NA") {
-      accountNumbers[i] = accounts[i].substring(0,1);
+      accountNumbers[i] = accounts[i].substring(0,accounts[i].search(":"));
      }
   }
   // Get the dropdown element
@@ -626,7 +689,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const selectedOption = accountSelect.options[accountSelect.selectedIndex];
     const selectedAccountNumber = selectedOption.value;
     desDiv.innerHTML = `Account Balance - #<span style="color: #f7c331">${selectedAccountNumber}</span>`;
-    div.innerHTML = accounts[accountSelect.selectedIndex].substring(2);
+    div.innerHTML = accounts[accountSelect.selectedIndex].substring(accounts[accountSelect.selectedIndex].search(":") + 1);
   });
 
   // Initially set the balance for the first account

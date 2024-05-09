@@ -104,10 +104,10 @@ def getBalance(user: str = Cookie(None)):
 
 
 @app.post("/ATMlogin")
-def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
+def ATMlogin(accountID: Annotated[str, Form()], atmPIN: Annotated[str, Form()]):
 
     account = cur.execute(
-        "SELECT * FROM accounts WHERE account_number = ? and pin = ?", (accountID, pin)
+        "SELECT * FROM accounts WHERE account_number = ? and pin = ?", (accountID, atmPIN)
     ).fetchone()
 
     if account is None:
@@ -137,7 +137,7 @@ def withdraw(amount: Annotated[int, Form()], currentAccountNumber: int = Cookie(
         "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
     ).fetchone()
     if amount > balance[0]:
-        errorPage("Balance insufficient")
+        return errorPage("Balance insufficient")
     else:
         newBalance = balance[0] - amount
         cur.execute(
@@ -230,23 +230,23 @@ def open(
 
 @app.post("/closeAccount")
 def closeAccount(
-    usernameca: Annotated[str, Form()],
-    accountca: Annotated[int, Form()],
-    cpasswordca: Annotated[int, Form()],
+    username: Annotated[str, Form()],
+    accountID: Annotated[int, Form()],
+    oldPin: Annotated[int, Form()],
 ):
     account = cur.execute(
         "SELECT username, account_number, pin FROM accounts WHERE username=? AND account_number=? AND pin=?",
-        (usernameca, accountca, cpasswordca),
+        (username, accountID, oldPin),
     ).fetchone()
     if account is None:
         return errorPage("Account Number, username or Pin is incorrect, please try again")
-    if account[0] != usernameca:
+    if account[0] != username:
         return errorPage(
             "Please login with the user which owns the account to close it."
         )
     cur.execute(
         "DELETE FROM accounts WHERE username=? AND account_number=? AND pin=?",
-        (usernameca, accountca, cpasswordca),
+        (username, accountID, oldPin),
     )
     database.commit()
     response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
@@ -289,7 +289,7 @@ def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
 @app.post("/transfer")
 def transfer(
     accountSelect: Annotated[int, Form()],
-    pin: Annotated[int, Form()],
+    transferPin: Annotated[int, Form()],
     ammttp: Annotated[float, Form()],
     recipientacctnum: Annotated[int, Form()],
 ):
@@ -297,12 +297,13 @@ def transfer(
         return errorPage("Transfer amount must be at least $0.01")
     balance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=? AND pin=?",
-        (accountSelect, pin),
+        (accountSelect, transferPin),
     ).fetchone()
-
+    if recipientacctnum == accountSelect:
+       return errorPage("Recipient and source cannot be the same.")
     if balance is None:
         return errorPage("pin was incorrect, go back and enter correct pin")
-
+    
     if ammttp > balance[0]:
         return errorPage("Balance insufficient, go back and try again")
 
@@ -311,11 +312,9 @@ def transfer(
     ).fetchone()
 
     if recipientBalance is None:
-        return {
-            errorPage(
-                "Recipient account does not exist, go back and enter correct number"
-            )
-        }
+        return errorPage(
+                "Recipient account does not exist, go back and enter correct number")
+        
     else:
         newRecBalance = recipientBalance[0] + ammttp
         try:
