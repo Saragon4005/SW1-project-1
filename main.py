@@ -107,7 +107,8 @@ def getBalance(user: str = Cookie(None)):
 def ATMlogin(accountID: Annotated[str, Form()], atmPIN: Annotated[str, Form()]):
 
     account = cur.execute(
-        "SELECT * FROM accounts WHERE account_number = ? and pin = ?", (accountID, atmPIN)
+        "SELECT * FROM accounts WHERE account_number = ? and pin = ?",
+        (accountID, atmPIN),
     ).fetchone()
 
     if account is None:
@@ -223,7 +224,7 @@ def open(
         if len(accounts) >= 3:
             return errorPage("You cannot open any more accounts with this user")
         response = HTMLResponse(
-            "<script>location.assign('/static/createPin.html')</script>"
+            "<script>location.assign('/static/createPIN.html')</script>"
         )
         return response
 
@@ -239,7 +240,9 @@ def closeAccount(
         (username, accountID, oldPin),
     ).fetchone()
     if account is None:
-        return errorPage("Account Number, username or Pin is incorrect, please try again")
+        return errorPage(
+            "Account Number, username or Pin is incorrect, please try again"
+        )
     if account[0] != username:
         return errorPage(
             "Please login with the user which owns the account to close it."
@@ -300,10 +303,10 @@ def transfer(
         (accountSelect, transferPin),
     ).fetchone()
     if recipientacctnum == accountSelect:
-       return errorPage("Recipient and source cannot be the same.")
+        return errorPage("Recipient and source cannot be the same.")
     if balance is None:
         return errorPage("pin was incorrect, go back and enter correct pin")
-    
+
     if ammttp > balance[0]:
         return errorPage("Balance insufficient, go back and try again")
 
@@ -313,8 +316,9 @@ def transfer(
 
     if recipientBalance is None:
         return errorPage(
-                "Recipient account does not exist, go back and enter correct number")
-        
+            "Recipient account does not exist, go back and enter correct number"
+        )
+
     else:
         newRecBalance = recipientBalance[0] + ammttp
         try:
