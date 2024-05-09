@@ -236,12 +236,16 @@ def closeAccount(
     oldPin: Annotated[int, Form()],
 ):
     account = cur.execute(
-        "SELECT username, account_number, pin FROM accounts WHERE username=? AND account_number=? AND pin=?",
+        "SELECT username, account_number, pin, balance FROM accounts WHERE username=? AND account_number=? AND pin=?",
         (username, accountID, oldPin),
     ).fetchone()
     if account is None:
         return errorPage(
             "Account Number, username or Pin is incorrect, please try again"
+        )
+    if balance := account[3] > 0.01:
+        return errorPage(
+            f"Account has ${balance}, please empty account before deleting it"
         )
     if account[0] != username:
         return errorPage(
