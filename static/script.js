@@ -178,7 +178,7 @@ function validate() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const acctNumInput = document.getElementById("accountca");
+    const acctNumInput = document.getElementById("accountID");
     const closeAcctMessageElement = document.getElementById("closeAcctMessage");
     const submitButton = document.getElementById("submitButton");
 
@@ -217,8 +217,6 @@ document.addEventListener("DOMContentLoaded", function () {
         submitButton.disabled = !validateAcctNum();
     });
 });
-
-
 
 document.addEventListener("DOMContentLoaded", function() {
   const oPinInput = document.getElementById("transferPin");
@@ -270,6 +268,28 @@ document.addEventListener("DOMContentLoaded", function() {
     validateInputs();
   });
 });
+function validateATMPIN() {
+  const atmPINInput = document.getElementById("atmPIN");
+  const invalidMessageElement = document.getElementById("invalidMessage");
+  const submitButton = document.getElementById("submitButton");
+
+  const atmPIN = atmPINInput.value;
+
+        
+  let isValid = true;
+
+  if (atmPIN !== "" && (parseInt(atmPIN) < 0 || parseInt(atmPIN) > 9999 || isNaN(parseInt(atmPIN)) || atmPIN.length !== 4)) {
+    invalidMessageElement.innerHTML = "Invalid ATM PIN: You should know this by now";
+    isValid = false;
+  } else {
+    invalidMessageElement.innerHTML = "";
+  }
+
+  // Enable or disable submit button based on validation result
+  submitButton.disabled = !isValid;
+
+  return isValid;
+}
 function validateOldPIN() {
   const oldPin = document.getElementById("oldPin").value;
   const invalidMessage = document.getElementById("invalidMessage");
@@ -282,6 +302,7 @@ function validateOldPIN() {
     appendMessage("Invalid PIN: You should know this by now", invalidMessage);
     isValid = false;
   }
+  
 }
 document.addEventListener("DOMContentLoaded", function () {
     const oldPinInput = document.getElementById("oldPin");
@@ -366,7 +387,7 @@ function validateForm() {
     return false;
   }
 
-  if (!validateAmountInput()) {
+  if (!validateAmountInput(amountInput)) {
     return false;
   }
 

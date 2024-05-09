@@ -38,18 +38,19 @@
     <form class="loginForm" id="formW" method="POST" required>
      <div class="formusr">
       <div class="ammountInput">
-        <label class="regtoplabel" for="amount"
+        <label class="regtoplabel" for="ammttp"
           >Amount to Withdraw (in USD):</label
         >
         <br>
         <div class="form-control">
           <input
             class="loginput"
-            id="amount"
-            name="amount"
+            id="ammttp"
+            name="ammttp"
             type="text"
             placeholder="0.00"
             required
+            onblur="formatAmount(this)"
           />
         </div>
       </div>
