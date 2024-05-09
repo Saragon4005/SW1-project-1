@@ -7,11 +7,14 @@ Assuming python and pip is installed the libraries can be installed with `pip in
 
 ### Initialize the Database
 
-If the databse doesn't exist, run the sql quaries in `create.sql`.
-This can be done by running the `new_db.py` Python script
-Important to note, employee logins need to be added manually
+The app uses a file named `bank.db` as a sqlite3 db
+If this database doesn't exist running the app will automatically create one based on sql queries in `create.sql`.
+The database can also be manually created over reset to default by running the `new_db.py` Python script
+There are default values for 1 user with 2 accounts and 1 employee account
+The employee account has the username of admin and password of admin1
 
 ## Running
 
-Fast API starts a self updating web server with the command `uvicorn main:app --reload`
-A web server will track the updates in real time
+Running the `main.py` file using python will start the server
+The Fast API can be started manually as a self updating web server with the command `uvicorn main:app --reload`
+Unlike with running `main.py` the server will track the updates to files in real time
