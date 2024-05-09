@@ -243,7 +243,7 @@ def closeAccount(
         return errorPage(
             "Account Number, username or Pin is incorrect, please try again"
         )
-    if balance := account[3] > 0.01:
+    if (balance := account[3]) > 0.01:
         return errorPage(
             f"Account has ${balance}, please empty account before deleting it"
         )
