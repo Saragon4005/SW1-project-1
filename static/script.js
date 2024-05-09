@@ -428,12 +428,18 @@ document.addEventListener("DOMContentLoaded", async function () {
   var accountNumbers = [];
   for(let i = 0; i < accounts.length; i++) {
      let string = "balance" + (i+1)
+     let transfer = "transfer" + (i+1)
+     let deposit = "deposit" + (i+1)
     if(accounts[i] != "NA") {  
        document.getElementById(string).innerHTML = accounts[i].substring(2);
+       document.getElementById(transfer).style.display = "block";
+      document.getElementById(deposit).style.display = "block";
        accountNumbers[i] = accounts[i].substring(0,1);
     }
     else {
       document.getElementById(string).innerHTML = "NA";
+      document.getElementById(transfer).style.display = "none";
+      document.getElementById(deposit).style.display = "none";
       accountNumbers[i] = "NA";
     }
   }
