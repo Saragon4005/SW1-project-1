@@ -133,10 +133,14 @@ def withdrawBalance(currentAccountNumber: int = Cookie(None)):
 
 
 @app.post("/withdraw")
-def withdraw(amount: Annotated[int, Form()], currentAccountNumber: int = Cookie(None)):
+def withdraw(
+    amount: Annotated[float, Form()], currentAccountNumber: int = Cookie(None)
+):
     balance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
     ).fetchone()
+    if amount < 0.01:
+        return errorPage("Withdraw amount must be at least $0.01")
     if amount > balance[0]:
         return errorPage("Balance insufficient")
     else:
