@@ -12,6 +12,8 @@ If this database doesn't exist running the app will automatically create one bas
 The database can also be manually created over reset to default by running the `new_db.py` Python script
 There are default values for 1 user with 2 accounts and 1 employee account
 The employee account has the username of admin and password of admin1
+Default user account: username: Sza, password: 1234
+Default Bank account: username: Sza, accountId:1, pin: 1234
 
 ## Running
 
