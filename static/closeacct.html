@@ -6,19 +6,18 @@
     <link rel="stylesheet" href="menuPartial.css" />
     <title>Bye, CashWash-er!</title>
     <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
+    <script src="script.js" defer></script>
   </head>
-
-  <div class="topBanner">
-    <div class="menu-btn">
-      <div class="btn-line"></div>
-      <div class="btn-line"></div>
-      <div class="btn-line"></div>
-    </div>
-  </div>
-
-  <div id="menuPartial"></div>
-  <script src="menuPartial.html" defer></script>
   <body>
+    <div class="topBanner">
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
+    </div>
+    <div id="menuPartial"></div>
+    <script src="menuPartial.html" defer></script>
     <div class="bodySection">
       <div class="ammountContainer">
         <div class="box-image">
@@ -28,9 +27,9 @@
                 >We are so sad to see you go! <br />
                 Just know that by closing your account means we get
                 <span class="colored">ALL</span> of
-                <span class="colored">YOUR</span> money.<br />
+                <span class="colored">YOUR</span> money from that account.<br />
                 Thank you for trusting us at
-                <span class="colored">CA$H WASH!!!</span></span
+                <span class="colored">CA$H WASH</span>!</span
               >
             </p>
           </div>
@@ -44,47 +43,53 @@
               required
             >
               <div class="formusr" id="formusr">
-                <label class="regtoplabel" for="accountca">
+                <label class="regtoplabel" for="accountID">
                   Enter Account #</label
                 >
                 <div class="form-control">
                   <input
                     class="loginput"
-                    id="accountca"
-                    name="accountca"
+                    id="accountID"
+                    name="accountID"
                     type="text"
                     required
                   />
                 </div>
                 <br />
-                <label class="regtoplabel" for="usernameca"
+                 <div id="closeAcctMessage" class="error-message"></div>
+                <br />
+                <label class="regtoplabel" for="username"
                   >Enter Username</label
                 >
                 <div class="form-control">
                   <input
                     class="loginput"
-                    id="usernameca"
-                    name="usernameca"
+                    id="username"
+                    name="username"
                     type="text"
                     required
+                    oninput="validateUsername(this.value)"
                   />
+                  <div id="usernameMessage" class="error-message"></div>
                 </div>
                 <br />
-                <label class="regtoplabel" for="passwordca"
-                  >Enter Password</label
+                <label class="regtoplabel" for="oldPin"
+                  >Enter PIN</label
                 >
                 <div class="form-control">
                   <input
                     class="loginput"
-                    id="cpasswordca"
+                    id="oldPin"
                     type="password"
                     required
-                    name="cpasswordca"
+                    name="oldPin"
+                    oninput="validateOldPIN()"
                   />
+                  <div id="invalidMessage" class="error-message"></div>
                 </div>
                 <br />
               </div>
-              <button type="submit" class="b-login">Close Account</button>
+              <button type="submit" class="b-login" id="submitButton" disabled>CLOSE ACCOUNT</button>
             </form>
             <div class="independent-button">
               <a href="" class="b-button"> </a>
@@ -97,6 +102,5 @@
       <br />
     </div>
     <div class="bottomBanner"></div>
-    <script src="script.js"></script>
   </body>
 </html>

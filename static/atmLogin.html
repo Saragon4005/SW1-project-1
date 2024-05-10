@@ -46,26 +46,32 @@
                   type="text"
                   required
                   name="accountID"
+                  oninput="validateAcctNum()"
                 />
               </div>
               <br />
-              <label class="loginlabel" for="Pin">PIN:</label>
+                 <div id="closeAcctMessage" class="error-message"></div>
+                <br />
+              <label class="loginlabel" for="atmPIN">PIN:</label>
               <div class="form-control">
                 <input
                   class="loginput"
-                  id="pin"
+                  id="atmPIN"
                   type="password"
                   required
-                  name="pin"
+                  name="atmPIN"
+                  oninput="validateATMPIN()"
                 />
               </div>
               <br />
+              <div id="invalidMessage" class="error-message"></div>
+              <br />
             </div>
             <br />
-            <button class="b-login">ENTER</button>
+            <button class="b-login" id="submitButton">ENTER</button>
           </form>
           <div class="independent-button">
-            <a href="" class="b-button"> </a>
+            <a href="atmWithdraw.html" class="b-button"> </a>
             <br />
             <br />
           </div>

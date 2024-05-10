@@ -74,5 +74,46 @@ hr {
 }
 
 .ammountContainer:hover .hover-text {
-  opacity: 0; /* Hide the text on hover */
+  opacity: 0; 
+}
+
+
+.colored-text3 {
+  background-color: #f7f3e8;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  height: 400px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  position: relative;
+  left: -10px; 
+}
+
+.colored-text4 {
+  background-color: #f7f3e8;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  height: 210px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  position: relative;
+  left: 40px; 
+}
+.atm-transact-btns {
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  position: absolute;
+  display: flex;
+  width: 100%;
+  overflow-y: auto;
+}
+.atm-transact-btns .b-button {
+  margin: 20px;
+}
+.glyphicon{
+ font-size: 200%;
+ margin-top: 40%;
 }

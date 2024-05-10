@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="menuPartial.css" />
     <title>Bye, CashWash-er!</title>
     <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
+    
   </head>
 
   <body>
@@ -21,30 +22,30 @@
     <script src="menuPartial.html" defer></script>
 
     <div class="bodySection">
-      <div class="ammountContainer">
+      <div class="loginContainer">
         <div class="box-image">
-          <div class="center4"></div>
           <div class="textDescription">
-            Electronics Check deposit
-            <br />
-            <span class="colored">Upload</span>
-            or <span class="colored">Drag</span>
-            your image below
+            <div class="colored4">
+               To electronically deposit your check, please
+            <span class="coloredX"> CLICK ON THE IMAGE BELOW </span> and <span class="coloredX"> SELECT </span> the appropriate image file 
+            <div>
+              (acceptable formats: .jpg, .jpeg, .png)
+            </div>
+            </div>
           </div>
-          <br /><br /><br /><br /><br />
-
-          <div class="image-container">
-            <img src="pictures/uploadPicture.jpg" alt="Uploaded Image" />
+          <div class="image-upload" id="image-upload">
+            <label for="file-input" id="file-label">
+                <img src="pictures/uploadPicture.jpg" alt="Uploaded Image"  />
+            </label>
+            <input class="file-input" id="file-input" type="file" hidden accept="image/png, image/jpeg" />
           </div>
-          <br /><br /><br /><br /><br /><br />
           <form
             class="loginForm"
             id="form"
             action="/checkAmount"
             method="POST"
-            required
+            onsubmit="return validateForm()"
           >
-            <div class="formusr" id="formusr"></div>
             <div class="formusr" id="formusr">
               <label class="loginlabel" for="ammttp">Amount (in USD)</label>
               <div class="form-control">
@@ -52,24 +53,23 @@
                   class="loginput"
                   id="ammttp"
                   type="text"
-                  placeholder="$0.00"
+                  placeholder="0.00"
                   required
                   name="amount"
+                  onblur="formatAmount(this)"
                 />
               </div>
+              <div id="amountErrorMessage" class="error-message"></div>
             </div>
             <br />
             <button type="submit" class="b-login" onclick="reload('deposit')">
-              Deposit
+              DEPOSIT
             </button>
             <br /><br />
             <button type="submit" class="b-login" onclick="reload('member')">
-              Cancel
+              CANCEL
             </button>
           </form>
-          <div class="independent-button">
-            <a href="" class="b-button"> </a>
-          </div>
         </div>
       </div>
     </div>

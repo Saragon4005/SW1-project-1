@@ -4,21 +4,11 @@
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="member.css" />
     <link rel="stylesheet" href="menuPartial.css" />
-    <title>Change PIN</title>
+    <title>We're not NOT peeking!</title>
     <link rel="icon" href="pictures/CWIcon.png" type="image/x-icon" />
     <style>
-      .loginput {
-        font-size: 18px;
-        padding: 10px;
-        width: 300px;
-      }
-
       .colored4 {
         font-size: 24px;
-      }
-
-      .regtoplabel {
-        font-size: 18px;
       }
     </style>
   </head>
@@ -48,6 +38,7 @@
               action="/change-pin"
               method="POST"
               required
+              
             >
               <div class="formusr" id="formusr">
                 <label class="regtoplabel" for="username">Username</label>
@@ -61,30 +52,47 @@
                   />
                 </div>
                 <br />
-                <label class="regtoplabel" for="password">Password</label>
+                <label class="regtoplabel" for="oldPin">Old PIN</label>
                 <div class="form-control">
                   <input
                     class="loginput"
-                    id="password"
+                    id="oldPin"
                     type="password"
                     required
-                    name="password"
+                    name="oldPin"
+                   
                   />
                 </div>
+                <div id="invalidMessage" class="error-message"></div>
                 <br />
-                <label class="regtoplabel" for="new-pin">New PIN</label>
+                <label class="regtoplabel" for="pin">New PIN</label>
                 <div class="form-control">
                   <input
                     class="loginput"
-                    id="new-pin"
+                    id="pin"
                     type="password"
                     required
-                    name="new-pin"
+                    name="pin"
+                    
                   />
                 </div>
+                <div id="pinRequirements"></div>
+                <br />
+                <label class="regtoplabel" for="pin2">Confirm New PIN</label>
+                <div class="form-control">
+                  <input
+                    class="loginput"
+                    id="pin2"
+                    type="password"
+                    required
+                    name="pin2"
+                    
+                  />
+                </div>
+                <div id="cpinRequirements"></div>
                 <br />
               </div>
-              <button type="submit" class="b-login">SET PIN</button>
+              <button type="submit" class="b-login" id="submitButton" disabled>SET PIN</button>
             </form>
           </div>
         </div>

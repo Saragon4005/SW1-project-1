@@ -1,8 +1,9 @@
+import json
 import sqlite3
 from typing import Annotated
 
 
-from fastapi import Cookie, FastAPI, Form, HTTPException, status
+from fastapi import Cookie, FastAPI, Form
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import Body
@@ -13,8 +14,14 @@ app = FastAPI()
 # fixed an error with the same thread being checked https://stackoverflow.com/a/48234567
 new_db.script()
 database = sqlite3.Connection("bank.db", check_same_thread=False)
-cur: sqlite3.Cursor = database.cursor()
+cur = database.cursor()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+
+def errorPage(message: str) -> HTMLResponse:
+    return HTMLResponse(
+        content=f"<script> alert('{message}'); history.back();</script>"
+    )
 
 
 @app.get("/")
@@ -49,9 +56,7 @@ def register(
 ):
     user = cur.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
     if user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
-        )
+        return errorPage("Username already exists")
     else:
         cur.execute(
             "INSERT INTO users (username, password) VALUES (?, ?)", (username, password)
@@ -69,10 +74,7 @@ def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
     ).fetchone()
 
     if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Username or Password is incorrect, please try again",
-        )
+        return errorPage("Username or Password is incorrect, please try again")
     else:
         response = HTMLResponse(
             "<script>location.assign('/static/member.html')</script>"
@@ -87,6 +89,7 @@ def getBalance(user: str = Cookie(None)):
         "SELECT `account_number`, `balance` FROM accounts WHERE username=?", (user,)
     ).fetchall()
     if len(accounts) == 0:
+        # this one has to be json
         return {"No account exists"}
     else:
         string = ""
@@ -101,22 +104,55 @@ def getBalance(user: str = Cookie(None)):
 
 
 @app.post("/ATMlogin")
-def ATMlogin(accountID: Annotated[str, Form()], pin: Annotated[str, Form()]):
+def ATMlogin(accountID: Annotated[str, Form()], atmPIN: Annotated[str, Form()]):
 
     account = cur.execute(
-        "SELECT * FROM accounts WHERE account_number = ? and pin = ?", (accountID, pin)
+        "SELECT * FROM accounts WHERE account_number = ? and pin = ?",
+        (accountID, atmPIN),
     ).fetchone()
 
     if account is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Account Number or Pin is incorrect, please try again",
-        )
+        return errorPage("Account Number or Pin is incorrect, please try again")
     else:
         response = HTMLResponse(
             content="<script>location.assign('/static/atmWithdraw.html')</script>"
         )
         response.set_cookie(key="currentAccountNumber", value=accountID)
+        return response
+
+
+@app.get("/getWithdrawBalance")
+def withdrawBalance(currentAccountNumber: int = Cookie(None)):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
+    ).fetchone()
+    return json.dumps(
+        {"accountNumber": str(currentAccountNumber), "balance": str(balance[0])},
+        separators=(", ", ":"),
+    )
+
+
+@app.post("/withdraw")
+def withdraw(
+    amount: Annotated[float, Form()], currentAccountNumber: int = Cookie(None)
+):
+    balance = cur.execute(
+        "SELECT balance FROM accounts WHERE account_number=?", (currentAccountNumber,)
+    ).fetchone()
+    if amount < 0.01:
+        return errorPage("Withdraw amount must be at least $0.01")
+    if amount > balance[0]:
+        return errorPage("Balance insufficient")
+    else:
+        newBalance = balance[0] - amount
+        cur.execute(
+            "UPDATE accounts SET balance=? WHERE account_number=?",
+            (newBalance, currentAccountNumber),
+        )
+        database.commit()
+        response = HTMLResponse(
+            "<script>location.assign('/static/atmAfterWithdraw.html')</script>"
+        )
         return response
 
 
@@ -130,6 +166,8 @@ def checkAccount(accountNum: str = Body()):
 
 @app.post("/checkAmount")
 def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
+    if amount < 0.01:
+        return errorPage("Deposit amount must be at least $0.01")
     currentAmount = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=?", (check,)
     ).fetchone()
@@ -140,7 +178,7 @@ def update(amount: Annotated[float, Form()], check: int = Cookie(None)):
     response = HTMLResponse(
         content="<script>location.assign('/static/successfulcheckdeposit.html')</script>"
     )
-    response.set_cookie(key="amount", value=input)
+    response.set_cookie(key="amount", value=input)  # type: ignore
     return response
 
 
@@ -151,11 +189,21 @@ def getCheckData(amount: str = Cookie(None), check: str = Cookie(None)):
 
 @app.post("/admin")
 def adminPost(
-    username: Annotated[str, Form()],
-    password: Annotated[str, Form()],
-    user: str = Cookie(None),
+    employeeUsername: Annotated[str, Form()], empPassword: Annotated[str, Form()]
 ):
-    return {"message": "Password incorrect, please try again "}
+    admin = cur.execute(
+        "SELECT * FROM admins WHERE username = ? and password = ?",
+        (employeeUsername, empPassword),
+    ).fetchone()
+
+    if admin is None:
+        return errorPage("Username or Password is incorrect, please try again")
+    else:
+        response = HTMLResponse(
+            "<script>location.assign('/static/adminMain.html')</script>"  # TODO: change to admin page
+        )
+        response.set_cookie(key="admin", value=employeeUsername)
+        return response
 
 
 @app.post("/openAccount")
@@ -168,36 +216,48 @@ def open(
         "SELECT * FROM users WHERE username = ? and password = ?", (username, password)
     ).fetchone()
     if userInfo is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Username or Password is incorrect, please try again",
-        )
+        return errorPage("Username or Password is incorrect, please try again")
     if userInfo[0] != user:
-        return {
-            "Message": "Please login with this user if you want to open an account with this user."
-        }
+        return errorPage(
+            "Please login with this user if you want to open an account with this user."
+        )
     else:
         accounts = cur.execute(
             "SELECT * FROM accounts WHERE username=?", (user,)
         ).fetchall()
         if len(accounts) >= 3:
-            return {"Message": "You cannot open any more accounts with this user"}
+            return errorPage("You cannot open any more accounts with this user")
         response = HTMLResponse(
-            "<script>location.assign('/static/confirmacct.html')</script>"
+            "<script>location.assign('/static/createPIN.html')</script>"
         )
         return response
 
 
 @app.post("/closeAccount")
 def closeAccount(
-    usernameca: Annotated[str, Form()],
-    accountca: Annotated[int, Form()],
-    cpasswordca: Annotated[int, Form()],
+    username: Annotated[str, Form()],
+    accountID: Annotated[int, Form()],
+    oldPin: Annotated[int, Form()],
 ):
-    # TODO Add feedback on success/fail
+    account = cur.execute(
+        "SELECT username, account_number, pin, balance FROM accounts WHERE username=? AND account_number=? AND pin=?",
+        (username, accountID, oldPin),
+    ).fetchone()
+    if account is None:
+        return errorPage(
+            "Account Number, username or Pin is incorrect, please try again"
+        )
+    if (balance := account[3]) > 0.01:
+        return errorPage(
+            f"Account has ${balance}, please empty account before deleting it"
+        )
+    if account[0] != username:
+        return errorPage(
+            "Please login with the user which owns the account to close it."
+        )
     cur.execute(
         "DELETE FROM accounts WHERE username=? AND account_number=? AND pin=?",
-        (usernameca, accountca, cpasswordca),
+        (username, accountID, oldPin),
     )
     database.commit()
     response = HTMLResponse("<script>location.assign('/static/member.html')</script>")
@@ -205,9 +265,9 @@ def closeAccount(
 
 
 @app.post("/pin")
-def insert(Pin: Annotated[int, Form()], user: str = Cookie(None)):
+def insert(pin: Annotated[int, Form()], user: str = Cookie(None)):
 
-    cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, Pin))
+    cur.execute("INSERT INTO accounts (username, pin) VALUES (?,?) ", (user, pin))
     database.commit()
     # This get the last account inserted
     accountsNumber = cur.execute(
@@ -232,32 +292,41 @@ def cancel():
     return response
 
 
+@app.get("/getTransferData")
+def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
+    return {recipient + "," + amount}
+
+
 @app.post("/transfer")
 def transfer(
     accountSelect: Annotated[int, Form()],
-    pin: Annotated[int, Form()],
+    transferPin: Annotated[int, Form()],
     ammttp: Annotated[float, Form()],
     recipientacctnum: Annotated[int, Form()],
 ):
+    if ammttp < 0.01:
+        return errorPage("Transfer amount must be at least $0.01")
     balance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=? AND pin=?",
-        (accountSelect, pin),
+        (accountSelect, transferPin),
     ).fetchone()
-
+    if recipientacctnum == accountSelect:
+        return errorPage("Recipient and source cannot be the same.")
     if balance is None:
-        return {"Message": "pin was incorrect, go back and enter correct pin"}
+        return errorPage("pin was incorrect, go back and enter correct pin")
 
     if ammttp > balance[0]:
-        return {"Message": "Balance insufficient, go back and try again"}
+        return errorPage("Balance insufficient, go back and try again")
 
     recipientBalance = cur.execute(
         "SELECT balance FROM accounts WHERE account_number=?", (recipientacctnum,)
     ).fetchone()
 
     if recipientBalance is None:
-        return {
-            "Message": "Recipient account does not exist, go back and enter correct number"
-        }
+        return errorPage(
+            "Recipient account does not exist, go back and enter correct number"
+        )
+
     else:
         newRecBalance = recipientBalance[0] + ammttp
         try:
@@ -277,14 +346,62 @@ def transfer(
         response = HTMLResponse(
             "<script>location.assign('/static/successfulfundtransfer.html')</script>"
         )
-        response.set_cookie(key="recipient", value=recipientacctnum)
-        response.set_cookie(key="amount", value=ammttp)
+        response.set_cookie(key="recipient", value=recipientacctnum)  # type: ignore
+        response.set_cookie(key="amount", value=ammttp)  # type: ignore
         return response
 
 
-@app.get("/getTransferData")
-def getTransferData(amount: str = Cookie(None), recipient: str = Cookie(None)):
-    return {recipient + "," + amount}
+@app.get("/getCustomerData")
+def generateStats():
+    accounts: list[tuple[int, str, int, float]] = cur.execute(
+        "SELECT account_number, username, pin, balance FROM accounts"
+    ).fetchall()
+    users: dict[str, list[tuple[int, float]]] = {}
+    numOfaccounts = len(accounts)
+    largestAccountNum = 0
+    totalBalance = 0.0
+    for account in accounts:
+        if account[0] > largestAccountNum:
+            largestAccountNum = account[0]
+        totalBalance += account[3]
+        user = users.get(account[1], [])
+        user.append((account[0], account[3]))
+        users[account[1]] = user
+
+    dataString = ""
+    userAccounts = 0
+
+    for user, currentList in users.items():
+        userAccounts = len(currentList)
+        userTotalBalance = 0
+        for tup in currentList:
+            userTotalBalance += tup[1]
+
+        stro1 = " ".join([f"({tup[0]},{tup[1]})" for tup in currentList])
+
+        dataString += (
+            json.dumps(
+                {
+                    "username": user,
+                    "accounts": stro1,
+                    "totals": str((userAccounts, userTotalBalance)).replace(" ", ""),
+                },
+                separators=(", ", ":"),
+            )
+            + ";"
+        )
+
+    formattedString = json.dumps(
+        {
+            "numOfaccounts": str(numOfaccounts),
+            "totalBalance": str(totalBalance),
+            "largestAccountNum": str(largestAccountNum),
+        },
+        separators=(", ", ":"),
+    )
+    # Creating a string in JSON format, so that I can parse it using JSON.parse() and split with semicolons in javascript.
+    dataString += formattedString
+    return dataString
 
 
 if __name__ == "__main__":
